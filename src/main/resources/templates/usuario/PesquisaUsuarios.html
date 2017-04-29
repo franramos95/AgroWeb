@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th ="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">	
+<head>
+
+<head>
+	<title>Pesquisa de Usuários</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo" >
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de Usuários</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/cidades/nova">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/usuarios/novo}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Usuario</span>
+						</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<form method="GET" th:object="${usuarioFilter}">
+			<div class="row">
+				<div class="form-group  col-sm-6">
+					<label class="control-label" for="nome">Nome</label>
+					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
+				
+				<div class="form-group  col-sm-6">
+					<label class="control-label" for="nome">Email</label>
+					<input type="text" class="form-control" id="email" autofocus="autofocus" th:field="*{email}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-12">
+					<label class="control-label">Grupos</label> 
+					<div>
+						<th:block th:each="grupo : ${grupos}">
+	  						<div class="checkbox  checkbox-inline"> 
+		    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
+		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
+	    					</div>
+	    				</th:block>
+					</div>
+  				</div>
+			</div>			
+			
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+		</form>	
+		
+		<div class="table-responsive  bw-tabela-simples">
+			<table class="table  table-hover">
+				<thead>
+					<tr>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
+						</td>						
+						<td class="table-cidades-col-estado">
+							<agroWeb:order page="${pagina}" field="email" text="eMail"></agroWeb:order>
+						</td>
+						<td class="table-cervejas-col-estilo">Grupo</td>						
+						<td class="table-cidades-col-estado">
+							<agroWeb:order page="${pagina}" field="ativo" text="Status"></agroWeb:order>
+						</td>						
+						<td class="table-clientes-col-acoes"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="usuario : ${pagina.content}">
+					
+						<td th:text="${usuario.nome}"></td>
+						<td th:text="${usuario.email}"></td>
+						<td>
+							<span th:each="grupo : ${usuario.grupos}" th:text="|${grupo.nome}${grupoStat.last ? '' : ', '}|"></span>
+						</td>
+						<td th:text="${usuario.ativo}"></td>
+						<td class="text-center" sec:authorize="hasRole('ROLE_CADASTRAR_USUARIO')">
+							<a class="btn  btn-link  btn-xs" title="Editar"> 
+								<i class="glyphicon glyphicon-pencil"></i>
+							</a>
+							<a class="btn  btn-link  btn-xs" title="Excluir">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</td>
+					</tr>	
+					<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhum usuário encontrado</td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>				
+			</nav>
+		</div>		
+				
+	</div>	
+	
+</section>
+</body>
+</head>
+</html>		
