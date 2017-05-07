@@ -11,7 +11,7 @@ import com.agroWeb.repository.IngredientesRepository;
 import com.agroWeb.service.exception.NomeIngredienteJaCadastradaException;
 
 @Service
-public class CadastrarIngredientesService {
+public class CadastroIngredientesService {
 
 	@Autowired
 	private IngredientesRepository ingredientesRepository;
