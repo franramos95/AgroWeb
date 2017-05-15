@@ -16,9 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agroWeb.controller.page.PageWrapper;
 import com.agroWeb.model.Comprador;
+import com.agroWeb.model.TipoPessoa;
 import com.agroWeb.repository.CompradorRepository;
+import com.agroWeb.repository.EstadoRepository;
 import com.agroWeb.repository.filter.CompradorFilter;
 import com.agroWeb.service.CadastroCompradorService;
+import com.agroWeb.service.exception.CpfCnpjClienteJaCadastradoException;
 import com.agroWeb.service.exception.NomeCompradorJaCadastradoException;
 
 
@@ -26,6 +29,9 @@ import com.agroWeb.service.exception.NomeCompradorJaCadastradoException;
 @RequestMapping("/compradores")
 public class CompradorController {
 	
+	@Autowired
+	private EstadoRepository estadoRepository;
+		
 	@Autowired
 	private CadastroCompradorService cadastroCompradorService;
 	
@@ -35,6 +41,8 @@ public class CompradorController {
 	@RequestMapping("/novo")
 	public ModelAndView novo(Comprador comprador){
 		ModelAndView mv = new ModelAndView("comprador/CadastroComprador");
+		mv.addObject("tiposPessoa",TipoPessoa.values());
+		mv.addObject("estados", estadoRepository.findAll());
 		return mv;
 	}
 	
@@ -49,9 +57,12 @@ public class CompradorController {
 		} catch (NomeCompradorJaCadastradoException e) {
 			result.rejectValue("nome", e.getMessage(), e.getMessage());
 			return novo(comprador);
-		} 	
+		} catch (CpfCnpjClienteJaCadastradoException e){
+			result.rejectValue("cpfOuCnp", e.getMessage(), e.getMessage());
+			return novo(comprador);
+		}
 		
-		attributes.addFlashAttribute("message","Comprador cadastrado com sucesso");
+		attributes.addFlashAttribute("mensagem","Comprador cadastrado com sucesso!");
 		return new ModelAndView("redirect:/compradores/novo");
 	}
 	

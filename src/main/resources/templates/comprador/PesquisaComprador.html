@@ -31,137 +31,83 @@
 	
 	<div class="container-fluid">
 		<form method="GET" th:object="${compradorFilter}">
-		<div class="row">
-				<div class="form-group  col-sm-8  bw-required" agroWeb:classforerror="nome">
-					<label for="nome" class="control-label">Nome</label>
-					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
-				</div>	
-				
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerror="inscricao">
-					<label for="inscricao" class="control-label">Inscrição</label>
-					<input id="inscricao" type="text" class="form-control" autofocus="autofocus" th:field="*{inscricao}"/>
-				</div>	
-			</div>
-			
-			<div class="row">
-				<div class="form-group  col-sm-8  bw-required" agroWeb:classforerro="logradouro">
-					<label for="logradouro" class="control-label">Logradouro</label>
-					<input id="logradouro" type="text" class="form-control" autofocus="autofocus" th:fiel="*{logradouro}"/>
-				</div>
-				
-				<div class="form-group  col-sm-2  bw-required" agroWeb:classforerro="numero">
-					<label for="numero" class="control-label">Número</label>
-					<input id="numero" type="text" class="form-control" autofocus="autofocus" th:fiel="*{numero}"/>
-				</div>
-							
-				<div class="form-group  col-sm-2  bw-required" agroWeb:classforerro="cep">
-					<label for="cep" class="control-label">CEP</label>
-					<input id="cep" type="text" class="form-control" autofocus="autofocus" th:fiel="*{cep}"/>
-				</div>
-			</div>
-			
-			<div class="row">					
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerro="cidade">
-					<label for="cidade" class="control-label">Cidade</label>
-					<input id="cidade" type="text" class="form-control" autofocus="autofocus" th:fiel="*{cidade}"/>
-				</div>
-				
-			    <div class="form-group  col-sm-4  bw-required" agroWeb:classforerro="estado">
-					<label for="estado" class="control-label">Estado</label>
-					<input id="estado" type="text" class="form-control" autofocus="autofocus" th:fiel="*{estado}"/>
-				</div>
-				
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerro="pais">
-					<label for="pais" class="control-label">País</label>
-					<input id="pais" type="text" class="form-control" autofocus="autofocus" th:fiel="*{pais}"/>
-				</div>
-			</div>
-			
-			<button type="submit" class="btn  btn-primary">Pesquisar</button>
-		</form>
-		
-		<div class="table-responsive  bw-table-simples">
-			<table class="table  table-hover">
-				<thead>
-					<tr>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
-						</td>	
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="inscricao" text="Inscrição"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="logradouro" text="Logradouro"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="numero" text="Número"></agroWeb:order>
-						</td>							
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="cep" text="CEP"></agroWeb:order>
-						</td>				
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="cidade" text="Cidade"></agroWeb:order>
-						</td>								
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="estado" text="Estado"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="pais" text="Pais"></agroWeb:order>
-						</td>
-						<td class="table-clientes-col-acoes"></td>
-					</tr>
-				</thead>
-							<tbody>
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.nome}"></td>
-					</tr>
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.inscricao}"></td>
-					</tr>
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.logradouro}"></td>
-					</tr>											
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.numero}"></td>
-					</tr>	
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.cep}"></td>
-					</tr>	
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.cidade}"></td>
-					</tr>	
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.estado}"></td>
-					</tr>	
-					<tr th:each="comprador : ${pagina.content}">
-						<td th:text="${comprador.pais}"></td>
-					</tr>	
-					<tr th:if="${pagina.empty}">
-						<td colspan="3">Nenhum comprador encontrado</td>
-					</tr>				
-				</tbody>
-			</table>
-		</div>
-		
-				<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
-			<nav>
-				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
-					<li th:class="${pagina.primeira} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
-					</li>	
-					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
-						<li th:class="${paginaAtuaç == numeroPagina} ? active">
-							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
-						</li>
-					</th:block>
-					
-					<li th:class="${pagina.ultima} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-			</div>
-	</div>
+ 			<div class="row">
+			    <div class="form-group  col-sm-8">
+			     	<label class="control-label" for="nome">Nome</label>
+			    	 <input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+			    </div>
+			    
+		    <div class="form-group  col-sm-4">
+		    	 <label for="cpfOuCnpj" class="control-label">CPF/CNPJ</label>
+		    	 <input type="text" class="form-control" id="cpfOuCnpj" th:field="*{cpfOuCnpj}"/>
+		    </div>
+		  </div>
+		   
+   			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+ 		 </form> 
+  
+  <div class="table-responsive  bw-tabela-simples">
+	   <table class="table  table-hover">
+	    	<thead>
+	     	<tr>
+	      		<td class="table-clientes-col-nome">
+	       			<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
+	      		</td>      
+	      		<td class="table-clientes-col-tipo-pessoa">
+	       			<agroWeb:order page="${pagina}" field="tipoPessoa" text="TipoPessoa"></agroWeb:order>
+	      		</td>
+	      		<td class="table-clientes-col-cpf-cnpj">CPF/CNPJ</td>
+	      		<td class="table-clientes-col-telefone">Telefone</td>
+	      		<td class="table-clientes-col-cidade-estado">Cidade/Estado</td>
+	      		<td class="table-clientes-col-acoes"></td>
+	     	</tr>
+	    	</thead>
+	    <tbody>
+	   		 <tr th:each="comprador : ${pagina.content}">
+	     
+	    	  <td th:text="${comprador.nome}"></td>
+	      	  <td class="text-center" th:text="${comprador.tipoPessoa.descricao}"></td>
+	      	  <td class="text-right" th:text="${comprador.cpfOuCnpj}"></td>
+	      	  <td class="text-right" th:text="${comprador.telefone}"></td>
+	      	  <td class="text-right" th:text="${comprador.endereco.nomeCidadeSiglaEstado}"></td>
+	       
+	      	  <td class="text-center">
+	       		<a class="btn  btn-link  btn-xs" title="Editar"> 
+	        		<i class="glyphicon glyphicon-pencil"></i>
+	       		</a>
+	       		<a class="btn  btn-link  btn-xs" title="Excluir">
+	        		<i class="glyphicon glyphicon-remove"></i>
+	       		</a>
+	      	 </td>
+	     	 </tr> 
+	         <tr th:if="${pagina.empty}">
+	      		<td colspan="6">Nenhum comprador encontrado</td>
+	     	 </tr>    
+	    </tbody>
+	   </table>
+   </div>
+  
+   <div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+   		<nav>
+    		<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+     			<li th:class="${pagina.primeira} ? disabled">
+      				<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+     			</li>
+     			<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+      				<li th:class="${paginaAtual == numeroPagina} ? active">
+       					<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+      				</li>
+     			</th:block>
+     
+    			<li th:class="${pagina.ultima} ? disabled">
+      				<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+     			</li>
+    		</ul>    
+   		</nav>
+   </div>  
+     
+ </div>
 </section>
 </body>
+</head>
 </html>

@@ -2,51 +2,78 @@ package com.agroWeb.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
+import org.hibernate.validator.group.GroupSequenceProvider;
+
+import com.agroWeb.model.validation.group.CnpjGroup;
+import com.agroWeb.model.validation.group.CompradorGroupSequenceProvider;
+import com.agroWeb.model.validation.group.CpfGroup;
 
 @Entity
-@Table(name="comprador")
+@Table(name = "comprador")
+@GroupSequenceProvider(CompradorGroupSequenceProvider.class)
 public class Comprador implements Serializable {
-	
-	
+
 	private static final long serialVersionUID = 4849238570543986556L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank(message = "O nome do comprador é obrigatório")
 	private String nome;
-	
-	@NotNull(message = "A inscrição do comprador é obrigatória")
-	private Long inscricao;
-	
-	@NotBlank(message = "O lodogradouro do comprador é obrigatório")
-	private String logradouro;
-	
-	@NotNull(message = "O numero do endereço do comprador é obttigatório")
-	private Long numero;
-	
-	@NotBlank(message = "O bairro do comprador é obrigatório")
-	private String bairro;
-	
-	@NotBlank(message = "A cidade do comprador é obrigatório")
-	private String cidade;
-	
-	@NotBlank(message = "O Estado do comprador é obrigatório")
-	private String estado;
-	
-	@NotBlank(message = "O País do comprador é obrigatório")
-	private String pais;
-	
-	@Max(value =  7)
-	private Long cep;
-	
+
+	@NotNull(message = "O CPF/CNPJ do comprador é obrigatória")
+	@CPF(groups = CpfGroup.class)
+	@CNPJ(groups = CnpjGroup.class)
+	@Column(name = "cpf_cnpj")
+	private String cpfOuCnpj;
+
+	@NotNull(message = "Tipo Pessoa é obrigatório")
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_pessoa")
+	private TipoPessoa tipoPessoa;
+
+	private String telefone;
+
+	@Embedded
+	private Endereco endereco;
+
+	@Email(message = "Email inválido")
+	private String email;
+
+	@PrePersist
+	@PreUpdate
+	private void prePersistPreUpdate() {
+		this.cpfOuCnpj = TipoPessoa.removerFormatacao(this.cpfOuCnpj);
+	}
+
+	@PostLoad
+	private void postLoad() {
+		this.cpfOuCnpj = this.tipoPessoa.formatar(this.cpfOuCnpj);
+	}
+
+	public String getCpfOuCnpjSemFormatacao() {
+		return TipoPessoa.removerFormatacao(this.cpfOuCnpj);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -63,69 +90,44 @@ public class Comprador implements Serializable {
 		this.nome = nome;
 	}
 
-	public Long getInscricao() {
-		return inscricao;
+	public String getCpfOuCnpj() {
+		return cpfOuCnpj;
 	}
 
-	public void setInscricao(Long inscricao) {
-		this.inscricao = inscricao;
+	public void setCpfOuCnpj(String cpfOuCnpj) {
+		this.cpfOuCnpj = cpfOuCnpj;
 	}
 
-	public String getLogradouro() {
-		return logradouro;
+	public TipoPessoa getTipoPessoa() {
+		return tipoPessoa;
 	}
 
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
+	public void setTipoPessoa(TipoPessoa tipoPessoa) {
+		this.tipoPessoa = tipoPessoa;
 	}
 
-	public Long getNumero() {
-		return numero;
+	public String getTelefone() {
+		return telefone;
 	}
 
-	public void setNumero(Long num) {
-		this.numero = num;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
-	public String getBairro() {
-		return bairro;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
-	public String getCidade() {
-		return cidade;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public String getPais() {
-		return pais;
-	}
-
-	public void setPais(String pais) {
-		this.pais = pais;
-	}
-
-	public Long getCep() {
-		return cep;
-	}
-
-	public void setCep(Long cep) {
-		this.cep = cep;
-	}
-
 
 }

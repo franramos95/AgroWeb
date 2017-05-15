@@ -72,11 +72,7 @@
 				<tbody>
 					<tr th:each="ingrediente : ${pagina.content}">
 						<td th:text="${ingrediente.nome}"></td>
-					</tr>
-					<tr th:each="ingrediente : ${pagina.content}">
 						<td th:text="${ingrediente.preco}"></td>
-					</tr>
-					<tr th:each="ingrediente : ${pagina.content}">
 						<td th:text="${ingrediente.quantidade}"></td>
 					</tr>											
 					<tr th:if="${pagina.empty}">
@@ -93,7 +89,7 @@
 						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
 					</li>	
 					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
-						<li th:class="${paginaAtuaç == numeroPagina} ? active">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
 							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
 						</li>
 					</th:block>

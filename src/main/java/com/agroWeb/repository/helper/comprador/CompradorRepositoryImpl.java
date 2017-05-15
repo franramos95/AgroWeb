@@ -5,6 +5,7 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,30 +42,12 @@ public class CompradorRepositoryImpl implements CompradorRepositoryQueries  {
 	private void adicionarFiltro(CompradorFilter filter, Criteria criteria){
 		if (filter != null){
 			if(!StringUtils.isEmpty(filter.getNome())) {
-				criteria.add(Restrictions.ilike("nome", filter.getNome()));
-				}
-			if(filter.getInscricao() != null){
-				criteria.add(Restrictions.eq("inscricao", filter.getInscricao()));
+				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 				}
 			
-		    if(filter.getLogradouro() != null){
-		    	criteria.add(Restrictions.eq("logradouro", filter.getLogradouro()));
-		    	}
-		    if(filter.getNumero() != null){
-		    	criteria.add(Restrictions.eq("numero", filter.getNumero()));
-		    	}
-		    if(filter.getCidade() !=null){
-		    	criteria.add(Restrictions.eq("cidade", filter.getCidade()));
-		       }
-		    if (filter.getEstado() !=null){
-		    	criteria.add(Restrictions.eq("estado", filter.getEstado()));
-		    }
-		    if (filter.getPais() !=null){
-		    	criteria.add(Restrictions.eq("pais", filter.getPais()));
-		    }
-		    if (filter.getCep() !=null){
-		    	criteria.add(Restrictions.eq("cep", filter.getCep()));
-		    }
+			if(!StringUtils.isEmpty(filter.getCpfOuCnpj())) {
+				criteria.add(Restrictions.eq("cpfOuCnpj", filter.getCpfOuCnpj()));
+			}
 		    
 		    }
 	}
