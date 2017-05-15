@@ -15,6 +15,7 @@ import com.agroWeb.security.exception.SenhaObrigatoriaUsuarioException;
 @Service
 public class CadastroUsuarioService {
 	
+	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
@@ -39,6 +40,12 @@ public class CadastroUsuarioService {
 		}
 		
 		return usuarioRepository.saveAndFlush(usuario);
+	}
+
+	@Transactional
+	public void alteraStatus(Long[] codigos, StatusUsuario statusUsuario) {
+		
+		statusUsuario.executar(codigos, usuarioRepository);
 	}
 
 	

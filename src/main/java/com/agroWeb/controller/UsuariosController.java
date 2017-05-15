@@ -6,11 +6,15 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,6 +26,8 @@ import com.agroWeb.repository.filter.UsuarioFilter;
 import com.agroWeb.security.exception.EmailCadastradoException;
 import com.agroWeb.security.exception.SenhaObrigatoriaUsuarioException;
 import com.agroWeb.service.CadastroUsuarioService;
+import com.agroWeb.service.StatusUsuario;
+
 
 @Controller
 @RequestMapping("/usuarios")
@@ -29,10 +35,10 @@ public class UsuariosController {
 
 	@Autowired
 	private CadastroUsuarioService cadastroUsuarioService;
-	
+
 	@Autowired
 	private GrupoRepository grupoRepository;
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
@@ -55,7 +61,7 @@ public class UsuariosController {
 		} catch (EmailCadastradoException e) {
 			result.rejectValue("email", e.getMessage(), e.getMessage());
 			return novo(usuario);
-		} catch (SenhaObrigatoriaUsuarioException e){
+		} catch (SenhaObrigatoriaUsuarioException e) {
 			result.rejectValue("senha", e.getMessage(), e.getMessage());
 			return novo(usuario);
 		}
@@ -63,15 +69,20 @@ public class UsuariosController {
 		attributes.addFlashAttribute("mensagem", "Usuário salvo com sucesso!");
 		return new ModelAndView("redirect:/usuarios/novo");
 	}
-	
+
 	@GetMapping
-	public ModelAndView pesquisar(UsuarioFilter filter, BindingResult result, @PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest){
+	public ModelAndView pesquisar(UsuarioFilter filter, BindingResult result,@PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("usuario/PesquisaUsuarios");
-		
-		PageWrapper<Usuario> pageWrapper = new PageWrapper<>(usuarioRepository.filtrar(filter, pageable), httpServletRequest);
+
+		PageWrapper<Usuario> pageWrapper = new PageWrapper<>(usuarioRepository.filtrar(filter, pageable),httpServletRequest);
 		mv.addObject("pagina", pageWrapper);
 		mv.addObject("grupos", grupoRepository.findAll());
 		return mv;
 	}
 
+	@PutMapping("/status")
+	@ResponseStatus(HttpStatus.OK)
+	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos,@RequestParam("status") StatusUsuario statusUsuario) {
+		cadastroUsuarioService.alteraStatus(codigos, statusUsuario);
+	}
 }

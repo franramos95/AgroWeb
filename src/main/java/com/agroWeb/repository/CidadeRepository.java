@@ -11,11 +11,10 @@ import com.agroWeb.model.Estado;
 import com.agroWeb.repository.helper.cidade.CidadeRepositoryQueries;
 
 @Repository
-public interface CidadeRepository extends JpaRepository<Cidade, Long>, CidadeRepositoryQueries{
-	
+public interface CidadeRepository extends JpaRepository<Cidade, Long>, CidadeRepositoryQueries {
+
 	public List<Cidade> findByEstadoCodigo(Long codigoEstado);
-	
+
 	public Optional<Cidade> findByNomeAndEstado(String nome, Estado estado);
-	
 
 }

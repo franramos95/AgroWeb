@@ -26,6 +26,8 @@ import com.agroWeb.model.Cidade;
 import com.agroWeb.repository.CidadeRepository;
 import com.agroWeb.repository.EstadoRepository;
 import com.agroWeb.repository.filter.CidadeFilter;
+import com.agroWeb.service.CadastroCidadeService;
+import com.agroWeb.service.exception.CidadeJaExistenteException;
 
 @Controller
 @RequestMapping("/cidades")
@@ -33,16 +35,19 @@ public class CidadesController {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
-
+	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private CadastroCidadeService cadastroCidadeService;
 
 	@RequestMapping("/novo")
 	public ModelAndView novo(Cidade cidade) {
 		ModelAndView mv = new ModelAndView("cidade/CadastroCidades");
-
-		mv.addObject("estados", estadoRepository.findAll());
-
+		
+		mv.addObject("estados",estadoRepository.findAll());
+		
 		return mv;
 	}
 
@@ -53,35 +58,36 @@ public class CidadesController {
 
 		return cidadeRepository.findByEstadoCodigo(codigoEstado);
 	}
-
+	
 	@PostMapping("/novo")
-	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
-	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
-
-		if (result.hasErrors()) {
+	@CacheEvict(value = "cidades", key ="#cidade.estado.codigo", condition = "#cidade.temEstado()")
+	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes){
+		
+		if (result.hasErrors()){
 			return novo(cidade);
 		}
-		/*
-		 * try { cadastroCidadeService.salvar(cidade); } catch
-		 * (CidadeJaExistenteException e) { result.rejectValue("nome",
-		 * e.getMessage(), e.getMessage()); return novo(cidade); }
-		 */
+		
+		try{
+			cadastroCidadeService.salvar(cidade);
+		}catch(CidadeJaExistenteException e ){
+			result.rejectValue("nome", e.getMessage(), e.getMessage());
+			return novo(cidade);
+		}
+		
 		attributes.addFlashAttribute("mensagem", "Cidade salva com sucesso!");
-		return new ModelAndView("redirect:/cidades/novo");
-
+		return new ModelAndView("redirect:/cidades/novo");		
+		
 	}
-
+	
 	@GetMapping
-	public ModelAndView pesquisar(CidadeFilter filter, BindingResult result,
-			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
+	public ModelAndView pesquisar(CidadeFilter filter, BindingResult result, @PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest){
 		ModelAndView mv = new ModelAndView("cidade/PesquisaCidades");
-
+		
 		mv.addObject("estados", estadoRepository.findAll());
-
-		PageWrapper<Cidade> pageWrapper = new PageWrapper<>(cidadeRepository.filtrar(filter, pageable),
-				httpServletRequest);
-		mv.addObject("pagina", pageWrapper);
-
+		
+		PageWrapper<Cidade> pageWrapper = new PageWrapper<>(cidadeRepository.filtrar(filter, pageable), httpServletRequest);
+		mv.addObject("pagina", pageWrapper);		
+		
 		return mv;
 	}
 }
