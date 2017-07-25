@@ -38,7 +38,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import com.agroWeb.controller.GrupoConverter;
 import com.agroWeb.controller.UsuariosController;
 import com.agroWeb.controller.converter.CidadeConverter;
+import com.agroWeb.controller.converter.DietaConverter;
+import com.agroWeb.controller.converter.DoencaConverter;
+import com.agroWeb.controller.converter.EspecieConverter;
 import com.agroWeb.controller.converter.EstadoConverter;
+import com.agroWeb.controller.converter.VacinaConvert;
 import com.agroWeb.thymeleaf.AgroWebDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -88,6 +92,10 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addConverter(new CidadeConverter());
 		conversionService.addConverter(new EstadoConverter());
 		conversionService.addConverter(new GrupoConverter());
+		conversionService.addConverter(new DietaConverter());
+		conversionService.addConverter(new DoencaConverter());
+		conversionService.addConverter(new VacinaConvert());
+		conversionService.addConverter(new EspecieConverter());
 
 		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th ="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
+<head>
+	<title>Pesquisa de Doença</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+				<h1>Pesquisa de Doença</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/doenca/novo">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/doenca/novo}">
+						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Doença</span>						
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${doencaFilter}">
+			<div class="row">
+				<div class="form-group  col-sm-12">
+				<label class="control-label" for="nome">Nome</label>
+				<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+			
+				<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="sintoma">
+					<label for="sintoma" class="control-label">Sintoma</label>
+					<textarea class="form-control" id="sintoma" rows="3" placeholder="Write here"></textarea>
+				</div>
+				<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="tratamento">
+					<label for="tratamento" class="control-label">Tratamento</label>
+					<textarea class="form-control" id="tratamento" rows="3" placeholder="Write here"></textarea>
+				</div>
+				
+				
+			</div>
+			
+			
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+		</form>
+			
+		<div class="table-responsive  bw-table-simples">
+			<table class="table  table-hover">
+				<thead>
+					<tr>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
+						</td>	
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="sintoma" text="Sintoma"></agroWeb:order>
+						</td>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="tratamento" text="Tratamento"></agroWeb:order>
+						</td>																			
+						<td class="table-clientes-col-acoes"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="doenca : ${pagina.content}">
+						<td th:text="${doenca.nome}"></td>
+						<td th:text="${doenca.sintoma}"></td>
+						<td th:text="${doenca.tratamento}"></td>
+					</tr>											
+					<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhuma doença encontrado</td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>	
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		
+		</div>
+	</div>
+
+</section>
+</body>
+</html>

@@ -25,7 +25,7 @@ public class Animal implements Serializable {
 	private static final long serialVersionUID = -5085488148537269956L;
 
 	@Id
-	@Column(name = "id_brinco")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idBrinco;
 
@@ -33,12 +33,15 @@ public class Animal implements Serializable {
 	private String nome;
 
 	@NotNull(message = "A especie é obrigatória")
+	@ManyToOne
+	@JoinColumn (name="id_especie")
 	private Especie especie;
 
 	@NotNull(message = "O lote é obrigatório")
 	private Long lote;
 
 	@NotNull(message = "o sexo é obrigatório")
+	@Column(name = "sexo")
 	private Sexo sexo;
 
 	@NotNull(message = "A idade é obrigatória")
@@ -53,12 +56,12 @@ public class Animal implements Serializable {
 	private LocalDate dataAquisicao;
 
 	@NotNull(message = "A situação do animal é obrigatória")
-	@Column(name = "situacao_animal")
-	private SituacaoAnimal situacaoAnimal;
+	@Column(name = "situacao")
+	private SituacaoAnimal situacao;
 	
 	@ManyToMany
 	@JoinTable(name = "animal_vacina", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_vacina"))
-	private List<Vacina> vacinas;
+	private List<Vacina> vacina;
 
 	@NotNull(message = "A dieta é obrigatória")
 	@ManyToOne
@@ -67,7 +70,19 @@ public class Animal implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
-	private List<Doenca> doencas;
+	private List<Doenca> doenca;
+	
+	@ManyToOne 
+	@JoinColumn(name = "id_pesagem")
+	private Pesagem pesagem;
+
+	public Pesagem getPesagem() {
+		return pesagem;
+	}
+
+	public void setPesagem(Pesagem pesagem) {
+		this.pesagem = pesagem;
+	}
 
 	public Long getIdBrinco() {
 		return idBrinco;
@@ -133,20 +148,20 @@ public class Animal implements Serializable {
 		this.dataAquisicao = dataAquisicao;
 	}
 
-	public SituacaoAnimal getSituacaoAnimal() {
-		return situacaoAnimal;
+	public SituacaoAnimal getSituacao() {
+		return situacao;
 	}
 
-	public void setSituacaoAnimal(SituacaoAnimal situacaoAnimal) {
-		this.situacaoAnimal = situacaoAnimal;
+	public void setSituacao(SituacaoAnimal situacao) {
+		this.situacao = situacao;
 	}
 
-	public List<Vacina> getVacinas() {
-		return vacinas;
+	public List<Vacina> getVacina() {
+		return vacina;
 	}
 
-	public void setVacinas(List<Vacina> vacinas) {
-		this.vacinas = vacinas;
+	public void setVacina(List<Vacina> vacina) {
+		this.vacina = vacina;
 	}
 
 	public Dieta getDieta() {
@@ -157,12 +172,12 @@ public class Animal implements Serializable {
 		this.dieta = dieta;
 	}
 
-	public List<Doenca> getDoencas() {
-		return doencas;
+	public List<Doenca> getDoenca() {
+		return doenca;
 	}
 
-	public void setDoencas(List<Doenca> doencas) {
-		this.doencas = doencas;
+	public void setDoenca(List<Doenca> doenca) {
+		this.doenca = doenca;
 	}
 
 	@Override

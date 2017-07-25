@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -11,19 +13,20 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "vacinas")
+@Table(name = "vacina")
 public class Vacina implements Serializable {
 
 	private static final long serialVersionUID = 1650745517584727537L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank(message = "O nome da vacina é obrigatório")
 	private String nome;
 
 	@NotNull(message = "O lote da vacina é obrigatório")
-	private Long lote;
+	private String lote;
 
 	@NotNull(message = "A data da vacina é obrigatória")
 	private LocalDate data;
@@ -47,11 +50,11 @@ public class Vacina implements Serializable {
 		this.nome = nome;
 	}
 
-	public Long getLote() {
+	public String getLote() {
 		return lote;
 	}
 
-	public void setLote(Long lote) {
+	public void setLote(String lote) {
 		this.lote = lote;
 	}
 
@@ -71,4 +74,4 @@ public class Vacina implements Serializable {
 		this.vencimento = vencimento;
 	}
 
-}
+	}

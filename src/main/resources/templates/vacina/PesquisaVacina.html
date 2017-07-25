@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th ="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
+<head>
+	<title>Pesquisa de Vacina</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+				<h1>Pesquisa de Vacina</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/vacina/novo">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/vacina/novo}">
+						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova Vacina</span>						
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${vacinaFilter}">
+			<div class="row">
+				<div class="form-group  col-sm-12">
+				<label class="control-label" for="nome">Nome</label>
+				<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+			
+				<div class="form-group  col-sm-4">
+					<label class="control-label" for="nome">Lote</label>
+					<input type="text" class="form-control" id="lote" autofocus="autofocus" th:field="*{lote}"/>
+				</div>
+				
+				<div class="form-group  col-sm-4">
+					<label class="control-label" for="nome">Data de Aquisição</label>
+					<input type="text" class="form-control" id="data" autofocus="autofocus" th:field="*{data}"/>
+				</div>
+				
+				<div class="form-group  col-sm-4">
+					<label class="control-label" for="nome">Vencimento</label>
+					<input type="text" class="form-control" id="vencimento" autofocus="autofocus" th:field="*{vencimento}"/>
+				</div>
+				
+			</div>
+			
+			
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+		</form>
+			
+		<div class="table-responsive  bw-table-simples">
+			<table class="table  table-hover">
+				<thead>
+					<tr>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
+						</td>	
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="sintoma" text="Lote"></agroWeb:order>
+						</td>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="tratamento" text="Data de Aquisição"></agroWeb:order>
+						</td>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="tratamento" text="Vencimento"></agroWeb:order>
+						</td>																			
+						<td class="table-clientes-col-acoes"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="vacina : ${pagina.content}">
+						<td th:text="${vacina.nome}"></td>
+						<td th:text="${vacina.lote}"></td>
+						<td th:text="${vacina.data}"></td>
+						<td th:text="${vacina.vencimento}"></td>
+					</tr>											
+					<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhuma vacina encontrado</td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>	
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		
+		</div>
+	</div>
+
+</section>
+</body>
+</html>

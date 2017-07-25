@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:data="http://www.thymeleag.org/extras/data"
+	xmlns:agroWeb="http://www.brewer.insightsoftware.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+<head>
+<title>Cadastro de Animal</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro de Animal</h1>
+				</div>
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/animal}"> <i
+							class="glyphicon glyphicon-plus-sign"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+
+			<form method="POST" th:object="${animal}" th:action="@{/animal/novo}">
+
+				<agroWeb:message />
+
+				<div class="row">
+					<div class="form-group  col-sm-6  bw-required">
+						<label for="idBrinco" class="control-label">Id Brinco</label> 
+						<input id="idBrinco" type="text" class="form-control" autofocus="autofocus" th:field="*{idBrinco}" />
+					</div>
+
+					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
+						<label for="nome" class="control-label">Nome</label> 
+						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}" />
+					</div>
+				</div>
+
+				<div class="row">							
+				<div class="form-group  col-sm-4  bw-required">
+						<label for="idade" class="control-label">Idade</label> 
+						<input id="idade" type="text" class="form-control" autofocus="autofocus" th:field="*{idade}" />
+					</div>
+
+					<div class="form-group  col-sm-4">
+						<label for="dataNascimento" class="control-label">Data de Nascimento</label>
+					    <input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataNascimento}" autocomplete="off" />
+					</div>
+					
+						<div class="form-group  col-sm-4">
+						<label for="dataAquisicao" class="control-label">Data de Aquisição</label>
+					    <input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataAquisicao}" autocomplete="off" />
+						</div>
+				</div>
+
+				<div class="row">
+				<div class="col-lg-4 col-sm-4 form-group bw-required">
+					<label for="Sexo" class="control-label">Sexo</label> 
+					<div>
+						<th:block th:each="sexo : ${sexos}">
+	  						<div class="radio radio-inline"> 
+		    					<input th:id="|id_${sexo}|" type="radio" th:value="${sexo}" name="sexo" th:field="*{sexo}"/>
+		    					<label th:for="|id_${sexo}|" th:text="${sexo.descricao}"></label>
+	    					</div>
+	    				</th:block>
+					</div>
+				</div>
+			
+	   			<div class="form-group  col-sm-4">
+					<label for="especie" class="control-label">Especie</label> 
+					<div class="bw-field-action">
+						<select id="especie" class="form-control" th:field="*{especie}">
+	  						<option value="">Selecione a Especie</option>
+							<option th:each="especie: ${especies}" th:value="${especie.id}" th:text="${especie.nome}"></option>
+						</select>
+	     			</div>
+					</div>
+					<div class="form-group  col-sm-4">
+						<label for="lote" class="control-label">Lote do Animal</label> 
+						<input type="text" class="form-control"	id="lote" th:field="*{lote}" />
+					</div>
+					
+				</div>
+			
+			<div class="row">	
+				<div class="col-sm-4 form-group bw-requied">
+					<label for="dieta" class="control-label">Dieta</label> 
+					<div class="bw-field-action">
+						<select id="dieta" class="form-control" th:field="*{dieta}">
+	  							<option value="">Selecione a Dieta</option>
+		    					<option th:each="dieta: ${dietas}" th:value="${dieta.id}" th:text="${dieta.nome}"></option>
+		    			</select>
+					</div>
+				</div>
+					
+				<div class="col-sm-4 form-group bw-requied">
+					<label for="vacina" class="control-label">Vacina</label> 
+					<div class="bw-field-action">
+						<select id="vacina" class="form-control" th:field="*{vacina}">
+	  							<option value="">Selecione a Vacina</option>
+		    					<option th:each="vacina: ${vacinas}" th:value="${vacina.id}" th:text="${vacina.nome}"></option>
+		    			</select>
+					</div>
+				</div>
+				
+					<div class="col-sm-4 form-group bw-requied">
+					<label for="doenca" class="control-label">Doença</label> 
+					<div class="bw-field-action">
+						<select id="doenca" class="form-control" th:field="*{doenca}">
+	  							<option value="">Selecione a Doença</option>
+		    					<option th:each="doenca: ${doencas}" th:value="${doenca.id}" th:text="${doenca.nome}"></option>
+		    			</select>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">				
+					<div class="col-lg-12 col-sm-12 form-group bw-required">
+					<label for="situacao" class="control-label">Situacao</label> 
+					<div>
+						<th:block th:each="situacao : ${situacoes}">
+	  						<div class="radio radio-inline"> 
+		    					<input th:id="|id_${situacao}|" type="radio" th:value="${situacao}" name="situacao" th:field="*{situacao}"/>
+		    					<label th:for="|id_${situacao}|" th:text="${situacao.descricao}"></label>
+	    					</div>
+	    				</th:block>
+					</div>
+				</div>
+			</div>		
+				
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
+				</div>
+			</form>
+		</div>
+
+	</section>
+</body>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javaScripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+</html>

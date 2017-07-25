@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th ="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	layout:decorate="~{layout/LayoutPadrao}">
+<head>
+       <title>Cadastro de Pesagem</title>
+</head>	
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="row">
+			<div class="col-xs-10">
+				<h1>
+					Cadastro de Pesagem
+				</h1>
+			</div>
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn bt-default" th:href="@{/pesagem}">
+						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		
+		<form method="POST" th:object="${pesagem}" th:action="@{/pesagem/novo}">
+		
+			<agroWeb:message/>
+			
+			<div class="row">
+			
+				<div class="form-group  col-sm-2  bw-required" agroWeb:classforerror="data">
+					<label for="data" class="control-label">Data</label>
+					<input id="data" type="text" class="form-control" autofocus="autofocus" th:field="*{data}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-2  bw-required" agroWeb:classforerror="peso">
+					<label for="peso" class="control-label">Peso</label>
+					<input id="peso" type="text" class="form-control" autofocus="autofocus" th:field="*{peso}"/>
+				</div>				
+				
+			</div>
+			
+			<div class="form-group">
+				<button class="btn  btn-primary" type="submit">Salvar</button>
+			</div>
+		</form>
+	</div>
+</section>
+</body>
+</html>

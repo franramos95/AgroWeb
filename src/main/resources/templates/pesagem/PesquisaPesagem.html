@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th ="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
+<head>
+	<title>Pesquisa de Pesagem</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+				<h1>Pesquisa de Pesagem</h1>
+				</div>
+				
+				<div class="col-xs-2" sec:authorize-url="/pesagem/novo">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/pesagem/novo}">
+						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova Pesagem</span>						
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${pesagemFilter}">
+			<div class="row">
+				<div class="form-group  col-sm-2">
+				<label class="control-label" for="nome">Data</label>
+				<input type="text" class="form-control" id="data" autofocus="autofocus" th:field="*{data}"/>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="form-group  col-sm-2">
+					<label class="control-label" for="nome">Peso</label>
+					<input type="text" class="form-control" id="peso" autofocus="autofocus" th:field="*{peso}"/>
+				</div>
+								
+			</div>
+			
+			
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+		</form>
+			
+		<div class="table-responsive  bw-table-simples">
+			<table class="table  table-hover">
+				<thead>
+					<tr>
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="nome" text="Data"></agroWeb:order>
+						</td>	
+						<td class="table-cidades-col-nome">
+							<agroWeb:order page="${pagina}" field="sintoma" text="Peso"></agroWeb:order>
+						</td>
+																	
+						<td class="table-clientes-col-acoes"></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pesagem : ${pagina.content}">
+						<td th:text="${pesagem.data}"></td>
+						<td th:text="${pesagem.peso}"></td>
+					</tr>											
+					<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhuma pesagem encontrado</td>
+					</tr>				
+				</tbody>
+			</table>
+		</div>
+		
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>	
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		
+		</div>
+	</div>
+
+</section>
+</body>
+</html>

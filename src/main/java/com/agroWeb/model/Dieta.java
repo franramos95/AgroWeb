@@ -20,10 +20,15 @@ public class Dieta implements Serializable {
 
 	@Id
 	private Long id;
+	
+	@NotBlank(message = "O nome da dieta é obrigatória")
+	private String nome;
 
 	@NotBlank(message = "O tipo da dieta é obrigatória")
 	private String tipo;
 
+	@NotBlank(message = "A quantidade é obrigatória")
+	private Long quantidade;
 	@ManyToMany
 	@JoinTable(name = "ingrediente_dieta", joinColumns = @JoinColumn(name = "id_ingrediente"), inverseJoinColumns = @JoinColumn(name = "id_dieta"))
 	private List<Ingrediente> ingredientes;
@@ -35,6 +40,14 @@ public class Dieta implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
 	public String getTipo() {
 		return tipo;
@@ -42,6 +55,14 @@ public class Dieta implements Serializable {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public Long getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Long quantidade) {
+		this.quantidade = quantidade;
 	}
 
 	public List<Ingrediente> getIngredientes() {

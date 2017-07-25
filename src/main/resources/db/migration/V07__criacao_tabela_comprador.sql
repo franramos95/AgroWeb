@@ -26,6 +26,7 @@ CREATE TABLE comprador (
 	FOREIGN KEY (codigo_cidade) REFERENCES cidade(codigo)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 INSERT INTO estado (codigo, nome, sigla) VALUES (1,'Acre', 'AC');
 INSERT INTO estado (codigo, nome, sigla) VALUES (2,'Bahia', 'BA');
 INSERT INTO estado (codigo, nome, sigla) VALUES (3,'Goiás', 'GO');

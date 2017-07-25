@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:data="http://www.thymeleag.org/extras/data"
+	xmlns:agroWeb="http://www.brewer.insightsoftware.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+<head>
+
+<head>
+	<title>Pesquisa de Animal</title>
+</head>
+
+<body>
+<section layout:fragment="conteudo">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Pesquisa de Animal</h1>
+				</div>
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn vtn-default" th:href="@{/animal/novo}">
+							<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Animal</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> 
+	
+	<div class="container-fluid">
+		<form method="GET" th:object="${animalFilter}">
+			<div class="row">
+					<div class="form-group  col-sm-6  bw-required" >
+						<label for="idBrinco" class="control-label">Id Brinco</label> 
+						<input id="idBrinco" type="text" class="form-control" autofocus="autofocus" th:field="*{idBrinco}" />
+					</div>
+
+					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
+						<label for="nome" class="control-label">Nome</label> 
+						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}" />
+					</div>
+				</div>
+				
+			<div class="row">
+					<div class="form-group  col-sm-3">
+					<label for="especie" class="control-label">Especie</label> 
+						<select id="especie" class="form-control" th:field="*{especie}">
+	  						<option value="">Todas as Especie</option>
+							<option th:each="especie: ${especie}" th:value="${especie.id}" th:text="especie.nome"></option>
+						</select>
+	     			</div>
+	     			
+	     			<div class="form-group col-sm-6">
+					<label class="control-label" for="situacao">Situacao</label> 
+						<div>
+							<th:block th:each="situacao : ${situacao}">
+	  							<div class="radio radio-inline"> 
+		    						<input th:id="|id_${situacao}|" type="radio" th:value="${situacao}" name="situacao" th:field="*{situacao}"/>
+		    						<label th:for="|id_${situacao}|" th:text="${situacao.descricao}">Confinado</label>
+	    						</div>
+	    					</th:block>
+	    					<div class="radio radio-inline">
+	    						<input id="todasSituacoes" type="radio" th:checked="*{situacao} == null" name="situacao"/>
+	    						<label for="todasSituacoes">Todos</label>
+	    					</div>
+						</div>
+					</div>
+					
+					<div class="form-group  col-sm-3">
+						<label for="lote" class="control-label">Lote do Animal</label> 
+						<input type="text" class="form-control"	id="lote" th:field="*{lote}" />
+					</div>
+			</div>
+			
+			<button type="submit" class="btn  btn-primary">Pesquisar</button>
+		</form>
+		
+		<div class="table-responsive bw-tabela-simples">
+			<table class="table  table-hovver">
+					<thead>
+						<tr>
+							<td class="table-animal-col-idBrinco">
+								<agroWeb:order pag="${pagina}" field="idBrinco" text="Id Brinco"></agroWeb:order>
+							</td>
+							<td class="table-animal-col-nome">
+								<agroWeb:order pag="${pagina}" field="nome" text="Nome"></agroWeb:order>
+							</td>
+							<td class="table-animal-col-especie">
+								<agroWeb:order pag="${pagina}" field="especie" text="Especie"></agroWeb:order>
+							</td>
+							<td class="table-animal-col-situacao">
+								<agroWeb:order pag="${pagina}" field="situacao" text="Situacao"></agroWeb:order>
+							</td>
+							<td class="table-animal-col-lote">
+								<agroWeb:order pag="${pagina}" field="lote" text="Lote"></agroWeb:order>
+							</td>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr th:each="animal : ${pagina.contente}">
+							<td class="text-center" th:text="{animal.idBrinco}"></td>
+							<td th:text="{anima.nome}"></td>
+							<td th:text="{animal.especie.nome}"></td>
+							<td th:text="{animal.lote}"></td>
+							<td th:text="{anima.pesagem.peso}"></td>
+							<td th:text="{animal.pesagem.data}"></td>			
+							<td th:text="{animal.situacao"></td>
+							<td class="text-center">
+								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/animal/{id}(id=${animal.id})}">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
+									data:url="@{animal/{id}(id={animal.id})}"
+									data:objeto="animal.nome">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</td>			
+						</tr>
+						
+						<tr th:if="${pagina.empty}">
+							<td colspan="7">Nenhum animal encontrado</td>
+						</tr>
+					</tbody>
+			</table>
+		</div>
+		
+		<div class="col-sm-12  text-center" th:if="${not.pagina.empty}">
+			<nav>
+				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disable">
+						<a th:rhef="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+					   		<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+					    </li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disable">
+						<a th:href="${pagina.urlParaPagina(PaginaAtual + 1)}" th:remove="${pagina.ultimo} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</section>
+</body>
+</head>
+</html>
