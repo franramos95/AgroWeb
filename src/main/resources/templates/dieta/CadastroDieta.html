@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:data="http://www.thymeleag.org/extras/data"
+	xmlns:agroWeb="http://www.brewer.insightsoftware.com"
+	layout:decorate="~{layout/LayoutPadrao}">
+<head>
+<title>Cadastro de Dieta</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
+</head>
+
+<body>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1>Cadastro de Dieta</h1>
+				</div>
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn btn-default" th:href="@{/dieta}"> <i
+							class="glyphicon glyphicon-plus-sign"></i> <span
+							class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+
+			<form method="POST" th:object="${dieta}" th:action="@{/dieta/novo}">
+
+				<agroWeb:message />
+
+				<div class="row">
+					<div class="form-group  col-sm-6  bw-required">
+						<label for="nome" class="control-label">Nome Dieta</label> 
+						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}" />
+					</div>
+
+					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
+						<label for="tipo" class="control-label">Tipo</label> 
+						<input id="tipo" type="text" class="form-control" autofocus="autofocus" th:field="*{tipo}" />
+					</div>
+				</div>
+
+				
+				<div class="row">
+		
+	   			<div class="form-group  col-sm-8">
+					<label for="ingrediente" class="control-label">Ingrediente</label> 
+					<div class="bw-field-action">
+						<select id="ingrediente" class="form-control" th:field="*{ingrediente}">
+	  						<option value="">Selecione a Especie</option>
+							<option th:each="ingrediente: ${ingredientes}" th:value="${ingrediente.id}" th:text="${ingrediente.nome}"></option>
+						</select>
+	     			</div>
+					</div>
+					<div class="form-group  col-sm-4">
+						<label for="quantidade" class="control-label">Quantidade</label> 
+						<input type="text" class="form-control"	id="quantidade" th:field="*{quantidade}" />
+					</div>
+					
+				</div>
+			
+				
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
+				</div>
+			</form>
+		</div>
+
+	</section>
+</body>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javaScripts/vendors/bootstrap-switch.min.js}"></script>
+	<script>
+		$('.js-status').bootstrapSwitch();
+	</script>
+</th:block>
+</html>

@@ -20,9 +20,7 @@ import com.agroWeb.model.Sexo;
 import com.agroWeb.model.SituacaoAnimal;
 import com.agroWeb.repository.AnimalRepository;
 import com.agroWeb.repository.DietaRepository;
-import com.agroWeb.repository.DoencaRepository;
 import com.agroWeb.repository.EspecieRepository;
-import com.agroWeb.repository.VacinaRepository;
 import com.agroWeb.repository.filter.AnimalFilter;
 import com.agroWeb.service.CadastroAnimalService;
 import com.agroWeb.service.exception.IdBrincoJaCadastradoException;
@@ -43,20 +41,12 @@ public class AnimalController {
 	@Autowired
 	private EspecieRepository especieRepository;
 
-	@Autowired
-	private VacinaRepository vacinaRepository;
-
-	@Autowired
-	private DoencaRepository doencaRepository;
-
 	@RequestMapping("/novo")
 	public ModelAndView novo(Animal animal) {
 		ModelAndView mv = new ModelAndView("animal/CadastroAnimal");
 
 		mv.addObject("dietas", dietaRepository.findAll());
 		mv.addObject("especies", especieRepository.findAll());
-		mv.addObject("doencas", doencaRepository.findAll());
-		mv.addObject("vacinas", vacinaRepository.findAll());
 		mv.addObject("sexos", Sexo.values());
 		mv.addObject("situacoes", SituacaoAnimal.values());
 
@@ -88,8 +78,6 @@ public class AnimalController {
 
 		mv.addObject("dietas", dietaRepository.findAll());
 		mv.addObject("especies", especieRepository.findAll());
-		mv.addObject("doencas", doencaRepository.findAll());
-		mv.addObject("vacinas", vacinaRepository.findAll());
 		mv.addObject("sexos", Sexo.values());
 		mv.addObject("situacoes", SituacaoAnimal.values());
 

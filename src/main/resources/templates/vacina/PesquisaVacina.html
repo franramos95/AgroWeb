@@ -4,6 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
 	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
 	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:data="http://www.thymeleag.org/extras/data"	
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
 <head>
 	<title>Pesquisa de Vacina</title>
@@ -46,14 +47,14 @@
 				</div>
 				
 				<div class="form-group  col-sm-4">
-					<label class="control-label" for="nome">Data de Aquisição</label>
-					<input type="text" class="form-control" id="data" autofocus="autofocus" th:field="*{data}"/>
+						<label for="data" class="control-label">Data de Aquisição</label>
+					    <input type="text" class="form-control  js-date" id="data" th:field="*{data}" autocomplete="off" />
 				</div>
 				
 				<div class="form-group  col-sm-4">
-					<label class="control-label" for="nome">Vencimento</label>
-					<input type="text" class="form-control" id="vencimento" autofocus="autofocus" th:field="*{vencimento}"/>
-				</div>
+						<label for="vencimento" class="control-label">Data de Nascimento</label>
+					    <input type="text" class="form-control  js-date" id="vencimento" th:field="*{vencimento}" autocomplete="off" />
+					</div>	
 				
 			</div>
 			
@@ -61,23 +62,15 @@
 			<button type="submit" class="btn  btn-primary">Pesquisar</button>
 		</form>
 			
+			
 		<div class="table-responsive  bw-table-simples">
 			<table class="table  table-hover">
 				<thead>
 					<tr>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
-						</td>	
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="sintoma" text="Lote"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="tratamento" text="Data de Aquisição"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="tratamento" text="Vencimento"></agroWeb:order>
-						</td>																			
-						<td class="table-clientes-col-acoes"></td>
+						<td class="table-vacina-col-nome">Nome</td>
+							<td class="table-vacina-col-lote">Lote</td>
+							<td class="table-vacina-col-data">Data Aquisição</td>
+							<td class="table-vacina-col-vencimento">Vencimento</td>									
 					</tr>
 				</thead>
 				<tbody>
@@ -86,7 +79,17 @@
 						<td th:text="${vacina.lote}"></td>
 						<td th:text="${vacina.data}"></td>
 						<td th:text="${vacina.vencimento}"></td>
-					</tr>											
+								
+					<td class="text-center">
+								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/vacina/{id}(id=${vacina.id})}">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
+									data:url="@{/vacina/{id}(id=${vacina.id})}"
+									data:objeto="vacina.nome">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</td>							
 					<tr th:if="${pagina.empty}">
 						<td colspan="3">Nenhuma vacina encontrado</td>
 					</tr>				

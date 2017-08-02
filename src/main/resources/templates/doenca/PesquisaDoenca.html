@@ -4,6 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
 	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
 	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:data="http://www.thymeleag.org/extras/data"	
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
 <head>
 	<title>Pesquisa de Doença</title>
@@ -60,16 +61,10 @@
 			<table class="table  table-hover">
 				<thead>
 					<tr>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
-						</td>	
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="sintoma" text="Sintoma"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="tratamento" text="Tratamento"></agroWeb:order>
-						</td>																			
-						<td class="table-clientes-col-acoes"></td>
+						<td class="table-doenca-col-nome">Nome</td>	
+						<td class="table-doenca-col-sintoma">Sintoma</td>
+						<td class="table-doenca-col-tratamento">Tratamento</td>																			
+						
 					</tr>
 				</thead>
 				<tbody>
@@ -77,6 +72,16 @@
 						<td th:text="${doenca.nome}"></td>
 						<td th:text="${doenca.sintoma}"></td>
 						<td th:text="${doenca.tratamento}"></td>
+						<td class="text-center">
+								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/doenca/{id}(id=${doenca.id})}">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
+									data:url="@{/doenca/{id}(id=${doenca.id})}"
+									data:objeto="doenca.nome">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</td>		
 					</tr>											
 					<tr th:if="${pagina.empty}">
 						<td colspan="3">Nenhuma doença encontrado</td>

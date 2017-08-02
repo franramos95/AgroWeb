@@ -51,7 +51,7 @@ public class PesagemController {
 		ModelAndView mv = new ModelAndView("pesagem/PesquisaPesagem");
 	
 		PageWrapper<Pesagem> pageWrapper = new PageWrapper<>(pesagemRepository.filtrar(filter, pageable), httpServletRequest);
-		mv.addObject("pagina", pageWrapper);;
+		mv.addObject("pagina", pageWrapper);
 		return mv;
 	}
 

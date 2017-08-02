@@ -4,16 +4,16 @@ import com.agroWeb.model.Especie;
 import com.agroWeb.model.SituacaoAnimal;
 
 public class AnimalFilter {
-	
+
 	private Long idBrinco;
-	
+
 	private String nome;
-	
+
 	private Especie especie;
-	
+
 	private Long lote;
-	
-	private SituacaoAnimal situacaoAnimal;
+
+	private SituacaoAnimal situacao;
 
 	public Long getIdBrinco() {
 		return idBrinco;
@@ -47,14 +47,12 @@ public class AnimalFilter {
 		this.lote = lote;
 	}
 
-	public SituacaoAnimal getSituacaoAnimal() {
-		return situacaoAnimal;
+	public SituacaoAnimal getSituacao() {
+		return situacao;
 	}
 
-	public void setSituacaoAnimal(SituacaoAnimal situacaoAnimal) {
-		this.situacaoAnimal = situacaoAnimal;
+	public void setSituacao(SituacaoAnimal situacao) {
+		this.situacao = situacao;
 	}
-	
-	
-	
+
 }

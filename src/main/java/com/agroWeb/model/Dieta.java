@@ -3,12 +3,16 @@ package com.agroWeb.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -19,19 +23,22 @@ public class Dieta implements Serializable {
 	private static final long serialVersionUID = 4439929610622402519L;
 
 	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank(message = "O nome da dieta é obrigatória")
 	private String nome;
 
 	@NotBlank(message = "O tipo da dieta é obrigatória")
 	private String tipo;
 
-	@NotBlank(message = "A quantidade é obrigatória")
+	@NotNull(message = "A quantidade é obrigatória")
 	private Long quantidade;
-	@ManyToMany
-	@JoinTable(name = "ingrediente_dieta", joinColumns = @JoinColumn(name = "id_ingrediente"), inverseJoinColumns = @JoinColumn(name = "id_dieta"))
-	private List<Ingrediente> ingredientes;
+
+	@OneToMany
+	@JoinTable(name = "ingrediente_dieta", joinColumns = @JoinColumn(name = "id_dieta"), inverseJoinColumns = @JoinColumn(name = "id_ingrediente"))
+	private List<Ingrediente> ingrediente;
 
 	public Long getId() {
 		return id;
@@ -40,7 +47,7 @@ public class Dieta implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -65,12 +72,12 @@ public class Dieta implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public List<Ingrediente> getIngredientes() {
-		return ingredientes;
+	public List<Ingrediente> getIngrediente() {
+		return ingrediente;
 	}
 
-	public void setIngredientes(List<Ingrediente> ingredientes) {
-		this.ingredientes = ingredientes;
+	public void setIngrediente(List<Ingrediente> ingrediente) {
+		this.ingrediente = ingrediente;
 	}
 
 	@Override

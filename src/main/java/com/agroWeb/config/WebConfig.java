@@ -42,6 +42,7 @@ import com.agroWeb.controller.converter.DietaConverter;
 import com.agroWeb.controller.converter.DoencaConverter;
 import com.agroWeb.controller.converter.EspecieConverter;
 import com.agroWeb.controller.converter.EstadoConverter;
+import com.agroWeb.controller.converter.IngredienteConverter;
 import com.agroWeb.controller.converter.VacinaConvert;
 import com.agroWeb.thymeleaf.AgroWebDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
@@ -96,6 +97,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addConverter(new DoencaConverter());
 		conversionService.addConverter(new VacinaConvert());
 		conversionService.addConverter(new EspecieConverter());
+		conversionService.addConverter(new IngredienteConverter());
 
 		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);

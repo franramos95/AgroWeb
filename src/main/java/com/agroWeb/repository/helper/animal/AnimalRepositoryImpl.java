@@ -46,13 +46,13 @@ public class AnimalRepositoryImpl implements AnimalRepositoryQueries {
 		return (Long) criteria.uniqueResult();
 	}
 
-	private void adicionarFiltro (AnimalFilter filter, Criteria criteria){
-		if(filter != null){
-			if(!StringUtils.isEmpty(filter.getNome())){
+	private void adicionarFiltro(AnimalFilter filter, Criteria criteria) {
+		if (filter != null) {
+			if (!StringUtils.isEmpty(filter.getNome())) {
 				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 			}
 			if (filter.getIdBrinco() != null) {
-				criteria.add(Restrictions.eq("id brinco", filter.getIdBrinco()));
+				criteria.add(Restrictions.eq("idBrinco", filter.getIdBrinco()));
 			}
 			if (filter.getEspecie() != null) {
 				criteria.add(Restrictions.eq("especie", filter.getEspecie()));
@@ -60,10 +60,9 @@ public class AnimalRepositoryImpl implements AnimalRepositoryQueries {
 			if (filter.getLote() != null) {
 				criteria.add(Restrictions.eq("lote", filter.getLote()));
 			}
-			if (filter.getSituacaoAnimal() != null){
-				criteria.add(Restrictions.eq("situação", filter.getSituacaoAnimal()));
+			if (filter.getSituacao() != null) {
+				criteria.add(Restrictions.eq("situacao", filter.getSituacao()));
 			}
-
 
 		}
 	}

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.agroWeb.model.Animal;
-import com.agroWeb.model.Pesagem;
 import com.agroWeb.repository.AnimalRepository;
 import com.agroWeb.service.exception.IdBrincoJaCadastradoException;
 
@@ -15,22 +14,17 @@ import com.agroWeb.service.exception.IdBrincoJaCadastradoException;
 public class CadastroAnimalService {
 
 	@Autowired
-	public AnimalRepository  animalRepository;
-	
+	public AnimalRepository animalRepository;
+
 	@Transactional
-	public Animal salvar(Animal animal){
-		
-		Optional<Animal> animalOption =  animalRepository.findByIdBrinco(animal.getIdBrinco());
-		
-		Pesagem pesagem = new Pesagem();
-		pesagem.setId(animal.getIdBrinco());
-		pesagem.setData(animal.getDataNascimento());
-		pesagem.setPeso(100l);
-		animal.setPesagem(pesagem);
-		if (animalOption.isPresent()){
+	public Animal salvar(Animal animal) {
+
+		Optional<Animal> animalOption = animalRepository.findByIdBrinco(animal.getIdBrinco());
+
+		if (animalOption.isPresent()) {
 			throw new IdBrincoJaCadastradoException("Animal já cadastrado com este Id Brinco!");
 		}
-		
+
 		return animalRepository.saveAndFlush(animal);
 	}
 }

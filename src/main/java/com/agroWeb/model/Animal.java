@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +29,10 @@ public class Animal implements Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@NotNull
+	@Column(name = "id_brinco")
 	private Long idBrinco;
 
 	@NotBlank(message = "O nome do animal é obrigatório")
@@ -34,7 +40,7 @@ public class Animal implements Serializable {
 
 	@NotNull(message = "A especie é obrigatória")
 	@ManyToOne
-	@JoinColumn (name="id_especie")
+	@JoinColumn(name = "id_especie")
 	private Especie especie;
 
 	@NotNull(message = "O lote é obrigatório")
@@ -57,8 +63,9 @@ public class Animal implements Serializable {
 
 	@NotNull(message = "A situação do animal é obrigatória")
 	@Column(name = "situacao")
+	@Enumerated(EnumType.STRING)
 	private SituacaoAnimal situacao;
-	
+
 	@ManyToMany
 	@JoinTable(name = "animal_vacina", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_vacina"))
 	private List<Vacina> vacina;
@@ -71,25 +78,17 @@ public class Animal implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
 	private List<Doenca> doenca;
-	
-	@ManyToOne 
-	@JoinColumn(name = "id_pesagem")
-	private Pesagem pesagem;
 
-	public Pesagem getPesagem() {
+	@ManyToMany
+	@JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_pesagem"))
+	private List<Pesagem> pesagem;
+
+	public List<Pesagem> getPesagem() {
 		return pesagem;
 	}
 
-	public void setPesagem(Pesagem pesagem) {
+	public void setPesagem(List<Pesagem> pesagem) {
 		this.pesagem = pesagem;
-	}
-
-	public Long getIdBrinco() {
-		return idBrinco;
-	}
-
-	public void setIdBrinco(Long idBrinco) {
-		this.idBrinco = idBrinco;
 	}
 
 	public String getNome() {
@@ -98,6 +97,22 @@ public class Animal implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getIdBrinco() {
+		return idBrinco;
+	}
+
+	public void setIdBrinco(Long idBrinco) {
+		this.idBrinco = idBrinco;
 	}
 
 	public Especie getEspecie() {
@@ -204,7 +219,5 @@ public class Animal implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

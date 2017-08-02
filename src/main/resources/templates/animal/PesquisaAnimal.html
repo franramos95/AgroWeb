@@ -46,31 +46,32 @@
 				</div>
 				
 			<div class="row">
-					<div class="form-group  col-sm-3">
+				<div class="form-group  col-sm-4">
 					<label for="especie" class="control-label">Especie</label> 
+					<div class="bw-field-action">
 						<select id="especie" class="form-control" th:field="*{especie}">
-	  						<option value="">Todas as Especie</option>
-							<option th:each="especie: ${especie}" th:value="${especie.id}" th:text="especie.nome"></option>
+	  						<option value="">Selecione a Especie</option>
+							<option th:each="especie: ${especies}" th:value="${especie.id}" th:text="${especie.nome}"></option>
 						</select>
 	     			</div>
+				</div>
 	     			
-	     			<div class="form-group col-sm-6">
-					<label class="control-label" for="situacao">Situacao</label> 
-						<div>
-							<th:block th:each="situacao : ${situacao}">
-	  							<div class="radio radio-inline"> 
-		    						<input th:id="|id_${situacao}|" type="radio" th:value="${situacao}" name="situacao" th:field="*{situacao}"/>
-		    						<label th:for="|id_${situacao}|" th:text="${situacao.descricao}">Confinado</label>
-	    						</div>
-	    					</th:block>
-	    					<div class="radio radio-inline">
-	    						<input id="todasSituacoes" type="radio" th:checked="*{situacao} == null" name="situacao"/>
-	    						<label for="todasSituacoes">Todos</label>
+	     			
+			<div class="col-lg-4 col-sm-4 form-group bw-required">
+					<label for="situacao" class="control-label">Situacao</label> 
+					<div>
+						<th:block th:each="situacao : ${situacoes}">
+	  						<div class="radio radio-inline"> 
+		    					<input th:id="|id_${situacao}|" type="radio" th:value="${situacao}" name="situacao" th:field="*{situacao}"/>
+		    					<label th:for="|id_${situacao}|" th:text="${situacao.descricao}"></label>
 	    					</div>
-						</div>
+	    				</th:block>
 					</div>
-					
-					<div class="form-group  col-sm-3">
+				</div>
+			
+	     			
+	
+	     		<div class="form-group  col-sm-4">
 						<label for="lote" class="control-label">Lote do Animal</label> 
 						<input type="text" class="form-control"	id="lote" th:field="*{lote}" />
 					</div>
@@ -83,39 +84,27 @@
 			<table class="table  table-hovver">
 					<thead>
 						<tr>
-							<td class="table-animal-col-idBrinco">
-								<agroWeb:order pag="${pagina}" field="idBrinco" text="Id Brinco"></agroWeb:order>
-							</td>
-							<td class="table-animal-col-nome">
-								<agroWeb:order pag="${pagina}" field="nome" text="Nome"></agroWeb:order>
-							</td>
-							<td class="table-animal-col-especie">
-								<agroWeb:order pag="${pagina}" field="especie" text="Especie"></agroWeb:order>
-							</td>
-							<td class="table-animal-col-situacao">
-								<agroWeb:order pag="${pagina}" field="situacao" text="Situacao"></agroWeb:order>
-							</td>
-							<td class="table-animal-col-lote">
-								<agroWeb:order pag="${pagina}" field="lote" text="Lote"></agroWeb:order>
-							</td>
+							<td class="table-animal-col-idBrinco">IdBrinco</td>
+							<td class="table-animal-col-nome">Nome</td>
+							<td class="table-animal-col-especie">Especie</td>
+							<td class="table-animal-col-situacao">Situacao</td>
+							<td class="table-animal-col-lote">Lote</td>
 						</tr>
 					</thead>
 					
 					<tbody>
-						<tr th:each="animal : ${pagina.contente}">
-							<td class="text-center" th:text="{animal.idBrinco}"></td>
-							<td th:text="{anima.nome}"></td>
-							<td th:text="{animal.especie.nome}"></td>
-							<td th:text="{animal.lote}"></td>
-							<td th:text="{anima.pesagem.peso}"></td>
-							<td th:text="{animal.pesagem.data}"></td>			
-							<td th:text="{animal.situacao"></td>
+						<tr th:each="animal : ${pagina.content}">
+							<td th:text="${animal.idBrinco}"></td>
+							<td th:text="${animal.nome}"></td>
+							<td th:text="${animal.especie.nome}"></td>
+							<td th:text="${animal.situacao}"></td>
+							<td th:text="${animal.lote}"></td>
 							<td class="text-center">
 								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/animal/{id}(id=${animal.id})}">
 									<i class="glyphicon glyphicon-pencil"></i>
 								</a>
 								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
-									data:url="@{animal/{id}(id={animal.id})}"
+									data:url="@{/animal/{id}(id=${animal.id})}"
 									data:objeto="animal.nome">
 									<i class="glyphicon glyphicon-remove"></i>
 								</a>
@@ -129,7 +118,7 @@
 			</table>
 		</div>
 		
-		<div class="col-sm-12  text-center" th:if="${not.pagina.empty}">
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
 			<nav>
 				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
 					<li th:class="${pagina.primeira} ? disable">
@@ -141,8 +130,8 @@
 					    </li>
 					</th:block>
 					
-					<li th:class="${pagina.ultima} ? disable">
-						<a th:href="${pagina.urlParaPagina(PaginaAtual + 1)}" th:remove="${pagina.ultimo} ? tag"><span>&raquo;</span></a>
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
 					</li>
 				</ul>
 			</nav>

@@ -24,6 +24,7 @@ CREATE TABLE dieta (
 
 CREATE TABLE animal(
 	id BIGINT(20 ) PRIMARY KEY AUTO_INCREMENT,
+	id_brinco BIGINT(20) NOT NULL,
 	nome VARCHAR(20) NOT NULL,
 	lote VARCHAR(20) NOT NULL,
 	sexo VARCHAR(20) NOT NULL,
@@ -31,17 +32,11 @@ CREATE TABLE animal(
 	data_nascimento DATETIME NOT NULL,
 	data_aquisicao DATETIME,
 	situacao VARCHAR(20) NOT NULL,
-	id_pesagem BIGINT(20) NOT NULL,
 	id_especie BIGINT(20) NOT NULL,
 	id_dieta BIGINT(20) NOT NULL,
 	id_venda BIGINT(20),
-	id_doenca BIGINT(20),
-	id_vacina BIGINT(20),
-	FOREIGN KEY (id_pesagem) REFERENCES pesagem(id),
 	FOREIGN KEY (id_especie) REFERENCES especie(id),
-	FOREIGN KEY (id_dieta) REFERENCES dieta(id),
-	FOREIGN KEY (id_doenca) REFERENCES doenca(id),
-	FOREIGN KEY (id_vacina) REFERENCES vacina(id)
+	FOREIGN KEY (id_dieta) REFERENCES dieta(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE item_venda(
