@@ -13,13 +13,12 @@
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1>
-					Cadastro de Doença
-				</h1>
+				<h1  th:if="${doenca.nova}">Cadastro de Doença</h1>
+    			<h1  th:unless="${doenca.nova}" th:text="|Edição da ${doenca.nome}|">Edição de Doença</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
-					<a class="btn btn-default" th:href="@{/doenca}">
+					<a class="btn btn-default" th:href="@{/doencas}">
 						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
 					</a>
 				</div>
@@ -28,12 +27,15 @@
 	</div>
 	
 	<div class="container-fluid">
-
-		<form method="POST" th:object="${doenca}" th:action="@{/doenca/novo}">
+		<form method="POST" th:object="${doenca}" 
+				th:action="${doenca.nova} ? @{/doencas/novo} : @{/doencas/{id}(id=${doenca.id})}">>
+		
 		
 			<agroWeb:message/>
 			
 			<div class="row">	
+			
+			<input type="hidden" th:field="*{id}"/>
 				
 				<div class="form-group  col-sm-12  bw-required" agroWeb:classforerror="nome">
 					<label for="nome" class="control-label">Nome</label>

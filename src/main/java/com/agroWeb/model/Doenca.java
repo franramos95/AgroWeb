@@ -61,6 +61,10 @@ public class Doenca implements Serializable {
 		this.tratamento = tratamento;
 	}
 
+	public boolean isNova() {
+		return id == null;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

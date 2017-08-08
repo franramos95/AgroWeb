@@ -3,7 +3,6 @@ package com.agroWeb.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,7 +23,6 @@ public class Ingrediente implements Serializable {
 	private static final long serialVersionUID = -8566468295819914130L;
 
 	@Id
-	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -71,6 +69,10 @@ public class Ingrediente implements Serializable {
 
 	public void setQuantidade(Long quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public boolean isNova() {
+		return id == null;
 	}
 
 	@Override

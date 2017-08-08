@@ -1,15 +1,13 @@
 package com.agroWeb.model;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -18,12 +16,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "dieta")
-public class Dieta implements Serializable {
-
-	private static final long serialVersionUID = 4439929610622402519L;
+public class Dieta {
 
 	@Id
-	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -36,9 +31,8 @@ public class Dieta implements Serializable {
 	@NotNull(message = "A quantidade é obrigatória")
 	private Long quantidade;
 
-	@OneToMany
-	@JoinTable(name = "ingrediente_dieta", joinColumns = @JoinColumn(name = "id_dieta"), inverseJoinColumns = @JoinColumn(name = "id_ingrediente"))
-	private List<Ingrediente> ingrediente;
+	@OneToMany(mappedBy = "dieta", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemDieta> itens = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -72,12 +66,12 @@ public class Dieta implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public List<Ingrediente> getIngrediente() {
-		return ingrediente;
+	public List<ItemDieta> getItens() {
+		return itens;
 	}
 
-	public void setIngrediente(List<Ingrediente> ingrediente) {
-		this.ingrediente = ingrediente;
+	public void setItens(List<ItemDieta> itens) {
+		this.itens = itens;
 	}
 
 	@Override

@@ -1,108 +1,122 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th ="http://thymeleaf.org"
+	xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
-	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
+	xmlns:data="http://www.thymeleag.org/extras/data"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">		
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
-	<title>Pesquisa de Ingredientes</title>
+<title>Pesquisa de Ingredientes</title>
 </head>
 
 <body>
-<section layout:fragment="conteudo">
-	<div class="page-header">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-10">
-				<h1>Pesquisa de Ingredientes</h1>
-				</div>
-				
-				<div class="col-xs-2" sec:authorize-url="/ingredientes/novo">
-					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/ingredientes/novo}">
-						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Ingrediente</span>						
-						</a>
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Pesquisa de Ingredientes</h1>
+					</div>
+
+					<div class="col-xs-2" sec:authorize-url="/ingredientes/novo">
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/ingredientes/novo}">
+								<i class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Novo Ingrediente</span>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	
-	<div class="container-fluid">
-		<form method="GET" th:object="${ingredienteFilter}">
-			<div class="row">
-				<div class="form-group  col-sm-12">
-				<label class="control-label" for="nome">Nome</label>
-				<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="form-group  col-sm-4">
-				<label class="control-label" for="preco">Preço</label>
-				<input type="text" class="form-control" id="preco" autofocus="autofocus" th:field="*{preco}"/>
-				</div>
-				<div class="form-group  col-sm-4">
-				<label class="control-label" for="quantidade">Quantidade</label>
-				<input type="text" class="form-control" id="quantidade" autofocus="autofocus" th:field="*{quantidade}"/>
-				</div>
-			</div>
-			
-			
-			<button type="submit" class="btn  btn-primary">Pesquisar</button>
-		</form>
-			
-		<div class="table-responsive  bw-table-simples">
-			<table class="table  table-hover">
-				<thead>
-					<tr>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="nome" text="Nome"></agroWeb:order>
-						</td>	
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="preco" text="Preço"></agroWeb:order>
-						</td>
-						<td class="table-cidades-col-nome">
-							<agroWeb:order page="${pagina}" field="quantidade" text="Quantidade"></agroWeb:order>
-						</td>																			
-						<td class="table-clientes-col-acoes"></td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="ingrediente : ${pagina.content}">
-						<td th:text="${ingrediente.nome}"></td>
-						<td th:text="${ingrediente.preco}"></td>
-						<td th:text="${ingrediente.quantidade}"></td>
-					</tr>											
-					<tr th:if="${pagina.empty}">
-						<td colspan="3">Nenhum ingrediente encontrado</td>
-					</tr>				
-				</tbody>
-			</table>
-		</div>
-		
-		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
-			<nav>
-				<ul class="pagination pagination-sm" th:with="paginaAtual=${pagina.atual}">
-					<li th:class="${pagina.primeira} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
-					</li>	
-					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p-1}">
-						<li th:class="${paginaAtual == numeroPagina} ? active">
-							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
-						</li>
-					</th:block>
-					
-					<li th:class="${pagina.ultima} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		
-		</div>
-	</div>
 
-</section>
+		<div class="container-fluid">
+			<form method="GET" th:object="${ingredienteFilter}">
+				<div class="row">
+					<div class="form-group  col-sm-12">
+						<label class="control-label" for="nome">Nome</label> <input
+							type="text" class="form-control" id="nome" autofocus="autofocus"
+							th:field="*{nome}" />
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="form-group  col-sm-4">
+						<label class="control-label" for="preco">Preço</label> <input
+							type="text" class="form-control" id="preco" autofocus="autofocus"
+							th:field="*{preco}" />
+					</div>
+					<div class="form-group  col-sm-4">
+						<label class="control-label" for="quantidade">Quantidade</label> <input
+							type="text" class="form-control" id="quantidade"
+							autofocus="autofocus" th:field="*{quantidade}" />
+					</div>
+				</div>
+
+
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+
+			<div class="table-responsive  bw-table-simples">
+				<table class="table  table-hover">
+					<thead>
+						<tr>
+							<td class="table-cidades-col-nome"><agroWeb:order
+									page="${pagina}" field="nome" text="Nome"></agroWeb:order></td>
+							<td class="table-cidades-col-nome"><agroWeb:order
+									page="${pagina}" field="preco" text="Preço"></agroWeb:order></td>
+							<td class="table-cidades-col-nome"><agroWeb:order
+									page="${pagina}" field="quantidade" text="Quantidade"></agroWeb:order>
+							</td>
+							<td class="table-clientes-col-acoes"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="ingrediente : ${pagina.content}">
+							<td th:text="${ingrediente.nome}"></td>
+							<td th:text="${ingrediente.preco}"></td>
+							<td th:text="${ingrediente.quantidade}"></td>
+							<td class="text-center"><a
+								class="btn  btn-link  btn-xs  js-tooltip" title="Editar"
+								th:href="@{/ingredientes/{id}(id=${ingrediente.id})}"> <i
+									class="glyphicon glyphicon-pencil"></i>
+							</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+								title="Excluir"
+								data:url="@{/ingredientes/{id}(id=${ingrediente.id})}"
+								data:objeto="${ingrediente.nome}"> <i
+									class="glyphicon glyphicon-remove"></i>
+							</a></td>
+						</tr>
+						<tr th:if="${pagina.empty}">
+							<td colspan="3">Nenhum ingrediente encontrado</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+				<nav>
+					<ul class="pagination pagination-sm"
+						th:with="paginaAtual=${pagina.atual}">
+						<li th:class="${pagina.primeira} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual - 1)}"
+							th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a></li>
+						<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}"
+							th:with="numeroPagina=${p-1}">
+							<li th:class="${paginaAtual == numeroPagina} ? active"><a
+								th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a></li>
+						</th:block>
+
+						<li th:class="${pagina.ultima} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual + 1)}"
+							th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+
+	</section>
 </body>
 </html>

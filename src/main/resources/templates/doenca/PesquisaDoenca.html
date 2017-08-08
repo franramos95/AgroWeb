@@ -14,14 +14,14 @@
 <section layout:fragment="conteudo">
 	<div class="page-header">
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row">s
 				<div class="col-xs-10">
 				<h1>Pesquisa de Doença</h1>
 				</div>
 				
-				<div class="col-xs-2" sec:authorize-url="/doenca/novo">
+				<div class="col-xs-2" sec:authorize-url="/doencas/novo">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/doenca/novo}">
+						<a class="btn  btn-default" th:href="@{/doencas/novo}">
 						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo Doença</span>						
 						</a>
 					</div>
@@ -73,15 +73,15 @@
 						<td th:text="${doenca.sintoma}"></td>
 						<td th:text="${doenca.tratamento}"></td>
 						<td class="text-center">
-								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/doenca/{id}(id=${doenca.id})}">
-									<i class="glyphicon glyphicon-pencil"></i>
-								</a>
-								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
-									data:url="@{/doenca/{id}(id=${doenca.id})}"
-									data:objeto="doenca.nome">
-									<i class="glyphicon glyphicon-remove"></i>
-								</a>
-							</td>		
+							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar"
+								th:href="@{/doencas/{id}(id=${doenca.id})}"> <i
+									class="glyphicon glyphicon-pencil"></i>
+							</a>
+						    <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+								title="Excluir" data:url="@{/doencas/{id}(id=${doenca.id})}"
+								data:objeto="${doenca.nome}"> <i
+									class="glyphicon glyphicon-remove"></i>
+							</a></td>	
 					</tr>											
 					<tr th:if="${pagina.empty}">
 						<td colspan="3">Nenhuma doença encontrado</td>

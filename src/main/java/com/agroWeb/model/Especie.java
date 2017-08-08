@@ -38,6 +38,10 @@ public class Especie implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public boolean isNova(){
+		return id == null;
+	}
 
 	@Override
 	public int hashCode() {
@@ -46,7 +50,7 @@ public class Especie implements Serializable {
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
