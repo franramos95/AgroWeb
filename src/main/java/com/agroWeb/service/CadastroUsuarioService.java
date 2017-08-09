@@ -2,6 +2,8 @@ package com.agroWeb.service;
 
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.agroWeb.model.Usuario;
 import com.agroWeb.repository.UsuarioRepository;
 import com.agroWeb.security.exception.EmailCadastradoException;
 import com.agroWeb.security.exception.SenhaObrigatoriaUsuarioException;
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 
 @Service
 public class CadastroUsuarioService {
@@ -46,6 +49,17 @@ public class CadastroUsuarioService {
 	public void alteraStatus(Long[] codigos, StatusUsuario statusUsuario) {
 		
 		statusUsuario.executar(codigos, usuarioRepository);
+	}
+
+	@Transactional
+	public void excluir(Long id) {
+		try{
+			usuarioRepository.delete(id);
+			usuarioRepository.flush();
+		}catch (PersistenceException e){
+			throw new ImpossivelExcluirEntidadeException("Impossivel excluir este usuario!");
+		}
+		
 	}
 
 	

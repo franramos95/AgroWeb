@@ -117,8 +117,12 @@ public class Usuario implements Serializable {
 	public void setConfirmacaoSenha(String confirmacaoSenha) {
 		this.confirmacaoSenha = confirmacaoSenha;
 	}
-	
-	public boolean isNovo(){
+
+	public boolean isNovo() {
+		return codigo == null;
+	}
+
+	public boolean isNova() {
 		return codigo == null;
 	}
 
@@ -148,4 +152,3 @@ public class Usuario implements Serializable {
 	}
 
 }
-

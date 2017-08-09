@@ -11,18 +11,19 @@
 </head>
 
 <body>
-<section layout:fragment="conteudo">
-	<div class="page-header">
-		<div class="container-fluid">
+	<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-10">
 				<h1>Pesquisa de Vacina</h1>
 				</div>
 				
-				<div class="col-xs-2" sec:authorize-url="/vacina/novo">
+				<div class="col-xs-2" sec:authorize-url="/vacinas/novo">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/vacina/novo}">
-						<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova Vacina</span>						
+						<a class="btn  btn-default" th:href="@{/vacinas/novo}">
+						<i class="glyphicon  glyphicon-plus-sign"></i> 
+						<span class="hidden-xs  hidden-sm">Nova Vacina</span>						
 						</a>
 					</div>
 				</div>
@@ -79,17 +80,16 @@
 						<td th:text="${vacina.lote}"></td>
 						<td th:text="${vacina.data}"></td>
 						<td th:text="${vacina.vencimento}"></td>
-								
-					<td class="text-center">
-								<a class="btn  btn-link  btn-xs js-tooltip"  title="Editar" th:href="@{/vacina/{id}(id=${vacina.id})}">
-									<i class="glyphicon glyphicon-pencil"></i>
-								</a>
-								<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" 
-									data:url="@{/vacina/{id}(id=${vacina.id})}"
-									data:objeto="vacina.nome">
-									<i class="glyphicon glyphicon-remove"></i>
-								</a>
-							</td>							
+						<td class="text-center"><a
+								class="btn  btn-link  btn-xs  js-tooltip" title="Editar"
+								th:href="@{/vacinas/{id}(id=${vacina.id})}"> <i
+									class="glyphicon glyphicon-pencil"></i>
+							</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn"
+								title="Excluir"
+								data:url="@{/vacinas/{id}(id=${vacina.id})}"
+								data:objeto="${vacina.nome}"> <i
+									class="glyphicon glyphicon-remove"></i>
+							</a></td>						
 					<tr th:if="${pagina.empty}">
 						<td colspan="3">Nenhuma vacina encontrado</td>
 					</tr>				

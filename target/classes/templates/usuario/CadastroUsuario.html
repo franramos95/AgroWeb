@@ -15,9 +15,8 @@
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1>
-					Cadastro de Usuario
-				</h1>
+				<h1  th:if="${usuario.nova}">Cadastro de Especie</h1>
+    			<h1  th:unless="${usuario.nova}" th:text="|Edição da ${usuario.nome}|">Edição de especie</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
@@ -31,9 +30,12 @@
 	
 	<div class="container-fluid">
 
-		<form method="POST" th:object="${usuario}" th:action="@{/usuarios/novo}">	
+		<form method="POST" th:object="${usuario}" 
+			th:action="${usuario.nova} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">>	
 		
 			<agroWeb:message/>
+		
+			<input type="hidden" th:field="*{codigo}"/>
 		
 			<div class="row">
 				<div class="form-group  col-sm-12  bw-required" agroWeb:classforerror="nome">

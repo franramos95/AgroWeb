@@ -6,11 +6,15 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,13 +23,12 @@ import com.agroWeb.model.Vacina;
 import com.agroWeb.repository.VacinaRepository;
 import com.agroWeb.repository.filter.VacinaFilter;
 import com.agroWeb.service.CadastroVacinaService;
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 import com.agroWeb.service.exception.NomeVacinaJaCadastradaException;
 
-
 @Controller
-@RequestMapping("/vacina")
+@RequestMapping("/vacinas")
 public class VacinaController {
-
 
 	@Autowired
 	private CadastroVacinaService cadastroVacinaService;
@@ -39,7 +42,7 @@ public class VacinaController {
 		return mv;
 	}
 
-	@PostMapping("/novo")
+	@RequestMapping(value = { "/novo", "{\\d+}" }, method = RequestMethod.POST)
 	public ModelAndView salvar(@Valid Vacina vacina, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return novo(vacina);
@@ -51,7 +54,7 @@ public class VacinaController {
 			return novo(vacina);
 		}
 		attributes.addFlashAttribute("mensagem", "Vacina salva com sucesso!");
-		return new ModelAndView("redirect:/vacina/novo");
+		return new ModelAndView("redirect:/vacinas/novo");
 	}
 
 	@GetMapping
@@ -66,5 +69,22 @@ public class VacinaController {
 		return mv;
 	}
 
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("id") Long id) {
+		try {
+			cadastroVacinaService.excluir(id);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/{id}")
+	public ModelAndView editar(@PathVariable("id") Long id) {
+		Vacina vacina = vacinaRepository.findOne(id);
+		ModelAndView mv = novo(vacina);
+		mv.addObject(vacina);
+		return mv;
+	}
 
 }

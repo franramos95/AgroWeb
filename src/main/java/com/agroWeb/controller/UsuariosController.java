@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,7 +31,7 @@ import com.agroWeb.security.exception.EmailCadastradoException;
 import com.agroWeb.security.exception.SenhaObrigatoriaUsuarioException;
 import com.agroWeb.service.CadastroUsuarioService;
 import com.agroWeb.service.StatusUsuario;
-
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -49,7 +53,7 @@ public class UsuariosController {
 		return mv;
 	}
 
-	@PostMapping("/novo")
+	@RequestMapping(value = { "/novo", "{\\d+}" }, method = RequestMethod.POST)
 	public ModelAndView salvar(@Valid Usuario usuario, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
@@ -71,10 +75,12 @@ public class UsuariosController {
 	}
 
 	@GetMapping
-	public ModelAndView pesquisar(UsuarioFilter filter, BindingResult result,@PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
+	public ModelAndView pesquisar(UsuarioFilter filter, BindingResult result,
+			@PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("usuario/PesquisaUsuarios");
 
-		PageWrapper<Usuario> pageWrapper = new PageWrapper<>(usuarioRepository.filtrar(filter, pageable),httpServletRequest);
+		PageWrapper<Usuario> pageWrapper = new PageWrapper<>(usuarioRepository.filtrar(filter, pageable),
+				httpServletRequest);
 		mv.addObject("pagina", pageWrapper);
 		mv.addObject("grupos", grupoRepository.findAll());
 		return mv;
@@ -82,7 +88,26 @@ public class UsuariosController {
 
 	@PutMapping("/status")
 	@ResponseStatus(HttpStatus.OK)
-	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos,@RequestParam("status") StatusUsuario statusUsuario) {
+	public void atualizarStatus(@RequestParam("codigos[]") Long[] codigos,
+			@RequestParam("status") StatusUsuario statusUsuario) {
 		cadastroUsuarioService.alteraStatus(codigos, statusUsuario);
+	}
+
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("id") Long id) {
+		try {
+			cadastroUsuarioService.excluir(id);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/{id}")
+	public ModelAndView edita(@PathVariable("id") Long id) {
+		Usuario usuario = usuarioRepository.findOne(id);
+		ModelAndView mv = novo(usuario);
+		mv.addObject(usuario);
+		return mv;
 	}
 }
