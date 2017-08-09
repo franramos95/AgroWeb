@@ -13,8 +13,8 @@
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1  th:if="${ingrediente.nova}">Cadastro de Doença</h1>
-    			<h1  th:unless="${ingrediente.nova}" th:text="|Edição da ${ingrediente.nome}|">Edição de Doença</h1>
+				<h1  th:if="${ingrediente.nova}">Cadastro de Ingrediente</h1>
+    			<h1  th:unless="${ingrediente.nova}" th:text="|Edição da ${ingrediente.nome}|">Edição de Ingrediente</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
@@ -29,7 +29,7 @@
 	<div class="container-fluid">
 		
 		<form method="POST" th:object="${ingrediente}"
-			th:action="${ingrediente.nova} ? @{/ingredientes/novo} : @{/ingredientes/{id}(id=${ingrediente.id})}">>
+			th:action="${ingrediente.nova} ? @{/ingredientes/novo} : @{/ingredientes/{id}(id=${ingrediente.id})}">
 		
 			<agroWeb:message/>
 			
@@ -45,16 +45,19 @@
 			</div>
 			
 			<div class="row">
-			
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerror="nome">
-					<label for="preco" class="control-label">Preço</label>
-					<input id="preco" type="text" class="form-control" autofocus="autofocus" th:field="*{preco}"/>
-				</div>
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerror="nome">
-					<label for="quantidade" class="control-label">Quantidade</label>
-					<input id="quantidade" type="text" class="form-control" autofocus="autofocus" th:field="*{quantidade}"/>
-				</div>
+
+				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="preco" class="control-label">Valor</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
+					</div>	
+				</div>		
 				
+				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="*{quantidade}">
+					<label for="quantidade" class="control-label">Quantidade em estoque</label>
+					<input id="quantidade" type="text" class="form-control js-plain" th:field="*{quantidade}"/>
+				</div>		
 				
 			</div>
 			

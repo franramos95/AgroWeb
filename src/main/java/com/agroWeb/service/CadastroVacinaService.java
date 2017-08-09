@@ -24,7 +24,7 @@ public class CadastroVacinaService {
 
 		Optional<Vacina> vacinaOptional = vacinaRepository.findByNomeIgnoreCase(vacina.getNome());
 
-		if (vacinaOptional.isPresent()) {
+		if (vacinaOptional.isPresent() && vacina.isNova()) {
 			throw new NomeVacinaJaCadastradaException("Vacina já existente");
 		}
 

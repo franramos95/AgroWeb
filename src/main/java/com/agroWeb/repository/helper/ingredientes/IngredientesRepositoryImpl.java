@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.agroWeb.dto.IngredientesDTO;
+import com.agroWeb.dto.IngredienteDTO;
 import com.agroWeb.model.Ingrediente;
 import com.agroWeb.repository.filter.IngredienteFilter;
 import com.agroWeb.repository.paginacao.PaginacaoUtil;
@@ -47,11 +47,20 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 			if (!StringUtils.isEmpty(filter.getNome())) {
 				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 			}
-			if (filter.getPreco() != null) {
-				criteria.add(Restrictions.eq("preço", filter.getPreco()));
+			if (filter.getValor() != null) {
+				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
 		}
 
+	}
+
+	@Override
+	public List<IngredienteDTO> porNome(String nome) {
+		String jpql = "select new com.agroWeb.dto.IngredienteDTO(id, nome, valor) " + "fro"
+				+ "m Ingrediente where lower(nome) like :nome";
+		List<IngredienteDTO> ingredientesFiltrados = manager.createQuery(jpql, IngredienteDTO.class)
+				.setParameter("nome", "%" + nome.toLowerCase() + "%").getResultList();
+		return ingredientesFiltrados;
 	}
 
 	private Long total(IngredienteFilter filter) {
@@ -60,14 +69,5 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 
-	}
-
-	@Override
-	public List<IngredientesDTO> porIdOuNome(String idOuNome) {
-		String jpql = "select new com.agroWeb.dto.IngredientesDTO(id,nome)"
-				+ "from ingrediente where id like :idOuNome or lower(nome) like :idOuNome";
-		List<IngredientesDTO> ingredientesFiltrados = manager.createQuery(jpql,IngredientesDTO.class)
-				.setParameter(idOuNome, idOuNome.toLowerCase() + "%").getResultList();
-		return ingredientesFiltrados;
 	}
 }

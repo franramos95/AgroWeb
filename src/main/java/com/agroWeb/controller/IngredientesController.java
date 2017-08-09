@@ -23,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agroWeb.controller.page.PageWrapper;
-import com.agroWeb.dto.IngredientesDTO;
+import com.agroWeb.dto.IngredienteDTO;
 import com.agroWeb.model.Ingrediente;
 import com.agroWeb.repository.IngredientesRepository;
 import com.agroWeb.repository.filter.IngredienteFilter;
@@ -76,8 +76,8 @@ public class IngredientesController {
 	}
 
 	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<IngredientesDTO> pesquisar(String idOuNome) {
-		return ingredientesRepository.porIdOuNome(idOuNome);
+	public @ResponseBody List<IngredienteDTO> pesquisar(String nome) {
+		return ingredientesRepository.porNome(nome);
 	}
 
 	@DeleteMapping("/{id}")

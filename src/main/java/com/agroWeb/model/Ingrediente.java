@@ -29,10 +29,10 @@ public class Ingrediente implements Serializable {
 	@NotBlank(message = "O nome é obrigatório")
 	private String nome;
 
-	@NotNull(message = "O preço é obrigatório")
-	@DecimalMin(value = "0.01", message = "O preço deve ser maior que 0")
-	@DecimalMax(value = "999999.99", message = "O preço maximo deve ser 999.999,99")
-	private BigDecimal preco;
+	@NotNull(message = "O valor é obrigatório")
+	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0")
+	@DecimalMax(value = "999999.99", message = "O alor maximo deve ser 999.999,99")
+	private BigDecimal valor;
 
 	@NotNull(message = "Quantidade é obrigatória")
 	@Min(value = 1, message = "O valor minímo deve ser maior ou igual a 1")
@@ -55,12 +55,12 @@ public class Ingrediente implements Serializable {
 		this.nome = nome;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public BigDecimal getValor() {
+		return valor;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 	public Long getQuantidade() {

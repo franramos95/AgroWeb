@@ -28,7 +28,7 @@
 	
 	<div class="container-fluid">
 		<form method="POST" th:object="${doenca}" 
-				th:action="${doenca.nova} ? @{/doencas/novo} : @{/doencas/{id}(id=${doenca.id})}">>
+				th:action="${doenca.nova} ? @{/doencas/novo} : @{/doencas/{id}(id=${doenca.id})}">
 		
 		
 			<agroWeb:message/>

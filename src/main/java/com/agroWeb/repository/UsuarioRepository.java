@@ -12,8 +12,8 @@ import com.agroWeb.repository.helper.usuario.UsuarioRepositoryQueries;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>, UsuarioRepositoryQueries{
 
-	public Optional<Usuario> findByEmailIgnoreCase(String email);
-	
+	public Optional<Usuario> findByEmail(String email);
+
 	public List<Usuario> findByCodigoIn(Long[] codigos);
 }
 

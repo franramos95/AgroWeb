@@ -11,10 +11,12 @@ import com.agroWeb.repository.filter.UsuarioFilter;
 
 public interface UsuarioRepositoryQueries {
 	
-	public Optional<Usuario> porEmaileAtivo(String email);
-	
+	public Optional<Usuario> porEmailEAtivo(String email);
+
 	public List<String> permissoes(Usuario usuario);
-	
-	public Page<Usuario> filtrar(UsuarioFilter filter, Pageable pageable);
+
+	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable);
+
+	public Usuario buscarComGrupos(Long codigo);
 
 }

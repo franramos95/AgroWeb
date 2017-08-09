@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,7 @@ public class VacinaController {
 	}
 
 	@RequestMapping(value = { "/novo", "{\\d+}" }, method = RequestMethod.POST)
-	public ModelAndView salvar(@Valid Vacina vacina, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView salvar(@Valid Vacina vacina, BindingResult result, RedirectAttributes attributes, Model model) {
 		if (result.hasErrors()) {
 			return novo(vacina);
 		}

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class IngredienteFilter {
 
 	private String nome;
-	private BigDecimal preco;
+	private BigDecimal valor;
 	private long quantidade;
 
 	public String getNome() {
@@ -16,12 +16,12 @@ public class IngredienteFilter {
 		this.nome = nome;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public BigDecimal getValor() {
+		return valor;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 	public long getQuantidade() {

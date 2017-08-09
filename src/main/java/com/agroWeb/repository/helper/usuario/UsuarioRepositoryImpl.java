@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
@@ -37,7 +38,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQueries {
 	private PaginacaoUtil paginacaoUtil;
 
 	@Override
-	public Optional<Usuario> porEmaileAtivo(String email) {
+	public Optional<Usuario> porEmailEAtivo(String email) {
 		return manager.createQuery("from Usuario where lower(email) = lower(:email) and ativo = true", Usuario.class)
 				.setParameter("email", email).getResultList().stream().findFirst();
 	}
@@ -50,47 +51,59 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryQueries {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	@Transactional(readOnly = true)
-	public Page<Usuario> filtrar(UsuarioFilter filter, Pageable pageable) {
+	@Override
+	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 
 		paginacaoUtil.preparar(criteria, pageable);
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		adicionarFiltro(filter, criteria);
+		adicionarFiltro(filtro, criteria);
 
-		return new PageImpl<>(criteria.list(), pageable, total(filter));
+		List<Usuario> filtrados = criteria.list();
+		filtrados.forEach(u -> Hibernate.initialize(u.getGrupos()));
+		return new PageImpl<>(filtrados, pageable, total(filtro));
 	}
 
-	private void adicionarFiltro(UsuarioFilter filter, Criteria criteria) {
-		if (filter != null) {
-			if (!StringUtils.isEmpty(filter.getEmail())) {
-				criteria.add(Restrictions.ilike("email", filter.getEmail(), MatchMode.START));
+	@Transactional(readOnly = true)
+	@Override
+	public Usuario buscarComGrupos(Long codigo) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq("codigo", codigo));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (Usuario) criteria.uniqueResult();
+	}
+
+	private Long total(UsuarioFilter filtro) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		adicionarFiltro(filtro, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
+	}
+
+	private void adicionarFiltro(UsuarioFilter filtro, Criteria criteria) {
+		if (filtro != null) {
+			if (!StringUtils.isEmpty(filtro.getNome())) {
+				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
 			}
-			if (!StringUtils.isEmpty(filter.getNome())) {
-				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
+
+			if (!StringUtils.isEmpty(filtro.getEmail())) {
+				criteria.add(Restrictions.ilike("email", filtro.getEmail(), MatchMode.START));
 			}
-			criteria.createAlias("grupos", "g", JoinType.LEFT_OUTER_JOIN);
-			if (filter.getGrupos() != null && !filter.getGrupos().isEmpty()){
+
+			if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {
 				List<Criterion> subqueries = new ArrayList<>();
-				for (Long codigoGrupo : filter.getGrupos().stream().mapToLong(Grupo::getCodigo).toArray()){
+				for (Long codigoGrupo : filtro.getGrupos().stream().mapToLong(Grupo::getCodigo).toArray()) {
 					DetachedCriteria dc = DetachedCriteria.forClass(UsuarioGrupo.class);
 					dc.add(Restrictions.eq("id.grupo.codigo", codigoGrupo));
 					dc.setProjection(Projections.property("id.usuario"));
-					
+
 					subqueries.add(Subqueries.propertyIn("codigo", dc));
 				}
+
 				Criterion[] criterions = new Criterion[subqueries.size()];
 				criteria.add(Restrictions.and(subqueries.toArray(criterions)));
 			}
 		}
 	}
-	
-	private Long total(UsuarioFilter filter) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
-		adicionarFiltro(filter, criteria);
-		criteria.setProjection(Projections.rowCount());
-		return (Long) criteria.uniqueResult();
-	}	
-
 }

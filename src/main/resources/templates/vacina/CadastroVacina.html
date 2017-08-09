@@ -13,8 +13,8 @@
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1  th:if="${vacina.nova}">Cadastro de Doença</h1>
-    			<h1  th:unless="${vacina.nova}" th:text="|Edição da ${vacina.nome}|">Edição de Doença</h1>
+				<h1  th:if="${vacina.nova}">Cadastro de Vacina</h1>
+    			<h1  th:unless="${vacina.nova}" th:text="|Edição da ${vacina.nome}|">Edição de Vacina</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
@@ -29,7 +29,7 @@
 	<div class="container-fluid">
 
 		<form method="POST" th:object="${vacina}" 
-			th:action="${vacina.nova} ? @{/vacinas/novo} : @{/vacinas/{id}(id=${vacina.id})}">>
+			th:action="${vacina.nova} ? @{/vacinas/novo} : @{/vacinas/{id}(id=${vacina.id})}">
 		
 			<agroWeb:message/>
 			
@@ -51,12 +51,12 @@
 				</div>		
 				
 				<div class="form-group  col-sm-4">
-						<label for="data" class="control-label">Data de Aquisição</label>
+						<label for="data" class="control-label">Data de aquisição</label>
 					    <input type="text" class="form-control  js-date" id="data" th:field="*{data}" autocomplete="off" />
 				</div>
 				
 				<div class="form-group  col-sm-4">
-						<label for="vencimento" class="control-label">Data de Nascimento</label>
+						<label for="vencimento" class="control-label">Data de vencimento</label>
 					    <input type="text" class="form-control  js-date" id="vencimento" th:field="*{vencimento}" autocomplete="off" />
 					</div>		
 			</div>

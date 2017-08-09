@@ -24,7 +24,7 @@ public class CadastroIngredientesService {
 
 		Optional<Ingrediente> ingredienteOptional = ingredientesRepository.findByNomeIgnoreCase(ingrediente.getNome());
 
-		if (ingredienteOptional.isPresent()) {
+		if (ingredienteOptional.isPresent() && ingrediente.isNova()) {
 			throw new NomeIngredienteJaCadastradaException("Ingrediente já existente");
 		}
 

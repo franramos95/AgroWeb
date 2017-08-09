@@ -28,8 +28,7 @@
 	
 	<div class="container-fluid">
 
-		<form method="POST" th:object="${especie}" 
-		th:action="${especie.nova} ? @{/especies/novo} : @{/especies/{id}(id=${especie.id})}">>
+		<form method="POST" th:object="${especie}" th:action="${especie.nova} ? @{/especies/novo} : @{/especies/{id}(id=${especie.id})}">
 		
 			<agroWeb:message/>
 		

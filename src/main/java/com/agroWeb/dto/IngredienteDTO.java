@@ -1,14 +1,17 @@
 package com.agroWeb.dto;
 
-public class IngredientesDTO {
+import java.math.BigDecimal;
+
+public class IngredienteDTO {
 
 	private Long id;
 	private String nome;
+	private BigDecimal valor;
 
-	public IngredientesDTO(Long id, String nome) {
-		super();
+	public IngredienteDTO(Long id, String nome, BigDecimal valor) {
 		this.id = id;
 		this.nome = nome;
+		this.valor = valor;
 	}
 
 	public Long getId() {
@@ -25,6 +28,14 @@ public class IngredientesDTO {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 }

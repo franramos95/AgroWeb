@@ -2,59 +2,61 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th ="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
-	xmlns:data="http://www.thymeleag.org/extras/data"
-	xmlns:agroWeb="http://www.brewer.insightsoftware.com"	
-	layout:decorate="~{layout/LayoutPadrao}">	
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"	
+	xmlns:data="http://www.thymeleag.org/extras/data"	
+	layout:decorate="~{layout/LayoutPadrao}">
 <head>
-	<title>Cadastro de Usuários</title>
+	<title>Cadastro de usuário</title>
+	
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
 </head>
 
-<body>
-<section layout:fragment="conteudo" >
+<section layout:fragment="conteudo">
+
 	<div class="page-header">
-		<div class="row">
-			<div class="col-xs-10">
-				<h1  th:if="${usuario.nova}">Cadastro de Especie</h1>
-    			<h1  th:unless="${usuario.nova}" th:text="|Edição da ${usuario.nome}|">Edição de especie</h1>
-			</div>
-			<div class="col-xs-2">
-				<div class="aw-page-header-controls">
-					<a class="btn btn-default" th:href="@{/usuarios}">
-						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
-					</a>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-10">
+					<h1 th:if="${usuario.novo}">Cadastro de usuário</h1>
+					<h1 th:unless="${usuario.novo}">Edição de usuário - [[${usuario.nome}]]</h1>
 				</div>
-			</div>			
+				
+				<div class="col-xs-2">
+					<div class="aw-page-header-controls">
+						<a class="btn  btn-default" th:href="@{/usuarios}">
+							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
 	<div class="container-fluid">
-
-		<form method="POST" th:object="${usuario}" 
-			th:action="${usuario.nova} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">>	
-		
+		<form method="POST" th:object="${usuario}" th:action="${usuario.novo} ? @{/usuarios/novo} : @{/usuarios/{codigo}(codigo=${usuario.codigo})}">
+			
 			<agroWeb:message/>
-		
+			
 			<input type="hidden" th:field="*{codigo}"/>
-		
+			
 			<div class="row">
 				<div class="form-group  col-sm-12  bw-required" agroWeb:classforerror="nome">
 					<label for="nome" class="control-label">Nome</label>
-					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
-				</div>	
+					<input type="text" class="form-control" id="nome" autofocus="autofocus" th:field="*{nome}"/>
+				</div>
 			</div>
-			
+				
 			<div class="row">
-				<div class="col-sm-6  form-group bw-required" agroWeb:classforerror="email">
-					<label for="eMail" class="control-label">E-Mail</label>
-					<input id="eMail" type="text" class="form-control" th:field="*{email}"/>			
-				</div>	
+				<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="email">
+					<label for="email" class="control-label">E-mail</label>
+					<input type="text" class="form-control" id="email" th:field="*{email}"/>
+				</div>
 				
 				<div class="form-group  col-sm-3">
 					<label for="dataNascimento" class="control-label">Data de nascimento</label>
 					<input type="text" class="form-control  js-date" id="dataNascimento" th:field="*{dataNascimento}" autocomplete="off"/>
-				</div>	
-			</div>	
+				</div>
+			</div>
 			
 			<div class="row">
 				<div class="form-group  col-sm-3" agroWeb:classforerror="senha" th:classappend="${usuario.novo} ? bw-required">
@@ -67,9 +69,9 @@
 					<input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}"/>
 				</div>
 				
-				<div class="form-group  col-sm-3">
+				<div class="form-group  col-sm-3" th:if="${#authentication.principal.usuario.codigo != usuario.codigo}">
 					<label class="control-label">Status</label>
-					<div >
+					<div>
 						<input type="checkbox" class="js-status" data-size="small" data-off-color="danger" 
 							data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}"/>
 					</div>
@@ -78,26 +80,24 @@
 			</div>
 			
 			<div class="row">
-				<div class="form-group  col-sm-6" agroWeb:classforerror="grupos">
+				<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="grupos">
 					<label class="control-label">Grupos</label> 
 					<div>
 						<th:block th:each="grupo : ${grupos}">
 	  						<div class="checkbox  checkbox-inline"> 
 		    					<input type="checkbox" th:value="${grupo.codigo}" th:field="*{grupos}"/>
-		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}"></label>
+		    					<label th:for="${#ids.prev('grupos')}" th:text="${grupo.nome}">Administrador</label>
 	    					</div>
 	    				</th:block>
 					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<button class="btn  btn-primary" type="submit">Salvar</button>
-			</div>														
-
-		</form>	
+			
+			<button type="submit" class="btn  btn-primary">Salvar</button>
+		</form>
 	</div>
-	
-</section>	
+</section>
+
 </body>	
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javaScripts/vendors/bootstrap-switch.min.js}"></script>
