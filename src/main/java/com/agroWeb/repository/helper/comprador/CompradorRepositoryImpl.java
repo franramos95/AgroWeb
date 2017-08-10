@@ -41,6 +41,18 @@ public class CompradorRepositoryImpl implements CompradorRepositoryQueries  {
 		
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
+	
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Comprador buscarComCidadeEstado(Long id) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Comprador.class);		
+		criteria.createAlias("endereco.cidade","c",JoinType.LEFT_OUTER_JOIN);
+		criteria.createAlias("c.estado","e", JoinType.LEFT_OUTER_JOIN);		
+		criteria.add(Restrictions.eq("id", id));		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		return (Comprador) criteria.uniqueResult();
+	}
 	 
 	private void adicionarFiltro(CompradorFilter filter, Criteria criteria){
 		if (filter != null){
@@ -60,4 +72,5 @@ public class CompradorRepositoryImpl implements CompradorRepositoryQueries  {
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 	}
+
 }

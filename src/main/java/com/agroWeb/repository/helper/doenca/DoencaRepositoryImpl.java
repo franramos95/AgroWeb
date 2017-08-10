@@ -45,7 +45,7 @@ public class DoencaRepositoryImpl implements DoencaRepositoryQueries {
 				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 			}
 			if (!StringUtils.isEmpty(filter.getSintoma())) {
-				criteria.add(Restrictions.ilike("Sintoma", filter.getSintoma(), MatchMode.ANYWHERE));
+				criteria.add(Restrictions.ilike("sintoma", filter.getSintoma(), MatchMode.ANYWHERE));
 			}
 			if (!StringUtils.isEmpty(filter.getTratamento())) {
 				criteria.add(Restrictions.ilike("tratamento", filter.getTratamento(), MatchMode.ANYWHERE));

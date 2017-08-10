@@ -50,6 +50,9 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 			if (filter.getValor() != null) {
 				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
+			if (filter.getQuantidade()!= null){
+				criteria.add(Restrictions.eq("quantidade", filter.getQuantidade()));
+			}
 		}
 
 	}

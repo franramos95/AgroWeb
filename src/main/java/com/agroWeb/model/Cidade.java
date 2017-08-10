@@ -62,6 +62,10 @@ public class Cidade implements Serializable {
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
+	
+	public boolean isNova(){
+		return codigo == null;
+	}
 
 	@Override
 	public int hashCode() {

@@ -6,7 +6,7 @@ public class IngredienteFilter {
 
 	private String nome;
 	private BigDecimal valor;
-	private long quantidade;
+	private Long quantidade = null;
 
 	public String getNome() {
 		return nome;
@@ -24,11 +24,11 @@ public class IngredienteFilter {
 		this.valor = valor;
 	}
 
-	public long getQuantidade() {
+	public Long getQuantidade() {
 		return quantidade;
 	}
 
-	public void setQuantidade(long quantidade) {
+	public void setQuantidade(Long quantidade) {
 		this.quantidade = quantidade;
 	}
 

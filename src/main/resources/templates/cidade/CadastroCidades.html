@@ -8,14 +8,12 @@
 	<title>Cadastro de cidade</title>
 </head>
 
-<body>
 <section layout:fragment="conteudo" >
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1>
-					Cadastro de Cidades
-				</h1>
+				<h1  th:if="${ingrediente.nova}">Cadastro de Cidade</h1>
+    			<h1  th:unless="${ingrediente.nova}" th:text="|Edição da cidade ${cidade.nome}|">Edição de Cidade</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
@@ -29,11 +27,13 @@
 	
 	<div class="container-fluid">
 
-		<form method="POST" th:object="${cidade}" th:action="@{/cidades/novo}">
+		<form method="POST" th:object="${cidade}" th:action="${cidade.nova} ? @{/cidades/novo} : @{/cidades/{codigo}(codigo=${cidade.codigo})}">
 		
 			<agroWeb:message/>
 			
 			<div class="row">	
+			
+				<input type="hidden" th:field="*{codigo}"/>			
 				
 				<div class="form-group  col-sm-4 bw-required" agroWeb:classforerror="estado">
 					<label for="estado" class="control-label">Estado</label>
@@ -56,7 +56,5 @@
 		
 		</form>
 	</div>
-	
 </section>	
-</body>	
 </html>	

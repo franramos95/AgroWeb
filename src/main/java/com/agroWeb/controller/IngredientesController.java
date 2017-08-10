@@ -71,7 +71,6 @@ public class IngredientesController {
 		PageWrapper<Ingrediente> pageWrapper = new PageWrapper<>(ingredientesRepository.filtrar(filter, pageable),
 				httpServletRequest);
 		mv.addObject("pagina", pageWrapper);
-		;
 		return mv;
 	}
 

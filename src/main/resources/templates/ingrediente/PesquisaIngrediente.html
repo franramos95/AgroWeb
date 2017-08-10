@@ -76,9 +76,8 @@
 							<td class="text-right" th:text="|R$ ${ingrediente.valor}|"></td>
 							<td th:text="${ingrediente.quantidade}"></td>
 							<td class="text-center">
-								<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar"
-								th:href="@{/ingredientes/{id}(id=${ingrediente.id})}"> <i
-									class="glyphicon glyphicon-pencil"></i>
+								<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+									th:href="@{/ingredientes/{id}(id=${ingrediente.id})}"> <i class="glyphicon glyphicon-pencil"></i>
 								</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir"
 									data:url="@{/ingredientes/{id}(id=${ingrediente.id})}"
 									data:objeto="${ingrediente.nome}"> <i class="glyphicon glyphicon-remove"></i>
