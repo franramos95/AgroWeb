@@ -1,41 +1,40 @@
 AgroWeb.TabelaItens = (function(){
 	
-	fuction TabelaItens(autocomplete){
+	function TabelaItens(autocomplete){
 		this.autocomplete = autocomplete;
 		this.tabelaIngredientesContainer = $('.js-tabela-ingredientes-container');
-		this.emitter = $({});
-		this.on = this.emitter.on.bind(this.emitter);
 	}
 	
 	TabelaItens.prototype.iniciar = function() {
-		  this.autocomplete.on('item-selecionado', onItemSelecionado.bind(this));
-		  
-		  bindQuantidade.call(this);
-		  bindTabelaItem.call(this);
+		this.autocomplete.on('item-selecionado', onItemSelecionado.bind(this));
 	}
 	
-	function onItemSelecionado(evento, item) {
-		  var resposta = $.ajax({
-		   url: 'item',
-		   method: 'POST',
-		   data: {
-		    idIngrediente: ingrediente.id
-		   }
-		  });
-		  
-		  resposta.done(onItemAtualizadoNoServidor.bind(this));
-		 }
-	
-	function onItemAtualizadoNoServidor(html) {
-		this.tabelaIngredientesContainer.html(html);
+	function onItemSelecionado(evento, item){
+		var resposta = $.ajax({
+			url: 'item',
+			method: 'POST',
+			data: {
+				idIngrediente: item.id
+			}
+		});
 		
-		 bindQuantidade.call(this);
-		 
-		 var tabelaItem = bindTabelaItem.call(this);
-		 this.emitter.trigger('tabela-itens-atualizada');
+		resposta.done(onItemAdicionadoNoServidor.bind(this));
 	}
 	
-	function onDoubleClick(evento) {
-		  $(this).toggleClass('solicitando-exclusao');
-	}	
+	function onItemAdicionadoNoServidor(html){
+		this.tabelaIngredientesContainer.html(html);
+	}
+	
+	return TabelaItens;
+	
 }());
+
+$(function() {
+	
+	var autocomplete = new AgroWeb.Autocomplete();
+	autocomplete.iniciar();
+	
+	var tabelaItens = new AgroWeb.TabelaItens(autocomplete);
+	tabelaItens.iniciar();
+	
+});

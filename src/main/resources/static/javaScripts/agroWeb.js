@@ -89,6 +89,16 @@ AgroWeb.Security = (function() {
 	
 }());
 
+numeral.language('pt-br');
+
+AgroWeb.formatarMoeda = function(valor) {
+	return numeral(valor).format('0,0.00');
+}
+
+AgroWeb.recuperarValor = function(valorFormatado) {
+	return numeral().unformat(valorFormatado);
+}
+
 $(function() {
 	var maskMoney = new AgroWeb.MaskMoney(); 
 	maskMoney.enable();

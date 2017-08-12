@@ -71,6 +71,10 @@ public class ItemDieta {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
+	
+	public BigDecimal getValorTotal(){
+		return valorUnitario.multiply(new BigDecimal(quantidade));
+	}
 
 	@Override
 	public int hashCode() {

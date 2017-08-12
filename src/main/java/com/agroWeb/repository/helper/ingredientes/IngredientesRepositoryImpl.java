@@ -42,6 +42,15 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
 
+	@Override
+	public List<IngredienteDTO> porNome(String nome) {
+		String jpql = "select new com.agroWeb.dto.IngredienteDTO(id, nome, valor) "
+				+ "from Ingrediente where lower(nome) like :nome";
+		List<IngredienteDTO> ingredientesFiltrados = manager.createQuery(jpql, IngredienteDTO.class)
+				.setParameter("nome", "%" + nome.toLowerCase() + "%").getResultList();
+		return ingredientesFiltrados;
+	}
+
 	private void adicionarFiltro(IngredienteFilter filter, Criteria criteria) {
 		if (filter != null) {
 			if (!StringUtils.isEmpty(filter.getNome())) {
@@ -50,20 +59,11 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 			if (filter.getValor() != null) {
 				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
-			if (filter.getQuantidade()!= null){
+			if (filter.getQuantidade() != null) {
 				criteria.add(Restrictions.eq("quantidade", filter.getQuantidade()));
 			}
 		}
 
-	}
-
-	@Override
-	public List<IngredienteDTO> porNome(String nome) {
-		String jpql = "select new com.agroWeb.dto.IngredienteDTO(id, nome, valor) " + "fro"
-				+ "m Ingrediente where lower(nome) like :nome";
-		List<IngredienteDTO> ingredientesFiltrados = manager.createQuery(jpql, IngredienteDTO.class)
-				.setParameter("nome", "%" + nome.toLowerCase() + "%").getResultList();
-		return ingredientesFiltrados;
 	}
 
 	private Long total(IngredienteFilter filter) {

@@ -45,6 +45,7 @@ import com.agroWeb.controller.converter.EspecieConverter;
 import com.agroWeb.controller.converter.EstadoConverter;
 import com.agroWeb.controller.converter.IngredienteConverter;
 import com.agroWeb.controller.converter.VacinaConvert;
+import com.agroWeb.session.TabelaItensDieta;
 import com.agroWeb.thymeleaf.AgroWebDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -52,7 +53,7 @@ import com.google.common.cache.CacheBuilder;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses = { UsuariosController.class })
+@ComponentScan(basePackageClasses = { UsuariosController.class, TabelaItensDieta.class })
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching

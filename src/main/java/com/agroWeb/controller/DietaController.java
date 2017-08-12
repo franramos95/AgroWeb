@@ -15,14 +15,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agroWeb.controller.page.PageWrapper;
 import com.agroWeb.model.Dieta;
+import com.agroWeb.model.Ingrediente;
 import com.agroWeb.repository.DietaRepository;
 import com.agroWeb.repository.IngredientesRepository;
 import com.agroWeb.repository.filter.DietaFilter;
 import com.agroWeb.service.CadastroDietaService;
 import com.agroWeb.service.exception.NomeDietaJaCadastradoException;
+import com.agroWeb.session.TabelaItensDieta;
 
 @Controller
-@RequestMapping("/dieta")
+@RequestMapping("/dietas")
 public class DietaController {
 	
 	@Autowired
@@ -33,6 +35,9 @@ public class DietaController {
 	
 	@Autowired
 	private IngredientesRepository ingredientesRepository;
+	
+	@Autowired
+	private TabelaItensDieta tabelaItensDieta;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo(Dieta dieta) {
@@ -72,6 +77,16 @@ public class DietaController {
 
 		return mv;
 
+	}
+	
+	@PostMapping("/item")
+	public ModelAndView adicionarItem(Long idIngrediente) {
+		
+		Ingrediente ingrediente = ingredientesRepository.findOne(idIngrediente);
+		tabelaItensDieta.adicionarItem(ingrediente, 1);
+		ModelAndView mv = new ModelAndView("dieta/TabelaIngredientesDieta");
+		mv.addObject("itens", tabelaItensDieta.getItens());
+		return mv;
 	}
 	
 }

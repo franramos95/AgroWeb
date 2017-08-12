@@ -74,11 +74,6 @@ public class IngredientesController {
 		return mv;
 	}
 
-	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody List<IngredienteDTO> pesquisar(String nome) {
-		return ingredientesRepository.porNome(nome);
-	}
-
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("id") Long id) {
 		try {
@@ -96,5 +91,10 @@ public class IngredientesController {
 		mv.addObject(ingrediente);
 		return mv;
 	}
+	
+	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<IngredienteDTO> pesquisar(String nome) {
+		return ingredientesRepository.porNome(nome);
+	}	
 
 }

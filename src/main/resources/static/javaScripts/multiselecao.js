@@ -1,7 +1,7 @@
-Brewer = Brewer || {};
+AgroWeb = AgroWeb || {};
 
 
-Brewer.MultiSelecao = (function(){
+AgroWeb.MultiSelecao = (function(){
 	
 	function MultiSelecao() {
 		this.statusBtn = $('.js-satatus-btn');
@@ -62,6 +62,6 @@ Brewer.MultiSelecao = (function(){
 }());
 
 $(function() {
-	var multiselecao = new Brewer.MultiSelecao();
+	var multiselecao = new AgroWeb.MultiSelecao();
 	multiselecao.iniciar();
 });
