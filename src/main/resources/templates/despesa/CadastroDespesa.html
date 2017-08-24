@@ -5,20 +5,20 @@
 	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
 	layout:decorate="~{layout/LayoutPadrao}">
 <head>
-       <title>Cadastro de Ingredientes</title>
-</head>	
+	  <title>Cadastro de Despesa</title>
+</head>
 
 <section layout:fragment="conteudo">
 	
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1  th:if="${ingrediente.nova}">Cadastro de Ingrediente</h1>
-    			<h1  th:unless="${ingrediente.nova}" th:text="|Edição da ${ingrediente.nome}|">Edição de Ingrediente</h1>
+				<h1  th:if="${despesa.nova}">Cadastro de Despesa</h1>
+    			<h1  th:unless="${despesa.nova}" th:text="|Edição da ${despesa.nome}|">Edição de Despesa</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
-					<a class="btn bt-default" th:href="@{/ingredientes}">
+					<a class="btn bt-default" th:href="@{/despesas}">
 						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
 					</a>
 				</div>
@@ -28,38 +28,48 @@
 	
 	<div class="container-fluid">
 		
-		<form method="POST" th:object="${ingrediente}"
-			th:action="${ingrediente.nova} ? @{/ingredientes/novo} : @{/ingredientes/{id}(id=${ingrediente.id})}">
+		<form method="POST" th:object="${despesa}"
+			th:action="${despesa.nova} ? @{/despesas/novo} : @{/despesas/{id}(id=${despesa.id})}">
 		
 			<agroWeb:message/>
 			
 			<div class="row">
 			
 			<input type="hidden" th:field="*{id}"/>
-			<input type="hidden" th:field="*{despesa.id}"/>
 			
-				<div class="form-group  col-sm-12  bw-required" agroWeb:classforerror="nome">
+				<div class="form-group col-sm-6 bw-required" agroWeb:classforerror="nome">
 					<label for="nome" class="control-label">Nome</label>
 					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
 				</div>
 				
-			</div>
+					<div class="col-lg-6 col-sm-6 form-group bw-required">
+					<label for="TipoDespesa" class="control-label">Tipo</label>
+					<div>
+						<th:block th:each="tipoDespesa : ${tipoDespesas}">
+							<div class="radio radio-inline">
+								<input th:id="|id_${tipoDespesa}|" type="radio" th:value="${tipoDespesa}" name="tipoDespesa" th:field="*{tipoDespesa}"/>
+								<label th:for="|id_${tipoDespesa}|" th:text="${tipoDespesa.tipo}"></label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</div>	
 			
 			<div class="row">
-
+			
+				
 				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="valor">
-					<label for="preco" class="control-label">Valor</label>
+					<label for="valor" class="control-label">Valor</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
 						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
 					</div>	
-				</div>		
+				</div>	
 				
-				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="*{quantidade}">
-					<label for="quantidade" class="control-label">Quantidade em estoque</label>
-					<input id="quantidade" type="text" class="form-control js-plain" th:field="*{quantidade}"/>
-				</div>		
-				
+				<div class="form-group col-sm-4">
+					<label class="control-label" for="data">Data</label>
+					<input type="text" class="form-control js-date" id="data" th:field="*{data}" autocomplete="off"/>
+				</div>
 			</div>
 			
 			<div class="form-group">

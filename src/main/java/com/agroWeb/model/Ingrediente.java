@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -39,6 +41,10 @@ public class Ingrediente implements Serializable {
 	@Max(value = 99999, message = "O valor máximo dever ser de até 99.999")
 	private Long quantidade;
 
+	@OneToOne
+	@JoinColumn(name = "id_despesa")
+	private Despesa despesa;
+
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +75,14 @@ public class Ingrediente implements Serializable {
 
 	public void setQuantidade(Long quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public Despesa getDespesa() {
+		return despesa;
+	}
+
+	public void setDespesa(Despesa despesa) {
+		this.despesa = despesa;
 	}
 
 	public boolean isNova() {

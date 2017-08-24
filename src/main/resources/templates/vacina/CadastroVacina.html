@@ -1,72 +1,88 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th ="http://thymeleaf.org"
+	xmlns:th="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
-	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
 	layout:decorate="~{layout/LayoutPadrao}">
 <head>
-	<title>Cadastro de Vacina</title>
+<title>Cadastro de Vacina</title>
 </head>
 
-<section layout:fragment="conteudo" >
+<section layout:fragment="conteudo">
 	<div class="page-header">
 		<div class="row">
 			<div class="col-xs-10">
-				<h1  th:if="${vacina.nova}">Cadastro de Vacina</h1>
-    			<h1  th:unless="${vacina.nova}" th:text="|Edição da ${vacina.nome}|">Edição de Vacina</h1>
+				<h1 th:if="${vacina.nova}">Cadastro de Vacina</h1>
+				<h1 th:unless="${vacina.nova}" th:text="|Edição da ${vacina.nome}|">Edição
+					de Vacina</h1>
 			</div>
 			<div class="col-xs-2">
 				<div class="aw-page-header-controls">
-					<a class="btn btn-default" th:href="@{/vacinas}">
-						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+					<a class="btn btn-default" th:href="@{/vacinas}"> <i
+						class="glyphicon glyphicon-plus-sign"></i> <span
+						class="hidden-xs  hidden-sm">Pesquisa</span>
 					</a>
 				</div>
-			</div>			
+			</div>
 		</div>
 	</div>
-	
+
 	<div class="container-fluid">
 
-		<form method="POST" th:object="${vacina}" 
+		<form method="POST" th:object="${vacina}"
 			th:action="${vacina.nova} ? @{/vacinas/novo} : @{/vacinas/{id}(id=${vacina.id})}">
-		
-			<agroWeb:message/>
-			
-			<input type="hidden" th:field="*{id}"/>
-			
-			<div class="row">	
-				
-				<div class="form-group  col-sm-12  bw-required" agroWeb:classforerror="nome">
-					<label for="nome" class="control-label">Nome</label>
-					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
-				</div>	
-				
+
+			<agroWeb:message />
+
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{despesa.id}" />
+
+			<div class="row">
+
+				<div class="form-group  col-sm-12  bw-required"
+					agroWeb:classforerror="nome">
+					<label for="nome" class="control-label">Nome</label> <input
+						id="nome" type="text" class="form-control" autofocus="autofocus"
+						th:field="*{nome}" />
+				</div>
+
 			</div>
 			<div class="row">
-				
-				<div class="form-group  col-sm-4  bw-required" agroWeb:classforerror="lote">
-					<label for="nome" class="control-label">Lote</label>
-					<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{lote}"/>
-				</div>		
-				
-				<div class="form-group  col-sm-4">
-						<label for="data" class="control-label">Data de aquisição</label>
-					    <input type="text" class="form-control  js-date" id="data" th:field="*{data}" autocomplete="off" />
+
+				<div class="form-group  col-sm-3  bw-required"
+					agroWeb:classforerror="lote">
+					<label for="lote" class="control-label">Lote</label> <input
+						id="lote" type="text" class="form-control" autofocus="autofocus"
+						th:field="*{lote}" />
 				</div>
-				
-				<div class="form-group  col-sm-4">
-						<label for="vencimento" class="control-label">Data de vencimento</label>
-					    <input type="text" class="form-control  js-date" id="vencimento" th:field="*{vencimento}" autocomplete="off" />
-					</div>		
+
+					<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="valor" class="control-label">Valor</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
+					</div>	
+					</div>
+				<div class="form-group  col-sm-3">
+					<label for="data" class="control-label">Data de aquisição</label> <input
+						type="text" class="form-control  js-date" id="data"
+						th:field="*{data}" autocomplete="off" />
+				</div>
+
+				<div class="form-group  col-sm-3">
+					<label for="vencimento" class="control-label">Data de
+						vencimento</label> <input type="text" class="form-control  js-date"
+						id="vencimento" th:field="*{vencimento}" autocomplete="off" />
+				</div>
 			</div>
-				
-			
+
+
 			<div class="form-group">
 				<button class="btn  btn-primary" type="submit">Salvar</button>
-			</div>					
-		
+			</div>
+
 		</form>
 	</div>
-	
-</section>	
-</html>	
+
+</section>
+</html>

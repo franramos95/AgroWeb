@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
+	xmlns:data="http://www.thymeleag.org/extras/data"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Pesquisa de Despesa</title>
+</head>
+
+<body>
+		<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Pesquisa de Despesa</h1>
+					</div>
+
+					<div class="col-xs-2" ><!-- sec:authorize-url="/despesas/novo" -->
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/despesas/novo}">
+								<i class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Nova Despesa</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="container-fluid">
+			<form method="GET" th:object="${despesaFilter}">
+				<div class="row">
+					<div class="form-group  col-sm-6">
+						<label class="control-label" for="nome">Nome</label> <input
+							type="text" class="form-control" id="nome" autofocus="autofocus"
+							th:field="*{nome}" />
+					</div>
+					
+					<div class="col-lg-6 col-sm-6 form-group bw-required">
+					<label for="TipoDespesa" class="control-label">Tipo</label>
+					<div>
+						<th:block th:each="tipoDespesa : ${tipoDespesas}">
+							<div class="radio radio-inline">
+								<input th:id="|id_${tipoDespesa}|" type="radio" th:value="${tipoDespesa}" name="tipoDespesa" th:field="*{tipoDespesa}"/>
+								<label th:for="|id_${tipoDespesa}|" th:text="${tipoDespesa.tipo}"></label>
+							</div>
+						</th:block>
+					</div>
+				</div>
+				</div>
+				
+			<div class="row">
+				<div class="form-group  col-sm-4">
+						<label class="control-label" for="valor">Valor</label> <input
+							type="text" class="form-control" id="valor" autofocus="autofocus"
+							th:field="*{valor}" />
+			</div>	
+					
+				
+				<div class="form-group col-sm-4">
+					<label for="data">Data</label>
+					<div class="form-inline">
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="data"
+							th:field="*{desde}" autocomplete="off"/>
+						<label for="data" class="aw-form-label-between">até</label>
+						<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="data"
+							th:field="*{ate}" autocomplete="off"/>
+					</div>
+				</div>
+			</div>
+		
+		<button type="submit" class="btn  btn-primary">Pesquisar</button>
+</form>
+
+<div class="table-responsive bw-table-simples">
+	<table class="table  table-hover">
+		<thead>
+			<tr>
+				<td>Nome</td>
+				<td>Tipo</td>
+				<td>Valor</td>
+				<td>Data</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="despesa : ${pagina.content}">
+				<td th:text="${despesa.nome}"></td>
+				<td th:text="${despesa.tipoDespesa.tipo}"></td>
+				<td th:text="|R$ ${despesa.valor}|"></td>
+				<td th:text="${despesa.data}"></td>
+				<td class="text-center">
+								<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+									th:href="@{/despesas/{id}(id=${despesa.id})}"> <i class="glyphicon glyphicon-pencil"></i>
+								</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir"
+									data:url="@{/despesas/{id}(id=${despesa.id})}"
+									data:objeto="${despesa.nome}"> <i class="glyphicon glyphicon-remove"></i>
+							</a></td>
+			</tr>
+				
+			<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhuma despesa encontrado</td>
+					</tr>				
+		</tbody>
+	</table>
+</div>
+
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+				<nav>
+					<ul class="pagination pagination-sm"
+						th:with="paginaAtual=${pagina.atual}">
+						<li th:class="${pagina.primeira} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual - 1)}"
+							th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a></li>
+						<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}"
+							th:with="numeroPagina=${p-1}">
+							<li th:class="${paginaAtual == numeroPagina} ? active"><a
+								th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a></li>
+						</th:block>
+
+						<li th:class="${pagina.ultima} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual + 1)}"
+							th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+		
+</section>
+</body>
+</html>

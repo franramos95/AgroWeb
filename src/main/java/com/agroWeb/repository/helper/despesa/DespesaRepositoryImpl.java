@@ -1,4 +1,6 @@
-package com.agroWeb.repository.helper.vacina;
+package com.agroWeb.repository.helper.despesa;
+
+import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,11 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.agroWeb.model.Vacina;
-import com.agroWeb.repository.filter.VacinaFilter;
+import com.agroWeb.model.Despesa;
+import com.agroWeb.repository.filter.DespesaFilter;
 import com.agroWeb.repository.paginacao.PaginacaoUtil;
 
-public class VacinaRepositoryImpl implements VacinaRepositoryQueries {
+public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
@@ -30,8 +32,8 @@ public class VacinaRepositoryImpl implements VacinaRepositoryQueries {
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Vacina> filtrar(VacinaFilter filter, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Vacina.class);
+	public Page<Despesa> filtrar(DespesaFilter filter, Pageable pageable) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Despesa.class);
 
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filter, criteria);
@@ -39,33 +41,36 @@ public class VacinaRepositoryImpl implements VacinaRepositoryQueries {
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
 
-	private void adicionarFiltro(VacinaFilter filter, Criteria criteria) {
+	
+	public void adicionarFiltro(DespesaFilter filter, Criteria criteria) {
 		if (filter != null) {
 			if (!StringUtils.isEmpty(filter.getNome())) {
 				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 			}
-			if (!StringUtils.isEmpty(filter.getLote())) {
-				criteria.add(Restrictions.ilike("lote", filter.getLote(), MatchMode.ANYWHERE));
-			}
-			if (filter.getData() != null) {
-				criteria.add(Restrictions.eq("data", filter.getData()));
-			}
-			if (filter.getVencimento() != null) {
-				criteria.add(Restrictions.eq("vencimento", filter.getVencimento()));
+			if (!StringUtils.isEmpty(filter.getTipoDespesa())) {
+				criteria.add(Restrictions.eq("tipoDespesa", filter.getTipoDespesa()));
 			}
 			if (filter.getValor() != null) {
 				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
+			if (filter.getDesde() != null) {
+				LocalDate desde = LocalDate.of(filter.getDesde().getYear(), filter.getDesde().getMonth(), filter.getDesde().getDayOfMonth());
+				//LocalDateTime desde = LocalDateTime.of(filter.getDesde(), LocalTime.of(0, 0));
+				criteria.add(Restrictions.ge("data", desde));
+			}
+			if (filter.getAte() != null) {
+				LocalDate ate = LocalDate.of(filter.getAte().getYear(), filter.getAte().getMonth(), filter.getAte().getDayOfMonth());
+				//LocalDate ate = LocalDate.from(filter.getAte());
+				//LocalDateTime ate = LocalDateTime.of(filter.getAte(), LocalTime.of(23, 59));
+				criteria.add(Restrictions.le("data", ate));
+			}
 		}
-
 	}
 
-	private Long total(VacinaFilter filter) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Vacina.class);
+	private Long total(DespesaFilter filter) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Despesa.class);
 		adicionarFiltro(filter, criteria);
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
-
 	}
-
 }
