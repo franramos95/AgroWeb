@@ -2,6 +2,7 @@ package com.agroWeb.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +46,8 @@ public class Ingrediente implements Serializable {
 	@JoinColumn(name = "id_despesa")
 	private Despesa despesa;
 
+	private LocalDate vencimento;
+
 	public Long getId() {
 		return id;
 	}
@@ -83,6 +86,14 @@ public class Ingrediente implements Serializable {
 
 	public void setDespesa(Despesa despesa) {
 		this.despesa = despesa;
+	}
+
+	public LocalDate getVencimento() {
+		return vencimento;
+	}
+
+	public void setVencimento(LocalDate vencimento) {
+		this.vencimento = vencimento;
 	}
 
 	public boolean isNova() {

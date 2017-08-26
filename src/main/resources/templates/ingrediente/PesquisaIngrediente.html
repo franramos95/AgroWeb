@@ -53,6 +53,12 @@
 							type="text" class="form-control" id="quantidade"
 							autofocus="autofocus" th:field="*{quantidade}" />
 					</div>
+					
+					<div class="form-group  col-sm-4">
+					<label for="vencimento" class="control-label">Data de
+						vencimento</label> <input type="text" class="form-control  js-date"
+						id="vencimento" th:field="*{vencimento}" autocomplete="off" />
+				</div>
 				</div>
 
 				<button type="submit" class="btn  btn-primary">Pesquisar</button>
@@ -62,19 +68,20 @@
 				<table class="table  table-hover">
 					<thead>
 						<tr>
-							<td class="table-cervejas-col-nome"><agroWeb:order
+							<td class="table-ingrediente-col-nome"><agroWeb:order
 									page="${pagina}" field="nome" text="Nome"></agroWeb:order></td>
-							<td class="table-cervejas-col-valor"><agroWeb:order
+							<td class="table-ingrediente-col-valor"><agroWeb:order
 									page="${pagina}" field="valor" text="Valor"></agroWeb:order></td>
-							<td class="table-cervejas-col-valor">Quantidade</td>
-							<td class="table-clientes-col-acoes"></td>
-						</tr>
+							<td class="table-ingrediente-col-quantidade">Quantidade</td>
+							<td class="table-ingrediente-col-vencimento">Vencimento</td>
+					</tr>
 					</thead>
 					<tbody>
 						<tr th:each="ingrediente : ${pagina.content}">
 							<td th:text="${ingrediente.nome}"></td>
 							<td class="text-right" th:text="|R$ ${ingrediente.valor}|"></td>
 							<td th:text="${ingrediente.quantidade}"></td>
+							<td th:text="${ingrediente.vencimento}"></td>
 							<td class="text-center">
 								<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
 									th:href="@{/ingredientes/{id}(id=${ingrediente.id})}"> <i class="glyphicon glyphicon-pencil"></i>

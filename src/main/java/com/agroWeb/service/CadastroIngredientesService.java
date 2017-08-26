@@ -73,8 +73,8 @@ public class CadastroIngredientesService {
 	public void excluir(Long id) {
 		try {
 			Ingrediente ingrediente = ingredientesRepository.findOne(id);
-			cadastroDespesaService.excluir(ingrediente.getDespesa().getId());
 			ingredientesRepository.delete(id);
+			cadastroDespesaService.excluir(ingrediente.getDespesa().getId());
 			ingredientesRepository.flush();
 		} catch (PersistenceException e) {
 			throw new ImpossivelExcluirEntidadeException("Impossível excluir o ingrediente");

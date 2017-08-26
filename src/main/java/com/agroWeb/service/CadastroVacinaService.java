@@ -3,6 +3,8 @@ package com.agroWeb.service;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import com.agroWeb.model.TipoDespesa;
 import com.agroWeb.model.Vacina;
 import com.agroWeb.repository.DespesaRepository;
 import com.agroWeb.repository.VacinaRepository;
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 import com.agroWeb.service.exception.NomeVacinaJaCadastradaException;
 
 
@@ -70,11 +73,11 @@ public class CadastroVacinaService {
 	public void excluir(Long id) {
 		try {
 			Vacina vacina = vacinaRepository.findOne(id);
-			cadastroDespesaService.excluir(vacina.getDespesa().getId());
 			vacinaRepository.delete(id);
+			cadastroDespesaService.excluir(vacina.getDespesa().getId());
 			vacinaRepository.flush();
-		}catch (Exception e){
-			throw e;
+		}catch (PersistenceException e) {
+			throw new ImpossivelExcluirEntidadeException("Impossível excluir a vacina");
 		}
 		
 	}
