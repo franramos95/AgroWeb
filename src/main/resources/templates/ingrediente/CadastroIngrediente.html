@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th ="http://thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
-	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"		
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"	
+	xmlns:data="http://www.thymeleag.org/extras/data"
 	layout:decorate="~{layout/LayoutPadrao}">
 <head>
        <title>Cadastro de Ingredientes</title>
@@ -47,20 +48,28 @@
 			
 			<div class="row">
 
-				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="valor">
-					<label for="preco" class="control-label">Valor</label>
+				<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="valorUnitario" class="control-label">Valor Unitario</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
-						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
+						<input id="valorUnitario" type="text" class="form-control js-decimal  js-valor-unitario" th:field="*{valorUnitario}" data:valor="${valorUnitario}"/>
 					</div>	
-				</div>		
-				
-				<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="*{quantidade}">
+				</div>
+							
+				<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="*{quantidade}">
 					<label for="quantidade" class="control-label">Quantidade em estoque</label>
-					<input id="quantidade" type="text" class="form-control js-plain" th:field="*{quantidade}"/>
+					<input id="quantidade" type="text" class="form-control js-plain  js-quantidade" th:field="*{quantidade}" data:valor="${quantidade}"/>
 				</div>		
 				
-					<div class="form-group  col-sm-4">
+				<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="valor" class="control-label">Valor Total</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input disabled id="valor" type="text" class="form-control js-decimal  js-valor-total" th:field="*{valor}"/>
+					</div>	
+				</div>	
+				
+					<div class="form-group  col-sm-3">
 					<label for="vencimento" class="control-label">Data de
 						vencimento</label> <input type="text" class="form-control  js-date"
 						id="vencimento" th:field="*{vencimento}" autocomplete="off" />
@@ -73,4 +82,7 @@
 		</form>
 	</div>
 </section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javaScripts/ingrediente.valor-total.js}"></script>
+</th:block>
 </html>

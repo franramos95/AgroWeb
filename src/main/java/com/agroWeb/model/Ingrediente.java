@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,7 +35,7 @@ public class Ingrediente implements Serializable {
 
 	@NotNull(message = "O valor é obrigatório")
 	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0")
-	@DecimalMax(value = "999999.99", message = "O alor maximo deve ser 999.999,99")
+	@DecimalMax(value = "999999.99", message = "O valor maximo deve ser 999.999,99")
 	private BigDecimal valor;
 
 	@NotNull(message = "Quantidade é obrigatória")
@@ -47,6 +48,12 @@ public class Ingrediente implements Serializable {
 	private Despesa despesa;
 
 	private LocalDate vencimento;
+
+	@NotNull(message = "O valor unitario é obrigatório")
+	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0")
+	@DecimalMax(value = "999999.99", message = "O valor maximo deve ser 999.999,99")
+	@Column(name = "valor_unitario")
+	private BigDecimal valorUnitario;
 
 	public Long getId() {
 		return id;
@@ -94,6 +101,14 @@ public class Ingrediente implements Serializable {
 
 	public void setVencimento(LocalDate vencimento) {
 		this.vencimento = vencimento;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
 	}
 
 	public boolean isNova() {
