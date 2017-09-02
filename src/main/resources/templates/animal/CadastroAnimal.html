@@ -13,29 +13,33 @@
 
 <body>
 	<section layout:fragment="conteudo">
-		<div class="page-header">
-			<div class="row">
-				<div class="col-xs-10">
-					<h1>Cadastro de Animal</h1>
-				</div>
-				<div class="col-xs-2">
-					<div class="aw-page-header-controls">
-						<a class="btn btn-default" th:href="@{/animal}"> <i
-							class="glyphicon glyphicon-plus-sign"></i> <span
-							class="hidden-xs  hidden-sm">Pesquisa</span>
-						</a>
-					</div>
+<div class="page-header">
+		<div class="row">
+			<div class="col-xs-10">
+				<h1  th:if="${animal.nova}">Cadastro de Animal</h1>
+    			<h1  th:unless="${animal.nova}" th:text="|Edição da ${animal.nome}|">Edição de Animal</h1>
+			</div>
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn bt-default" th:href="@{/animal}">
+						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+					</a>
 				</div>
 			</div>
 		</div>
+	</div>
+	
 
 		<div class="container-fluid">
 
-			<form method="POST" th:object="${animal}" th:action="@{/animal/novo}">
-
-				<agroWeb:message />
-
+			<form method="POST" th:object="${animal}"
+			th:action="${animal.nova} ? @{/animal/novo} : @{/animal/{id}(id=${animal.id})}">
+		
+			<agroWeb:message/>
+		
 				<div class="row">
+				<input type="hidden" th:field="*{id}"/>
+				
 					<div class="form-group  col-sm-6  bw-required">
 						<label for="idBrinco" class="control-label">Id Brinco</label> 
 						<input id="idBrinco" type="text" class="form-control" autofocus="autofocus" th:field="*{idBrinco}" />

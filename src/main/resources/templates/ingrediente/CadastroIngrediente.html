@@ -48,7 +48,7 @@
 			
 			<div class="row">
 
-				<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="valor">
+				<div class="col-sm-3 form-group  bw-required" agroWeb:classforerror="valorUnitario">
 					<label for="valorUnitario" class="control-label">Valor Unitario</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
@@ -65,7 +65,7 @@
 					<label for="valor" class="control-label">Valor Total</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
-						<input disabled id="valor" type="text" class="form-control js-decimal  js-valor-total" th:field="*{valor}"/>
+						<input id="valor" type="text" class="form-control js-decimal  js-valor-total" th:field="*{valor}"/>
 					</div>	
 				</div>	
 				

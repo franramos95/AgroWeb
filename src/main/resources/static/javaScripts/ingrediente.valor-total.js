@@ -4,11 +4,8 @@ AgroWeb.IngredienteValorTotal = (function() {
 	
 	function IngredienteValorTotal() {
 		this.valorTotalInput = $('.js-valor-total');
-		this.valorUnitarioInput = $('.js-valor-unitario')
+		this.valorUnitarioInput = $('.js-valor-unitario');
 		this.quantidadeInput = $('.js-quantidade');	
-
-		this.valorUnitario = this.valorUnitarioInput.val();
-		this.valorQuantidade = this.quantidadeInput.val();
 	}
 	
 	IngredienteValorTotal.prototype.iniciar = function() {
@@ -19,11 +16,13 @@ AgroWeb.IngredienteValorTotal = (function() {
 	}
 	 
 	function onValoresAlterados(evento) {
+		
+		this.valorUnitario = this.valorUnitarioInput.val();
+		this.valorQuantidade = this.quantidadeInput.val();
 				
-		var valor = numeral(this.valorUnitario) * this.valorQuantidade;
-		console.log(numeral(this.valorUnitario));
-		console.log(this.valorQuantidade);
-		console.log(valor);
+		var valor = numeral(this.valorUnitario) * (this.valorQuantidade);
+		this.valor = AgroWeb.formatarMoeda(valor);
+		
 		this.valorTotalInput.val(valor);
 	}
 	

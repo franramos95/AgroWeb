@@ -2,6 +2,8 @@ package com.agroWeb.service;
 
 import java.util.Optional;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.agroWeb.model.Animal;
 import com.agroWeb.repository.AnimalRepository;
 import com.agroWeb.service.exception.IdBrincoJaCadastradoException;
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 
 @Service
 public class CadastroAnimalService {
@@ -26,5 +29,16 @@ public class CadastroAnimalService {
 		}
 
 		return animalRepository.saveAndFlush(animal);
+	}
+
+	@Transactional
+	public void excluir(Long id) {
+		try{
+			animalRepository.delete(id);
+			animalRepository.flush();
+		} catch (PersistenceException e){
+			throw new ImpossivelExcluirEntidadeException("Impossivel excluir o animal");
+		}
+		
 	}
 }
