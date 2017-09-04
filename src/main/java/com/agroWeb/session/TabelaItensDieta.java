@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -26,9 +27,7 @@ public class TabelaItensDieta {
 	}
 	
 	public void adicionarItem(Ingrediente ingrediente, Integer quantidade){
-		Optional<ItemDieta> itemDietaOptional = itens.stream()
-			.filter(i -> i.getIngrediente().equals(ingrediente))
-			.findAny();
+		Optional<ItemDieta> itemDietaOptional = buscarItemPorIngrediente(ingrediente);
 		
 		ItemDieta itemDieta = null;
 		if (itemDietaOptional.isPresent()){
@@ -38,7 +37,7 @@ public class TabelaItensDieta {
 			itemDieta = new ItemDieta();
 			itemDieta.setIngrediente(ingrediente);
 			itemDieta.setQuantidade(quantidade);
-			itemDieta.setValorUnitario(ingrediente.getValor());
+			itemDieta.setValorUnitario(ingrediente.getValorUnitario());
 			
 			itens.add(0,itemDieta);
 		}
@@ -52,5 +51,25 @@ public class TabelaItensDieta {
 	public List<ItemDieta> getItens() {
 		return itens;
 	}
+	
+	public void alterarQuantidadeItens(Ingrediente ingrediente, Integer quantidade){
+		ItemDieta itemDieta = buscarItemPorIngrediente(ingrediente).get();
+		itemDieta.setQuantidade(quantidade);
+		
+	}
+	
+	public void excluirItem(Ingrediente ingrediente) {
+		int indice = IntStream.range(0, itens.size())
+				.filter(i -> itens.get(i).getIngrediente().equals(ingrediente))
+				.findAny().getAsInt();
+		itens.remove(indice);
+	}
+	
+	private Optional<ItemDieta> buscarItemPorIngrediente(Ingrediente ingrediente) {
+		Optional<ItemDieta> itemDietaOptional = itens.stream()
+			.filter(i -> i.getIngrediente().equals(ingrediente))
+			.findAny();
+		return itemDietaOptional;
+	}	
 
 }

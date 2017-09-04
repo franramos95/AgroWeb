@@ -32,17 +32,17 @@
 
 		<div class="container-fluid">
 
-			<form method="POST" th:object="${dieta}" th:action="@{/dieta/novo}">
+			<form method="POST" th:object="${dieta}" th:action="@{/dietas/novo}">
 
-				<agroWeb:message />
+				<agroWeb:message/>
 
 				<div class="row">
-					<div class="form-group  col-sm-6  bw-required">
+					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
 						<label for="nome" class="control-label">Nome da dieta</label> 
 						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}" />
 					</div>
 
-					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
+					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="tipo">
 						<label for="tipo" class="control-label">Tipo</label> 
 						<input id="tipo" type="text" class="form-control" autofocus="autofocus" th:field="*{tipo}" />
 					</div>
@@ -60,10 +60,10 @@
 				<div class="bw-tabela-ingredientes  js-tabela-ingredientes-container">				
 			
 			
-				<!-- <div class="bw-tabela-cervejas__vazio">
-					<i class="glyphicon  glyphicon-shopping-cart"></i> 
-					<span>Você ainda não adicionou nenhuma cerveja.</span>
-				</div> -->
+					<div class="bw-tabela-ingredientes__vazio">
+						<i class="glyphicon  glyphicon-shopping-cart"></i> 
+						<span>Você ainda não adicionou nenhum ingrediente.</span>
+					</div> 
 				
 				</div>		
 				

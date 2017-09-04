@@ -152,9 +152,9 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	}
 	
 	@Bean
-	 public DomainClassConverter<?> domainClassConverter(){
-	  return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
-	 }
+	public DomainClassConverter<FormattingConversionService> domainClassConverter(){
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
+	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

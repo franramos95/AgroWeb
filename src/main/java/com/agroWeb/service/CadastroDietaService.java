@@ -21,7 +21,7 @@ public class CadastroDietaService {
 
 		Optional<Dieta> dietaOption = dietaRepository.findByNome(dieta.getNome());
 
-		if (dietaOption.isPresent()) {
+		if (dietaOption.isPresent() && dieta.isNovo()) {
 			throw new NomeDietaJaCadastradoException("Dieta já cadastrada");
 		}
 		return dietaRepository.saveAndFlush(dieta);

@@ -21,9 +21,7 @@ AgroWeb.IngredienteValorTotal = (function() {
 		this.valorQuantidade = this.quantidadeInput.val();
 				
 		var valor = numeral(this.valorUnitario) * (this.valorQuantidade);
-		this.valor = AgroWeb.formatarMoeda(valor);
-		
-		this.valorTotalInput.val(valor);
+		this.valorTotalInput.val(AgroWeb.formatarMoeda(valor));
 	}
 	
 	return IngredienteValorTotal;

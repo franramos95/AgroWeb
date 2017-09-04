@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,9 +26,6 @@ public class Dieta {
 
 	@NotBlank(message = "O tipo da dieta é obrigatória")
 	private String tipo;
-
-	@NotNull(message = "A quantidade é obrigatória")
-	private Long quantidade;
 
 	@OneToMany(mappedBy = "dieta", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ItemDieta> itens = new ArrayList<>();
@@ -58,20 +54,16 @@ public class Dieta {
 		this.tipo = tipo;
 	}
 
-	public Long getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Long quantidade) {
-		this.quantidade = quantidade;
-	}
-
 	public List<ItemDieta> getItens() {
 		return itens;
 	}
 
 	public void setItens(List<ItemDieta> itens) {
 		this.itens = itens;
+	}
+	
+	public boolean isNovo(){
+		return id == null;
 	}
 
 	@Override

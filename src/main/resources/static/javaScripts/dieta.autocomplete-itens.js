@@ -40,7 +40,7 @@ AgroWeb.Autocomplete = (function() {
 	}
 	
 	function template(nome, ingrediente){
-			ingrediente.valorFormatado = AgroWeb.formatarMoeda(ingrediente.valor);
+			ingrediente.valorFormatado = AgroWeb.formatarMoeda(ingrediente.valorUnitario);
 			return this.template(ingrediente);
 	}
 	
