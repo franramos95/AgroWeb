@@ -1,0 +1,2 @@
+ALTER TABLE vacina
+ADD valor DECIMAL(10,2) NOT NULL;

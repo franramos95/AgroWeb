@@ -1,7 +1,17 @@
+CREATE TABLE despesa (
+    id BIGINT(20) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	nome VARCHAR(20) NOT NULL,
+	tipo VARCHAR(20) NOT NULL,
+	valor DECIMAL(15,2) NOT NULL,
+	data DATETIME
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE vacina (
 	id BIGINT(20) PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(50) NOT NULL,
     lote VARCHAR(50) NOT NULL,
     data DATE,
-    vencimento DATE
+    vencimento DATE,
+    id_despesa BIGINT(20),
+    FOREIGN KEY (id_despesa) REFERENCES despesa(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

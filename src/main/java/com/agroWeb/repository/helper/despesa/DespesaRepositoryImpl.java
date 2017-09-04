@@ -1,6 +1,6 @@
-package com.agroWeb.repository.helper.ingredientes;
+package com.agroWeb.repository.helper.despesa;
 
-import java.util.List;
+import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,12 +17,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.agroWeb.dto.IngredienteDTO;
-import com.agroWeb.model.Ingrediente;
-import com.agroWeb.repository.filter.IngredienteFilter;
+import com.agroWeb.model.Despesa;
+import com.agroWeb.repository.filter.DespesaFilter;
 import com.agroWeb.repository.paginacao.PaginacaoUtil;
 
-public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries {
+public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager manager;
@@ -33,8 +32,8 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Ingrediente> filtrar(IngredienteFilter filter, Pageable pageable) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Ingrediente.class);
+	public Page<Despesa> filtrar(DespesaFilter filter, Pageable pageable) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Despesa.class);
 
 		paginacaoUtil.preparar(criteria, pageable);
 		adicionarFiltro(filter, criteria);
@@ -42,38 +41,36 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
 
-	@Override
-	public List<IngredienteDTO> porNome(String nome) {
-		String jpql = "select new com.agroWeb.dto.IngredienteDTO(id, nome, valor) "
-				+ "from Ingrediente where lower(nome) like :nome";
-		List<IngredienteDTO> ingredientesFiltrados = manager.createQuery(jpql, IngredienteDTO.class)
-				.setParameter("nome", "%" + nome.toLowerCase() + "%").getResultList();
-		return ingredientesFiltrados;
-	}
-
-	private void adicionarFiltro(IngredienteFilter filter, Criteria criteria) {
+	
+	public void adicionarFiltro(DespesaFilter filter, Criteria criteria) {
 		if (filter != null) {
 			if (!StringUtils.isEmpty(filter.getNome())) {
 				criteria.add(Restrictions.ilike("nome", filter.getNome(), MatchMode.ANYWHERE));
 			}
+			if (!StringUtils.isEmpty(filter.getTipoDespesa())) {
+				criteria.add(Restrictions.eq("tipoDespesa", filter.getTipoDespesa()));
+			}
 			if (filter.getValor() != null) {
 				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
-			if (filter.getQuantidade() != null) {
-				criteria.add(Restrictions.eq("quantidade", filter.getQuantidade()));
+			if (filter.getDesde() != null) {
+				LocalDate desde = LocalDate.of(filter.getDesde().getYear(), filter.getDesde().getMonth(), filter.getDesde().getDayOfMonth());
+				//LocalDateTime desde = LocalDateTime.of(filter.getDesde(), LocalTime.of(0, 0));
+				criteria.add(Restrictions.ge("data", desde));
 			}
-			if (filter.getVencimento() != null) {
-				criteria.add(Restrictions.eq("vencimento", filter.getVencimento()));
+			if (filter.getAte() != null) {
+				LocalDate ate = LocalDate.of(filter.getAte().getYear(), filter.getAte().getMonth(), filter.getAte().getDayOfMonth());
+				//LocalDate ate = LocalDate.from(filter.getAte());
+				//LocalDateTime ate = LocalDateTime.of(filter.getAte(), LocalTime.of(23, 59));
+				criteria.add(Restrictions.le("data", ate));
 			}
 		}
-
 	}
 
-	private Long total(IngredienteFilter filter) {
-		Criteria criteria = manager.unwrap(Session.class).createCriteria(Ingrediente.class);
+	private Long total(DespesaFilter filter) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Despesa.class);
 		adicionarFiltro(filter, criteria);
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
-
 	}
 }

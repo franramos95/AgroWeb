@@ -1,12 +1,15 @@
 package com.agroWeb.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -33,6 +36,13 @@ public class Vacina implements Serializable {
 
 	@NotNull(message = "O vencimento da vacina é obrigatória")
 	private LocalDate vencimento;
+
+	@OneToOne
+	@JoinColumn(name = "id_despesa")
+	private Despesa despesa;
+
+	@NotNull(message = "O valor da vacina é obrigatório")
+	private BigDecimal valor;
 
 	public Long getId() {
 		return id;
@@ -72,6 +82,22 @@ public class Vacina implements Serializable {
 
 	public void setVencimento(LocalDate vencimento) {
 		this.vencimento = vencimento;
+	}
+
+	public Despesa getDespesa() {
+		return despesa;
+	}
+
+	public void setDespesa(Despesa despesa) {
+		this.despesa = despesa;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
 	public boolean isNova() {

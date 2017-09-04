@@ -53,6 +53,9 @@ public class VacinaRepositoryImpl implements VacinaRepositoryQueries {
 			if (filter.getVencimento() != null) {
 				criteria.add(Restrictions.eq("vencimento", filter.getVencimento()));
 			}
+			if (filter.getValor() != null) {
+				criteria.add(Restrictions.eq("valor", filter.getValor()));
+			}
 		}
 
 	}
@@ -64,8 +67,5 @@ public class VacinaRepositoryImpl implements VacinaRepositoryQueries {
 		return (Long) criteria.uniqueResult();
 
 	}
-
-
-
 
 }

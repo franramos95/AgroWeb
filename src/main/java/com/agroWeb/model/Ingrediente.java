@@ -2,11 +2,15 @@ package com.agroWeb.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -31,13 +35,25 @@ public class Ingrediente implements Serializable {
 
 	@NotNull(message = "O valor é obrigatório")
 	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0")
-	@DecimalMax(value = "999999.99", message = "O alor maximo deve ser 999.999,99")
+	@DecimalMax(value = "999999.99", message = "O valor maximo deve ser 999.999,99")
 	private BigDecimal valor;
 
 	@NotNull(message = "Quantidade é obrigatória")
 	@Min(value = 1, message = "O valor minímo deve ser maior ou igual a 1")
 	@Max(value = 99999, message = "O valor máximo dever ser de até 99.999")
 	private Long quantidade;
+
+	@OneToOne
+	@JoinColumn(name = "id_despesa")
+	private Despesa despesa;
+
+	private LocalDate vencimento;
+
+	@NotNull(message = "O valor unitario é obrigatório")
+	@DecimalMin(value = "0.01", message = "O valor deve ser maior que 0")
+	@DecimalMax(value = "999999.99", message = "O valor maximo deve ser 999.999,99")
+	@Column(name = "valor_unitario")
+	private BigDecimal valorUnitario;
 
 	public Long getId() {
 		return id;
@@ -69,6 +85,30 @@ public class Ingrediente implements Serializable {
 
 	public void setQuantidade(Long quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	public Despesa getDespesa() {
+		return despesa;
+	}
+
+	public void setDespesa(Despesa despesa) {
+		this.despesa = despesa;
+	}
+
+	public LocalDate getVencimento() {
+		return vencimento;
+	}
+
+	public void setVencimento(LocalDate vencimento) {
+		this.vencimento = vencimento;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
 	}
 
 	public boolean isNova() {
