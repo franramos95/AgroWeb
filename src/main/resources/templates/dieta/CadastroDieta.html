@@ -17,11 +17,12 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-xs-10">
-					<h1>Cadastro de Dieta</h1>
+					<h1  th:if="${dieta.novo}">Cadastro de Dieta</h1>
+    			<h1  th:unless="${dieta.novo}" th:text="|Edição da ${dieta.nome}|">Edição de Dieta</h1>
 				</div>
 				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
-						<a class="btn btn-default" th:href="@{/dieta}"> <i
+						<a class="btn btn-default" th:href="@{/dietas}"> <i
 							class="glyphicon glyphicon-plus-sign"></i> <span
 							class="hidden-xs  hidden-sm">Pesquisa</span>
 						</a>
@@ -32,11 +33,16 @@
 
 		<div class="container-fluid">
 
-			<form method="POST" th:object="${dieta}" th:action="@{/dietas/novo}">
-
+			<form method="POST" th:object="${dieta}"
+				th:action="${dieta.novo} ? @{/dietas/novo} : @{/dietas/{id}(id=${dieta.id})}">
+				
 				<agroWeb:message/>
+				
 
 				<div class="row">
+				
+				<input type="hidden" th:field="*{id}"/>
+				
 					<div class="form-group  col-sm-6  bw-required" agroWeb:classforerror="nome">
 						<label for="nome" class="control-label">Nome da dieta</label> 
 						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}" />

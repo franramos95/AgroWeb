@@ -1,5 +1,7 @@
 package com.agroWeb.repository.helper.animal;
 
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -38,6 +40,12 @@ public class AnimalRepositoryImpl implements AnimalRepositoryQueries {
 
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
+	
+	@Override
+	public Long totalDeAnimais() {
+	 Optional<Long> optional = Optional.ofNullable(manager.createQuery("select count(*) from Animal", Long.class).getSingleResult());
+		return optional.orElse(0L);
+	}
 
 	private Long total(AnimalFilter filter) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Animal.class);
@@ -66,4 +74,6 @@ public class AnimalRepositoryImpl implements AnimalRepositoryQueries {
 
 		}
 	}
+
+
 }

@@ -1,6 +1,8 @@
 package com.agroWeb.repository.helper.despesa;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,6 +43,11 @@ public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
 
+	@Override
+	public BigDecimal totalDeDespesa() {
+		Optional<BigDecimal> optional =  Optional.ofNullable(manager.createQuery("select sum(valor) from Despesa", BigDecimal.class).getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
 	
 	public void adicionarFiltro(DespesaFilter filter, Criteria criteria) {
 		if (filter != null) {
@@ -73,4 +80,7 @@ public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 	}
+
+
+
 }

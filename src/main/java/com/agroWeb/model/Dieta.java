@@ -1,5 +1,6 @@
 package com.agroWeb.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "dieta")
-public class Dieta {
+public class Dieta implements Serializable {
+
+	private static final long serialVersionUID = 6212153225423196053L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,6 +68,12 @@ public class Dieta {
 	public boolean isNovo(){
 		return id == null;
 	}
+	
+	public void adicionarItens(List<ItemDieta> itens) {
+		
+		this.itens = itens;
+		this.itens.forEach(i -> i.setDieta(this));
+	}	
 
 	@Override
 	public int hashCode() {
@@ -90,5 +99,6 @@ public class Dieta {
 			return false;
 		return true;
 	}
+
 
 }

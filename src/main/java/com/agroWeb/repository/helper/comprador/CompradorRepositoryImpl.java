@@ -1,5 +1,7 @@
 package com.agroWeb.repository.helper.comprador;
 
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -42,6 +44,11 @@ public class CompradorRepositoryImpl implements CompradorRepositoryQueries  {
 		return new PageImpl<>(criteria.list(), pageable, total(filter));
 	}
 	
+	@Override
+	public Long totalDeCompradores() {
+		Optional<Long> optional =  Optional.ofNullable(manager.createQuery("select count(*) from Comprador", Long.class).getSingleResult());
+		return optional.orElse(0L);
+	}
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -72,5 +79,8 @@ public class CompradorRepositoryImpl implements CompradorRepositoryQueries  {
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 	}
+
+
+
 
 }

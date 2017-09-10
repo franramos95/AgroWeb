@@ -6,13 +6,17 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,6 +27,7 @@ import com.agroWeb.repository.DietaRepository;
 import com.agroWeb.repository.IngredientesRepository;
 import com.agroWeb.repository.filter.DietaFilter;
 import com.agroWeb.service.CadastroDietaService;
+import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
 import com.agroWeb.service.exception.NomeDietaJaCadastradoException;
 import com.agroWeb.session.TabelaItensDieta;
 
@@ -49,10 +54,10 @@ public class DietaController {
 		return mv;
 	}
 
-	@PostMapping("/novo")
+	@RequestMapping(value = { "/novo", "{\\d+}" }, method = RequestMethod.POST)
 	public ModelAndView salvar(@Valid Dieta dieta, BindingResult result, RedirectAttributes attributes) {
 
-		dieta.setItens(tabelaItensDieta.getItens());
+		dieta.adicionarItens(tabelaItensDieta.getItens());
 		
 		if (result.hasErrors()) {
 			return novo(dieta);
@@ -69,6 +74,7 @@ public class DietaController {
 		return new ModelAndView("redirect:/dietas/novo");
 	}
 
+	@GetMapping
 	public ModelAndView pesquisar(@Valid DietaFilter filter, BindingResult result,
 			@PageableDefault(size = 20) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("dieta/PesquisaDieta");
@@ -81,6 +87,24 @@ public class DietaController {
 
 		return mv;
 
+	}
+	
+	@DeleteMapping("/{id}")
+	public @ResponseBody ResponseEntity<?> excluir(@PathVariable("id") Long id) {
+		try {
+			cadastroDietaService.excluir(id);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/{id}")
+	public ModelAndView editar(@PathVariable("id") Long id) {
+		Dieta dieta = dietaRepository.findOne(id);
+		ModelAndView mv = novo(dieta);
+		mv.addObject(dieta);
+		return mv;
 	}
 
 	@PostMapping("/item")

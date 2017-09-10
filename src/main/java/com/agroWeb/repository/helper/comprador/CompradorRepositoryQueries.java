@@ -10,5 +10,6 @@ public interface CompradorRepositoryQueries {
 	public Page<Comprador> filtrar(CompradorFilter filter, Pageable pageable);
 
 	public Comprador buscarComCidadeEstado(Long id);
-
+	
+	public Long totalDeCompradores();
 }

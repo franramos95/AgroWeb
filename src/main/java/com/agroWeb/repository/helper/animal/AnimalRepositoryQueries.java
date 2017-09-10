@@ -10,5 +10,5 @@ public interface AnimalRepositoryQueries {
 	
 	public Page<Animal> filtrar(AnimalFilter filter, Pageable pageable);
 	
-
+	public Long totalDeAnimais();
 }

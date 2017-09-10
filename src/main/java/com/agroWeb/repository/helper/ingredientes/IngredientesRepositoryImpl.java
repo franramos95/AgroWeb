@@ -1,6 +1,8 @@
 package com.agroWeb.repository.helper.ingredientes;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,6 +45,13 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 	}
 
 	@Override
+	public BigDecimal valorTotalIngrediente() {
+		Optional<BigDecimal> optional = Optional.ofNullable(
+				manager.createQuery("select sum(valor) from Ingrediente", BigDecimal.class).getSingleResult());
+		return optional.orElse(BigDecimal.ZERO);
+	}
+
+	@Override
 	public List<IngredienteDTO> porNome(String nome) {
 		String jpql = "select new com.agroWeb.dto.IngredienteDTO(id, nome, valor) "
 				+ "from Ingrediente where lower(nome) like :nome";
@@ -76,4 +85,5 @@ public class IngredientesRepositoryImpl implements IngredientesRepositoryQueries
 		return (Long) criteria.uniqueResult();
 
 	}
+
 }

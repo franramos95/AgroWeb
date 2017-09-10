@@ -1,5 +1,6 @@
 package com.agroWeb.repository.helper.ingredientes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -14,4 +15,7 @@ public interface IngredientesRepositoryQueries {
 	public Page<Ingrediente> filtrar(IngredienteFilter filter, Pageable pageable);
 
 	public List<IngredienteDTO> porNome(String nome);
+	
+	public BigDecimal valorTotalIngrediente();
+	
 }

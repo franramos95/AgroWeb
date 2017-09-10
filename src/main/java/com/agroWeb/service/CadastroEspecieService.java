@@ -26,7 +26,7 @@ public class CadastroEspecieService {
 		Optional<Especie> especieOptional = especieRepository.findByNomeIgnoreCase(especie.getNome());
 		
 		
-		if (especieOptional.isPresent()){
+		if (especieOptional.isPresent() && especie.isNova()){
 			throw new NomeEspecieJaCadastradaException("Espécie com este nome já cadastrada");
 		}
 		
