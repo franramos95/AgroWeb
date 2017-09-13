@@ -52,7 +52,7 @@ public class Venda implements Serializable{
 
 	@ManyToOne
 	@JoinColumn(name = "id_comprador")
-	private Comprador compradores;
+	private Comprador comprador;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusVenda status =  StatusVenda.ORCAMENTO;
@@ -131,12 +131,12 @@ public class Venda implements Serializable{
 		this.usuario = usuario;
 	}
 
-	public Comprador getCompradores() {
-		return compradores;
+	public Comprador getComprador() {
+		return comprador;
 	}
 
-	public void setCompradores(Comprador compradores) {
-		this.compradores = compradores;
+	public void setComprador(Comprador comprador) {
+		this.comprador = comprador;
 	}
 
 	public StatusVenda getStatus() {

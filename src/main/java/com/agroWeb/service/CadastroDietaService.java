@@ -34,7 +34,7 @@ public class CadastroDietaService {
 		//		.get();
 		
 		
-		return dietaRepository.saveAndFlush(dieta);
+		return dietaRepository.save(dieta);
 	}
 	
 	@Transactional
