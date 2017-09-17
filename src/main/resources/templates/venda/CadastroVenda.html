@@ -23,7 +23,7 @@
 	</div>
 	
 	<div class="container-fluid">
-		<form method="POST" th:action="@{/vendas/nova}">
+		<form method="POST" th:action="@{/vendas/novo}">
 			
 			<div class="row">
 				<div class="col-sm-4">
@@ -89,21 +89,27 @@
 				</div>
 			</div>
 			
-			
+			<div class="tab-content">
+				<div class="tab-pane active" id="animal">
+				
 				<div class="row">
 						<div class="form-group  col-lg-12">
-						<label for="animal" class="control-label">Animal</label>
-							<input type="text" class="form-control" id="cerveja" 
-								placeholder="Pesquise e adicione o animal pelo nome" autofocus="autofocus" />
+							<label class="control-label" for="produto">Produto</label>
+							<input type="text" class="form-control js-nome-produto-input" id="produto" 
+								placeholder="Pesquise e adicione o produto nome" autofocus="autofocus" data:url="@{/produtos}" />
 						</div>
 					</div>
 					
-					<div class="bw-tabela-cervejas">
-						<div class="bw-tabela-cervejas__vazio">
+					<div class="bw-tabela-produto  js-tabela-produto-container">
+						<div class="bw-tabela-produto__vazio">
 							<i class="glyphicon  glyphicon-shopping-cart"></i> 
-							<span>Você ainda não adicionou nenhum animal.</span>
+							<span>Você ainda não adicionou nenhum Produto.</span>
 						</div>
 					</div>
+</div>
+					</div>
+				</div>
+				</div>
 				
 				
 			
@@ -127,5 +133,11 @@
 		</form>
 	</div>
 </section>
+<th:block layout:fragment="javascript-extra">
+	<script th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script th:src="@{/javaScripts/vendors/handlebars.min.js}"></script>
+	<script th:src="@{/javaScripts/venda.autocomplete-itens.js}"></script>
+	<script th:src="@{/javaScripts/venda.tabela-itens.js}"></script>
+</th:block>
 
 </html>

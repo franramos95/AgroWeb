@@ -24,12 +24,14 @@ public class ItemVenda {
 	private BigDecimal valorUnitario;
 
 	@OneToOne
-	@JoinColumn(name = "id_animal")
-	private Animal animal;
+	@JoinColumn(name = "id_produto")
+	private Produto produto;
 
 	@ManyToOne
 	@JoinColumn(name = "id_venda")
 	private Venda venda;
+	
+	private Integer quantidade;
 
 	public Long getId() {
 		return id;
@@ -47,12 +49,12 @@ public class ItemVenda {
 		this.valorUnitario = valorUnitario;
 	}
 
-	public Animal getAnimal() {
-		return animal;
+	public Produto getProduto() {
+		return produto;
 	}
 
-	public void setAnimal(Animal animal) {
-		this.animal = animal;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 
 	public Venda getVenda() {
@@ -63,6 +65,18 @@ public class ItemVenda {
 		this.venda = venda;
 	}
 
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public BigDecimal getValorTotal(){
+		return valorUnitario.multiply(new BigDecimal(quantidade));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -29,8 +29,9 @@ public class ItemDieta {
 
 	@Column(name = "valor_unitario")
 	private BigDecimal valorUnitario;
-
+	
 	private Integer quantidade;
+
 
 	public Long getId() {
 		return id;
@@ -63,7 +64,8 @@ public class ItemDieta {
 	public void setValorUnitario(BigDecimal valorUnitario) {
 		this.valorUnitario = valorUnitario;
 	}
-
+	
+	
 	public Integer getQuantidade() {
 		return quantidade;
 	}
@@ -71,11 +73,10 @@ public class ItemDieta {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
-	
+
 	public BigDecimal getValorTotal(){
 		return valorUnitario.multiply(new BigDecimal(quantidade));
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

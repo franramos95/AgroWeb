@@ -1,0 +1,2 @@
+ALTER TABLE produto
+ADD nome VARCHAR(20) NOT NULL;
