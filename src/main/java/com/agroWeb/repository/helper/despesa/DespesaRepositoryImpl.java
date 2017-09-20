@@ -2,6 +2,7 @@ package com.agroWeb.repository.helper.despesa;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.agroWeb.dto.DespesaMes;
 import com.agroWeb.model.Despesa;
 import com.agroWeb.repository.filter.DespesaFilter;
 import com.agroWeb.repository.paginacao.PaginacaoUtil;
@@ -45,10 +47,29 @@ public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 
 	@Override
 	public BigDecimal totalDeDespesa() {
-		Optional<BigDecimal> optional =  Optional.ofNullable(manager.createQuery("select sum(valor) from Despesa", BigDecimal.class).getSingleResult());
+		Optional<BigDecimal> optional = Optional
+				.ofNullable(manager.createQuery("select sum(valor) from Despesa", BigDecimal.class).getSingleResult());
 		return optional.orElse(BigDecimal.ZERO);
 	}
-	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DespesaMes> totalPorMes() {
+		List<DespesaMes> despesaMes = manager.createNamedQuery("Despesa.totalPorMes").getResultList();
+		
+		LocalDate hoje =  LocalDate.now();
+		for (int i =1; i <= 6; i++){
+			String mesIdeal = String.format("%d/%02d", hoje.getYear(), hoje.getMonthValue());
+			
+			boolean possuiMes = despesaMes.stream().filter(v -> v.getMes().equals(mesIdeal)).findAny().isPresent();
+			if(!possuiMes){
+				despesaMes.add(i - 1, new DespesaMes(mesIdeal, 0));
+			}
+			
+			hoje = hoje.minusMonths(1);
+		}
+		return despesaMes;
+	}
+
 	public void adicionarFiltro(DespesaFilter filter, Criteria criteria) {
 		if (filter != null) {
 			if (!StringUtils.isEmpty(filter.getNome())) {
@@ -61,14 +82,18 @@ public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 				criteria.add(Restrictions.eq("valor", filter.getValor()));
 			}
 			if (filter.getDesde() != null) {
-				LocalDate desde = LocalDate.of(filter.getDesde().getYear(), filter.getDesde().getMonth(), filter.getDesde().getDayOfMonth());
-				//LocalDateTime desde = LocalDateTime.of(filter.getDesde(), LocalTime.of(0, 0));
+				LocalDate desde = LocalDate.of(filter.getDesde().getYear(), filter.getDesde().getMonth(),
+						filter.getDesde().getDayOfMonth());
+				// LocalDateTime desde = LocalDateTime.of(filter.getDesde(),
+				// LocalTime.of(0, 0));
 				criteria.add(Restrictions.ge("data", desde));
 			}
 			if (filter.getAte() != null) {
-				LocalDate ate = LocalDate.of(filter.getAte().getYear(), filter.getAte().getMonth(), filter.getAte().getDayOfMonth());
-				//LocalDate ate = LocalDate.from(filter.getAte());
-				//LocalDateTime ate = LocalDateTime.of(filter.getAte(), LocalTime.of(23, 59));
+				LocalDate ate = LocalDate.of(filter.getAte().getYear(), filter.getAte().getMonth(),
+						filter.getAte().getDayOfMonth());
+				// LocalDate ate = LocalDate.from(filter.getAte());
+				// LocalDateTime ate = LocalDateTime.of(filter.getAte(),
+				// LocalTime.of(23, 59));
 				criteria.add(Restrictions.le("data", ate));
 			}
 		}
@@ -80,7 +105,5 @@ public class DespesaRepositoryImpl implements DespesaRepositoryQueries {
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.uniqueResult();
 	}
-
-
 
 }

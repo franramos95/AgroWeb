@@ -53,7 +53,7 @@ public class TabelaItensVenda {
 	
 	public void alterarQuantidadeItens(Produto produto, Integer quantidade){
 		ItemVenda itemVenda = buscarItemPorProduto(produto).get();
-		itemVenda.setQuantidade(null);
+		itemVenda.setQuantidade(quantidade);
 	}
 	
 	public void excluirItem(Produto produto){

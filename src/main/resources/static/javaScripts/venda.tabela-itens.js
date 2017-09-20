@@ -23,6 +23,23 @@ AgroWeb.TabelaItens = (function() {
 	
 	function onItemAdicionadoNoServidor(html){
 		this.tabelaProdutoContainer.html(html);
+		$('.js-tabela-produto-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
+	}
+	
+	function onQuantidadeItemAlterado(evento) {
+		var input = $(evento.target);
+		var quantidade = input.val();
+		var idProduto = input.data('id-produto');
+		
+		var resposta = $.ajax({
+			url: 'item/' + idProduto,
+			method: 'PUT',
+			data: {
+				quantidade: quantidade
+			}
+		});
+		
+		resposta.done(onItemAdicionadoNoServidor.bind(this));
 	}
 	
 	return TabelaItens;

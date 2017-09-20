@@ -1,5 +1,7 @@
 package com.agroWeb.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agroWeb.controller.page.PageWrapper;
+import com.agroWeb.dto.DespesaMes;
 import com.agroWeb.model.Despesa;
 import com.agroWeb.model.TipoDespesa;
 import com.agroWeb.repository.DespesaRepository;
@@ -90,6 +93,11 @@ public class DespesaController {
 		ModelAndView mv = novo(despesa);
 		mv.addObject(despesa);
 		return mv;
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<DespesaMes> listaTotalDespesaPorMes(){
+		return despesaRepository.totalPorMes();
 	}
 
 }

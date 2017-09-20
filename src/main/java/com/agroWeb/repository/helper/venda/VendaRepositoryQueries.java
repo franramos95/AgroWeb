@@ -9,4 +9,5 @@ import com.agroWeb.repository.filter.VendaFilter;
 public interface VendaRepositoryQueries {
 
 	public Page<Venda> filtrar(VendaFilter filter, Pageable pageable);
+
 }

@@ -13,7 +13,7 @@ AgroWeb.Autocomplete = (function() {
 	Autocomplete.prototype.iniciar = function() {
 		var options = {
 			url: function(nome) {
-				return this.NomeInput.data('url')'?nome=' + nome;
+				return this.NomeInput.data('url') + '?nome=' + nome;
 			}.bind(this),
 			getValue: 'nome',
 			minCharNumber: 3,

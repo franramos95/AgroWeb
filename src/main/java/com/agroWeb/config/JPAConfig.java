@@ -47,6 +47,7 @@ public class JPAConfig {
 		factory.setDataSource(dataSource);
 		factory.setJpaVendorAdapter(jpaVendorAdapter);
 		factory.setPackagesToScan(Usuario.class.getPackage().getName());
+		factory.setMappingResources("sql/consultas-nativas.xml");
 		factory.afterPropertiesSet();
 		return factory.getObject();
 	}
