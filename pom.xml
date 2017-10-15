@@ -64,7 +64,13 @@
 		<thymeleaf-extras-springsecurity.version>3.0.0.RELEASE</thymeleaf-extras-springsecurity.version>
 		
 		<!-- JUnit-->
-		<junit.version>4.12</junit.version>								
+		<junit.version>4.12</junit.version>						
+		
+		<!-- JasperReports -->
+		<jasperreports.version>6.3.0</jasperreports.version>
+		
+		<!-- JasperReports Fonts -->
+		<jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>		
 	</properties>
 
 	<build>
@@ -281,7 +287,21 @@
 		    <artifactId>junit</artifactId>
 		    <version>${junit.version}</version>
 		    <scope>test</scope>
-		</dependency>											
+		</dependency>	
+		
+		<!-- JasperReports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-fonts</artifactId>
+		    <version>${jasperreports-fonts.version}</version>
+		    <scope>compile</scope>
+		</dependency>										
 	
 	</dependencies>
 	

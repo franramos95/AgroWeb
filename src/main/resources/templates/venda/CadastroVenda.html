@@ -7,7 +7,7 @@
 	xmlns:brewer="http://brewer.algaworks.com">
 
 <head>
-	<title>Cadastro de venda</title>
+<title>Cadastro de venda</title>
 </head>
 
 <section layout:fragment="conteudo">
@@ -21,10 +21,10 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="container-fluid">
 		<form method="POST" th:action="@{/vendas/novo}">
-			
+
 			<div class="row">
 				<div class="col-sm-4">
 					<div class="aw-box">
@@ -35,7 +35,7 @@
 						<div class="aw-box__title">Total</div>
 					</div>
 				</div>
-				
+
 				<div class="col-sm-4">
 					<div class="aw-box">
 						<div class="aw-box__icon">
@@ -45,7 +45,7 @@
 						<div class="aw-box__title">Status</div>
 					</div>
 				</div>
-				
+
 				<div class="col-sm-4">
 					<div class="aw-box">
 						<div class="aw-box__icon">
@@ -63,78 +63,85 @@
 				<div class="form-group  col-sm-4  bw-required">
 					<label class="control-label" for="comprador">Comprador</label>
 					<div class="input-group">
-				      <input id="comprador" type="text" readonly="readonly" class="form-control" placeholder="Clique na lupa para pesquisar o cliente"/>
-				      <span class="input-group-btn">
-				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada">
-				        	<i class="glyphicon  glyphicon-search"></i>
-				        </button>
-				      </span>
-				    </div>
-				</div>
-				
-				<div class="form-group  col-sm-4 bw-required">
-					<label class="control-label" for="valorFrete">Valor do frete</label>
-					<div class="input-group">
-	      				<div class="input-group-addon">R$</div> 
-						<input type="text" maxlength="14" class="form-control  js-decimal" id="valorFrete"/>
+						<input id="comprador" type="text" readonly="readonly"
+							class="form-control"
+							placeholder="Clique na lupa para pesquisar o comprador" /> <span
+							class="input-group-btn">
+							<button class="btn  btn-default  js-tooltip" type="button"
+								title="Pesquisa avançada">
+								<i class="glyphicon  glyphicon-search"></i>
+							</button>
+						</span>
 					</div>
 				</div>
-				
-				<div class="form-group  col-sm-4">
-					<label class="control-label" for="valorDesconto">Valor do desconto</label>
+
+				<div class="form-group  col-sm-4 bw-required">
+					<label class="control-label" for="valorFrete">Valor do
+						frete</label>
 					<div class="input-group">
-	      				<div class="input-group-addon">R$</div> 
-						<input type="text" maxlength="14" class="form-control  js-decimal" id="valorDesconto"/>
+						<div class="input-group-addon">R$</div>
+						<input type="text" maxlength="14" class="form-control  js-decimal"
+							id="valorFrete" />
+					</div>
+				</div>
+
+				<div class="form-group  col-sm-4">
+					<label class="control-label" for="valorDesconto">Valor do
+						desconto</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input type="text" maxlength="14" class="form-control  js-decimal"
+							id="valorDesconto" />
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="tab-content">
 				<div class="tab-pane active" id="animal">
-				
-				<div class="row">
+
+					<div class="row">
 						<div class="form-group  col-lg-12">
-							<label class="control-label" for="produto">Produto</label>
-							<input type="text" class="form-control js-nome-produto-input" id="produto" 
-								placeholder="Pesquise e adicione o produto nome" autofocus="autofocus" data:url="@{/produtos}" />
+							<label class="control-label" for="produto">Produto</label> <input
+								type="text" class="form-control js-nome-produto-input"
+								id="produto" placeholder="Pesquise e adicione o produto nome"
+								autofocus="autofocus" data:url="@{/produtos}" />
 						</div>
 					</div>
-					
+
 					<div class="bw-tabela-produto  js-tabela-produto-container">
 						<div class="bw-tabela-produto__vazio">
-							<i class="glyphicon  glyphicon-shopping-cart"></i> 
-							<span>Você ainda não adicionou nenhum Produto.</span>
+							<i class="glyphicon  glyphicon-shopping-cart"></i> <span>Você
+								ainda não adicionou nenhum Produto.</span>
 						</div>
 					</div>
-</div>
-					</div>
-				</div>
-				</div>
-				
-				
-			
-			<div class="row" style="clear: both">
-				<div class="col-lg-12">
-					<div class="btn-group">
-					  <button type="submit" class="btn  btn-primary">Salvar</button>
-					  <button type="button" class="btn  btn-primary  dropdown-toggle" data-toggle="dropdown">
-					    <span class="caret"></span>
-					  </button>
-					  
-					  <ul class="dropdown-menu">
-					    <li><a href="#">Salvar e emitir</a></li>
-					    <li><a href="#">Salvar e enviar por e-mail</a></li>
-					  </ul>
-					</div>
-				
-					<button class="btn  btn-danger">Cancelar</button>
 				</div>
 			</div>
-		</form>
+
+
+	<div class="row" style="clear: both">
+		<div class="col-lg-12">
+			<div class="btn-group">
+				<button type="submit" class="btn  btn-primary">Salvar</button>
+				<button type="button" class="btn  btn-primary  dropdown-toggle"
+					data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu">
+					<li><a href="#">Salvar e emitir</a></li>
+					<li><a href="#">Salvar e enviar por e-mail</a></li>
+				</ul>
+			</div>
+
+			<button class="btn  btn-danger">Cancelar</button>
+		</div>
+	</div>
+</form>
 	</div>
 </section>
 <th:block layout:fragment="javascript-extra">
-	<script th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+	<script
+		th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
 	<script th:src="@{/javaScripts/vendors/handlebars.min.js}"></script>
 	<script th:src="@{/javaScripts/venda.autocomplete-itens.js}"></script>
 	<script th:src="@{/javaScripts/venda.tabela-itens.js}"></script>

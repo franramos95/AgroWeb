@@ -79,17 +79,17 @@ public class Animal implements Serializable {
 	@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
 	private List<Doenca> doenca;
 
-	@ManyToMany
-	@JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_pesagem"))
-	private List<Pesagem> pesagem;
+	//@ManyToMany
+	//@JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_pesagem"))
+	//private List<Pesagem> pesagem;
 
-	public List<Pesagem> getPesagem() {
-		return pesagem;
-	}
+	//public List<Pesagem> getPesagem() {
+		//return pesagem;
+	//}
 
-	public void setPesagem(List<Pesagem> pesagem) {
-		this.pesagem = pesagem;
-	}
+	//public void setPesagem(List<Pesagem> pesagem) {
+		//this.pesagem = pesagem;
+	//}
 
 	public String getNome() {
 		return nome;

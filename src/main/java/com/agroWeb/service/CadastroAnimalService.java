@@ -24,7 +24,7 @@ public class CadastroAnimalService {
 
 		Optional<Animal> animalOption = animalRepository.findByIdBrinco(animal.getIdBrinco());
 
-		if (animalOption.isPresent()) {
+		if (animalOption.isPresent() && animal.isNova()) {
 			throw new IdBrincoJaCadastradoException("Animal já cadastrado com este Id Brinco!");
 		}
 
