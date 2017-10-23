@@ -1,6 +1,7 @@
 package com.agroWeb.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -79,17 +80,28 @@ public class Animal implements Serializable {
 	@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
 	private List<Doenca> doenca;
 
-	//@ManyToMany
-	//@JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_pesagem"))
-	//private List<Pesagem> pesagem;
+	// @ManyToMany
+	// @JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name =
+	// "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_pesagem"))
+	// private List<Pesagem> pesagem;
 
-	//public List<Pesagem> getPesagem() {
-		//return pesagem;
-	//}
+	// public List<Pesagem> getPesagem() {
+	// return pesagem;
+	// }
 
-	//public void setPesagem(List<Pesagem> pesagem) {
-		//this.pesagem = pesagem;
-	//}
+	// public void setPesagem(List<Pesagem> pesagem) {
+	// this.pesagem = pesagem;
+	// }
+
+	@NotNull(message = "O peso é obrigatória")
+	private BigDecimal pesagem;
+
+	@NotNull(message = "A data de nascimento é obrigatória")
+	@Column(name = "data_pesagem")
+	private LocalDate dataPesagem;
+
+	@Column(name = "data_alteracao")
+	private LocalDate dataAlteracao;
 
 	public String getNome() {
 		return nome;
@@ -193,6 +205,30 @@ public class Animal implements Serializable {
 
 	public void setDoenca(List<Doenca> doenca) {
 		this.doenca = doenca;
+	}
+
+	public BigDecimal getPesagem() {
+		return pesagem;
+	}
+
+	public void setPesagem(BigDecimal pesagem) {
+		this.pesagem = pesagem;
+	}
+
+	public LocalDate getDataPesagem() {
+		return dataPesagem;
+	}
+
+	public void setDataPesagem(LocalDate dataPesagem) {
+		this.dataPesagem = dataPesagem;
+	}
+
+	public LocalDate getDataAlteracao() {
+		return dataAlteracao;
+	}
+
+	public void setDataAlteracao(LocalDate dataAlteracao) {
+		this.dataAlteracao = dataAlteracao;
 	}
 
 	public boolean isNova() {

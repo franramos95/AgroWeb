@@ -1,5 +1,7 @@
 package com.agroWeb.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agroWeb.controller.page.PageWrapper;
+import com.agroWeb.dto.MortalidadeMes;
 import com.agroWeb.model.Animal;
 import com.agroWeb.model.Sexo;
 import com.agroWeb.model.SituacaoAnimal;
@@ -111,6 +114,11 @@ public class AnimalController {
 		mv.addObject(animal);
 		return mv;
 
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<MortalidadeMes> listaTotalMortalidadePorMes(){
+		return animalRepository.totalPorMes();
 	}
 
 }

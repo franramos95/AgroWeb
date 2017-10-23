@@ -8,6 +8,9 @@
 
 <head>
 <title>Cadastro de venda</title>
+	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
+	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}" />
+	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}" />
 </head>
 
 <section layout:fragment="conteudo">
@@ -140,11 +143,14 @@
 	</div>
 </section>
 <th:block layout:fragment="javascript-extra">
-	<script
-		th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
-	<script th:src="@{/javaScripts/vendors/handlebars.min.js}"></script>
-	<script th:src="@{/javaScripts/venda.autocomplete-itens.js}"></script>
-	<script th:src="@{/javaScripts/venda.tabela-itens.js}"></script>
+		<script	th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
+		<script th:src="@{/javaScripts/vendors/handlebars.min.js}"></script>
+		<script th:src="@{/javaScripts/vendors/bootstrap-switch.min.js}"></script>
+		<script th:src="@{/javaScripts/venda.autocomplete-itens.js}"></script>
+		<script th:src="@{/javaScripts/venda.tabela-itens.js}"></script>
+		<script>
+		$('.js-status').bootstrapSwitch();
+		</script>
 </th:block>
 
 </html>

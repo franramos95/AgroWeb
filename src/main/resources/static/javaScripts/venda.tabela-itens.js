@@ -24,6 +24,8 @@ AgroWeb.TabelaItens = (function() {
 	function onItemAdicionadoNoServidor(html){
 		this.tabelaProdutoContainer.html(html);
 		$('.js-tabela-produto-quantidade-item').on('change', onQuantidadeItemAlterado.bind(this));
+		$('.js-tabela-item').on('dblclick', onDoubleClick);
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this))
 	}
 	
 	function onQuantidadeItemAlterado(evento) {
@@ -41,6 +43,17 @@ AgroWeb.TabelaItens = (function() {
 		
 		resposta.done(onItemAdicionadoNoServidor.bind(this));
 	}
+	
+	function onDoubleClick(evento){
+		$(this).toggleClass('solicitando-exclusao');
+	}
+	
+	function onExclusaoItemClick(evento){
+		var idProduto = $(evento.target).data('codigo-produto');
+		var resposta = $.ajax({
+			url: 'item/' + idProduto,
+			method: 'DELETE'
+		});
 	
 	return TabelaItens;
 	

@@ -129,6 +129,11 @@ public class Venda implements Serializable{
 		return codigo == null;
 	}
 
+	public void adicionarItens(List<ItemVenda> itens){
+		
+		this.itens = itens;
+		this.itens.forEach(i -> i.setVenda(this));
+	}
 
 	@Override
 	public int hashCode() {
