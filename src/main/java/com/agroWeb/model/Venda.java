@@ -3,55 +3,47 @@ package com.agroWeb.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
-@Table (name = "venda")
-public class Venda implements Serializable{
-	
-	private static final long serialVersionUID = -5012134410179107637L;
+@Table(name = "venda")
+public class Venda implements Serializable {
+
+	private static final long serialVersionUID = 7618606327443089600L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-	
-	@Column(name = "valor_total")
-	private BigDecimal valorTotal;
-	
-	@Column(name = "valor_desconto")
-	private BigDecimal valorDesconto;
-	
-	@Column(name = "valor_frete")
-	private BigDecimal valorFrete;
-	
-	@NotNull(message = "A data de criacao é obrigatória")
-	private LocalDate dataCriacao;
+
+	@NotBlank
+	private String nome;
+
+	@NotNull
+	private BigDecimal valor;
 
 	@ManyToOne
-	@JoinColumn(name = "codigo_usuario")
-	private Usuario usuario;
+	@JoinColumn(name = "id_animal")
+	private Animal animal;
 
 	@ManyToOne
 	@JoinColumn(name = "id_comprador")
 	private Comprador comprador;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusVenda status =  StatusVenda.ORCAMENTO;
-	
-	@OneToMany (mappedBy = "venda", cascade = CascadeType.ALL)
-	private List<ItemVenda> itens =  new ArrayList<>();
+
+	private StatusVenda status;
+
+	@Column(name = "data_criacao")
+	private LocalDate dataCriacao;
 
 	public Long getCodigo() {
 		return codigo;
@@ -61,44 +53,28 @@ public class Venda implements Serializable{
 		this.codigo = codigo;
 	}
 
-	public BigDecimal getValorTotal() {
-		return valorTotal;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setValorTotal(BigDecimal valorTotal) {
-		this.valorTotal = valorTotal;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public BigDecimal getValorDesconto() {
-		return valorDesconto;
+	public BigDecimal getValor() {
+		return valor;
 	}
 
-	public void setValorDesconto(BigDecimal valorDesconto) {
-		this.valorDesconto = valorDesconto;
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
 	}
 
-	public BigDecimal getValorFrete() {
-		return valorFrete;
+	public Animal getAnimal() {
+		return animal;
 	}
 
-	public void setValorFrete(BigDecimal valorFrete) {
-		this.valorFrete = valorFrete;
-	}
-
-	public LocalDate getDataCriacao() {
-		return dataCriacao;
-	}
-
-	public void setDataCriacao(LocalDate dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
 	}
 
 	public Comprador getComprador() {
@@ -117,22 +93,16 @@ public class Venda implements Serializable{
 		this.status = status;
 	}
 
-	public List<ItemVenda> getItens() {
-		return itens;
+	public LocalDate getDataCriacao() {
+		return dataCriacao;
 	}
 
-	public void setItens(List<ItemVenda> itens) {
-		this.itens = itens;
+	public void setDataCriacao(LocalDate dataCriacao) {
+		this.dataCriacao = dataCriacao;
 	}
-	
+
 	public boolean isNova() {
 		return codigo == null;
-	}
-
-	public void adicionarItens(List<ItemVenda> itens){
-		
-		this.itens = itens;
-		this.itens.forEach(i -> i.setVenda(this));
 	}
 
 	@Override
@@ -159,9 +129,5 @@ public class Venda implements Serializable{
 			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
+
 }

@@ -76,9 +76,13 @@ public class Animal implements Serializable {
 	@JoinColumn(name = "id_dieta")
 	private Dieta dieta;
 
-	@ManyToMany
-	@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
-	private List<Doenca> doenca;
+	@ManyToOne
+	@JoinColumn(name = "id_doenca")
+	private Doenca doenca;
+	
+	//@ManyToMany
+	//@JoinTable(name = "animal_doenca", joinColumns = @JoinColumn(name = "id_animal"), inverseJoinColumns = @JoinColumn(name = "id_doenca"))
+	//private List<Doenca> doenca;
 
 	// @ManyToMany
 	// @JoinTable(name = "animal_pesagem", joinColumns = @JoinColumn(name =
@@ -199,11 +203,11 @@ public class Animal implements Serializable {
 		this.dieta = dieta;
 	}
 
-	public List<Doenca> getDoenca() {
+	public Doenca getDoenca() {
 		return doenca;
 	}
 
-	public void setDoenca(List<Doenca> doenca) {
+	public void setDoenca(Doenca doenca) {
 		this.doenca = doenca;
 	}
 

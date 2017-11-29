@@ -2,7 +2,7 @@ package com.agroWeb.model;
 
 public enum SituacaoAnimal {
 
-	ABATIDO("Abatido"), MORTO("Morto"), VENDIDO("Vendido"), VIVO("Vivo");
+	ABATIDO("Abatido"), VENDIDO("Vendido"), VIVO("Vivo"), MORTO("Morto");
 
 	private String descricao;
 

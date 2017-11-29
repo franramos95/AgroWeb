@@ -36,6 +36,7 @@ public class CadastroAnimalService {
 		if ((animal.getSituacao() == SituacaoAnimal.MORTO)) {
 			animal.setDataAlteracao(LocalDate.now());
 		}
+
 		return animalRepository.saveAndFlush(animal);
 	}
 

@@ -1,16 +1,17 @@
 package com.agroWeb.service;
 
+import java.util.Optional;
+
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.agroWeb.model.Venda;
 import com.agroWeb.repository.VendaRepository;
-import com.agroWeb.service.event.venda.VendaEvent;
 import com.agroWeb.service.exception.ImpossivelExcluirEntidadeException;
+import com.agroWeb.service.exception.NomeVendaJaCadastradoException;
 
 @Service
 public class CadastroVendaService {
@@ -18,14 +19,17 @@ public class CadastroVendaService {
 	@Autowired
 	private VendaRepository vendaRepository;
 
-	@Autowired
-	private ApplicationEventPublisher publisher;
 
 	@Transactional
-	public void salva(Venda venda) {
+	public Venda salva(Venda venda) {
+		Optional<Venda> vendaOptional = vendaRepository.findByNomeIgnoreCase(venda.getNome());
 
-		publisher.publishEvent(new VendaEvent(venda));
-		vendaRepository.saveAndFlush(venda);
+		if(vendaOptional.isPresent() && venda.isNova()){
+			throw new NomeVendaJaCadastradoException("Venda já existente");
+		}
+		
+		return vendaRepository.save(venda);
+		
 	}
 
 	@Transactional

@@ -79,7 +79,7 @@
 					<tbody>
 						<tr th:each="ingrediente : ${pagina.content}">
 							<td th:text="${ingrediente.nome}"></td>
-							<td class="text-right" th:text="|R$ ${ingrediente.valor}|"></td>
+							<td th:text="|R$ ${ingrediente.valor}|"></td>
 							<td th:text="${ingrediente.quantidade}"></td>
 							<td th:text="${ingrediente.vencimento}"></td>
 							<td class="text-center">

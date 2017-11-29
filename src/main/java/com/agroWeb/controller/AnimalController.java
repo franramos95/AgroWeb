@@ -115,9 +115,9 @@ public class AnimalController {
 		return mv;
 
 	}
-	
+
 	@GetMapping("/totalPorMes")
-	public @ResponseBody List<MortalidadeMes> listaTotalMortalidadePorMes(){
+	public @ResponseBody List<MortalidadeMes> listaTotalMortalidadePorMes() {
 		return animalRepository.totalPorMes();
 	}
 

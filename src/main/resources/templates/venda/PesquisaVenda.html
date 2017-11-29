@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
+	xmlns:data="http://www.thymeleag.org/extras/data"
+	layout:decorate="~{layout/LayoutPadrao}"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<title>Pesquisa de Vendas</title>
+</head>
+
+<body>
+		<section layout:fragment="conteudo">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-10">
+						<h1>Pesquisa de Venda</h1>
+					</div>
+
+					<div class="col-xs-2" ><!-- sec:authorize-url="/vendas/novo" -->
+						<div class="aw-page-header-controls">
+							<a class="btn  btn-default" th:href="@{/vendas/novo}">
+								<i class="glyphicon  glyphicon-plus-sign"></i> <span
+								class="hidden-xs  hidden-sm">Nova Venda</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<form method="GET" th:object="${vendaFilter}">
+				<div class="row">
+					<div class="form-group  col-sm-4">
+						<label class="control-label" for="nome">Nome</label> <input
+							type="text" class="form-control" id="nome" autofocus="autofocus"
+							th:field="*{nome}" />
+					</div>
+					
+					<div class="form-group  col-sm-4">
+					<label for="comprador" class="control-label">Comprador</label> 
+					<input type="text" class="form-control" id="comprador" autofocus="autofocus"
+							th:field="*{comprador}" />
+					</div>
+
+					<div class="form-group  col-sm-4">
+					<label for="status" class="control-label">Status</label> 
+					<input type="text" class="form-control" id="status" autofocus="autofocus"
+							th:field="*{status}" />
+					</div>	
+					</div>
+					
+					<div class="row">
+							
+					<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="valor" class="control-label">Valor</label>
+					<div class="input-group">
+						<div class="input-group-addon">R$</div>
+						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
+					</div>	
+						</div>
+					<div class="form-group col-sm-4">
+						<label for="data">Data</label>
+						<div class="form-inline">
+							<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="data"
+								th:field="*{desde}" autocomplete="off"/>
+							<label for="data" class="aw-form-label-between">até</label>
+							<input type="text" class="form-control  aw-form-control-inline-sm  js-date" id="data"
+								th:field="*{ate}" autocomplete="off"/>
+						</div>
+					</div>	
+					</div>
+					
+					
+				<button type="submit" class="btn  btn-primary">Pesquisar</button>
+			</form>
+			<div class="table-responsive bw-table-simples">
+	<table class="table  table-hover">
+		<thead>
+			<tr>
+				<td>Nome</td>
+				<td>Comprador</td>
+				<td>Status</td>
+				<td>Valor</td>
+				<td>Data Venda</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="venda : ${pagina.content}">
+				<td th:text="${venda.nome}"></td>
+				<td th:text="${venda.comprador.nome}"></td>
+				<td th:text="${venda.status}"></td>
+				<td th:text="|R$ ${venda.valor}|"></td>
+				<td th:text="${venda.dataCriacao}"></td>
+				<td class="text-center">
+								<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
+									th:href="@{/vendas/{codigo}(codigo=${venda.codigo})}"> <i class="glyphicon glyphicon-pencil"></i>
+								</a> <a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir"
+									data:url="@{/vendas/{codigo}(codigo=${venda.codigo})}"
+									data:objeto="${venda.nome}"> <i class="glyphicon glyphicon-remove"></i>
+							</a></td>
+			</tr>
+				
+			<tr th:if="${pagina.empty}">
+						<td colspan="3">Nenhuma venda encontrado</td>
+					</tr>				
+		</tbody>
+	</table>
+</div>
+
+		<div class="col-sm-12  text-center" th:if="${not pagina.empty}">
+				<nav>
+					<ul class="pagination pagination-sm"
+						th:with="paginaAtual=${pagina.atual}">
+						<li th:class="${pagina.primeira} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual - 1)}"
+							th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a></li>
+						<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}"
+							th:with="numeroPagina=${p-1}">
+							<li th:class="${paginaAtual == numeroPagina} ? active"><a
+								th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a></li>
+						</th:block>
+
+						<li th:class="${pagina.ultima} ? disabled"><a
+							th:href="${pagina.urlParaPagina(paginaAtual + 1)}"
+							th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a></li>
+					</ul>
+				</nav>
+
+			</div>
+		</div>
+		
+</section>
+</body>
+</html>

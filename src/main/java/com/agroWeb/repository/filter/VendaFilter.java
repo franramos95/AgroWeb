@@ -3,31 +3,53 @@ package com.agroWeb.repository.filter;
 import java.time.LocalDate;
 
 import com.agroWeb.model.Comprador;
-
+import com.agroWeb.model.StatusVenda;
 
 public class VendaFilter {
 
+	private String nome;
 
-	private Long valorTotal;
+	private Long valor;
+
+	private LocalDate desde;
 	
-	private LocalDate dataVenda;
+	private LocalDate ate;
 
-	private Comprador  comprador;
+	private Comprador comprador;
 
-	public Long getValorTotal() {
-		return valorTotal;
+	private StatusVenda status;
+
+	
+	public LocalDate getAte() {
+		return ate;
 	}
 
-	public void setValorTotal(Long valorTotal) {
-		this.valorTotal = valorTotal;
+	public void setAte(LocalDate ate) {
+		this.ate = ate;
 	}
 
-	public LocalDate getDataVenda() {
-		return dataVenda;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDataVenda(LocalDate dataVenda) {
-		this.dataVenda = dataVenda;
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public Long getValor() {
+		return valor;
+	}
+
+	public void setValor(Long valor) {
+		this.valor = valor;
+	}
+
+	public LocalDate getDesde() {
+		return desde;
+	}
+
+	public void setDesde(LocalDate desde) {
+		this.desde = desde;
 	}
 
 	public Comprador getComprador() {
@@ -38,5 +60,12 @@ public class VendaFilter {
 		this.comprador = comprador;
 	}
 
+	public StatusVenda getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusVenda status) {
+		this.status = status;
+	}
 
 }

@@ -137,5 +137,28 @@ public class RelatoriosController {
 
 		return new ModelAndView("relatorio_dieta_animal", parametros);
 	}
+	
+	@GetMapping("/vendas")
+	public ModelAndView relatorioVendas() {
+		ModelAndView mv = new ModelAndView("relatorio/RelatorioVenda");
+		mv.addObject(new PeriodoRelatorio());
+		return mv;
+	}
+
+	@PostMapping("/vendas")
+	public ModelAndView geraRelatorioVendas(PeriodoRelatorio periodoRelatorio) {
+		Map<String, Object> parametros = new HashMap<>();
+
+		Date dataInicio = Date.from(LocalDateTime.of(periodoRelatorio.getDataInicio(), LocalTime.of(0, 0, 0))
+				.atZone(ZoneId.systemDefault()).toInstant());
+		Date dataFim = Date.from(LocalDateTime.of(periodoRelatorio.getDataFim(), LocalTime.of(23, 59, 59))
+				.atZone(ZoneId.systemDefault()).toInstant());
+
+		parametros.put("format", "pdf");
+		parametros.put("data_inicio", dataInicio);
+		parametros.put("data_fim", dataFim);
+
+		return new ModelAndView("relatorio_vendas", parametros);
+	}
 
 }

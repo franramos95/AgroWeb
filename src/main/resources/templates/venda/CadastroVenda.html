@@ -1,156 +1,105 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+	xmlns:th="http://thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/http://thymeleaf.org/layout"
 	xmlns:data="http://www.thymeleag.org/extras/data"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:brewer="http://brewer.algaworks.com">
-
+	xmlns:agroWeb="http://www.agroWeb.insightsoftware.com"
+	layout:decorate="~{layout/LayoutPadrao}">
 <head>
-<title>Cadastro de venda</title>
-	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
-	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/easy-autocomplete.min.css}" />
-	<link rel="stylesheet" type="text/css"th:href="@{/stylesheets/vendors/easy-autocomplete.themes.min.css}" />
+<title>Cadastro de Animal</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}" />
 </head>
 
-<section layout:fragment="conteudo">
+<body>
+	<section layout:fragment="conteudo">
+<div class="page-header">
+		<div class="row">
+			<div class="col-xs-10">
+				<h1  th:if="${venda.nova}">Cadastro de Vendas</h1>
+    			<h1  th:unless="${venda.nova}" th:text="|Edição da ${venda.nome}|">Edição de Venda</h1>
+			</div>
+			<div class="col-xs-2">
+				<div class="aw-page-header-controls">
+					<a class="btn bt-default" th:href="@{/vendas}">
+						<i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Pesquisa</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 
-	<div class="page-header">
 		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-10">
-					<h1>Cadastro de Venda</h1>
-				</div>
-			</div>
-		</div>
-	</div>
 
-	<div class="container-fluid">
-		<form method="POST" th:action="@{/vendas/novo}">
+			<form method="POST" th:object="${venda}"
+			th:action="${venda.nova} ? @{/vendas/novo} : @{/vendas/{codigo}(codigo=${venda.codigo})}">
+		
+			<agroWeb:message/>
+		
+				<div class="row">
+				<input type="hidden" th:field="*{codigo}"/>
+				
+					<div class="form-group col-sm-4 bw-required" agroWeb:classforerror="nome">
+						<label for="nome" class="control-label">Nome</label>
+						<input id="nome" type="text" class="form-control" autofocus="autofocus" th:field="*{nome}"/>
+					</div>
+					<div class="form-group  col-sm-4">
+						<label for="dataCriacao" class="control-label">Data de Criação</label>
+					    <input type="text" class="form-control  js-date" id="dataCriacao" th:field="*{dataCriacao}" autocomplete="off" />
+					</div>
 
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="aw-box">
-						<div class="aw-box__icon">
-							<i class="fa  fa-usd  fa-3x"></i>
-						</div>
-						<div class="aw-box__value">R$0,00</div>
-						<div class="aw-box__title">Total</div>
+					<div class="col-lg-4 col-sm-4 form-group bw-required">
+					<label for="status" class="control-label">Status</label> 
+					<div>
+						<th:block th:each="status : ${situacao}">
+	  						<div class="radio radio-inline"> 
+		    					<input th:id="|id_${status}|" type="radio" th:value="${status}" name="status" th:field="*{status}"/>
+		    					<label th:for="|id_${status}|" th:text="${status.descricao}"></label>
+	    					</div>
+	    				</th:block>
 					</div>
 				</div>
-
-				<div class="col-sm-4">
-					<div class="aw-box">
-						<div class="aw-box__icon">
-							<i class="fa  fa-tag  fa-3x"></i>
-						</div>
-						<div class="aw-box__value">Orçamento</div>
-						<div class="aw-box__title">Status</div>
-					</div>
 				</div>
 
-				<div class="col-sm-4">
-					<div class="aw-box">
-						<div class="aw-box__icon">
-							<i class="fa  fa-calendar  fa-3x"></i>
-						</div>
-						<div class="aw-box__value">
-							<span class="js-tooltip">Hoje</span>
-						</div>
-						<div class="aw-box__title">Data da Venda</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="form-group  col-sm-4  bw-required">
-					<label class="control-label" for="comprador">Comprador</label>
-					<div class="input-group">
-						<input id="comprador" type="text" readonly="readonly"
-							class="form-control"
-							placeholder="Clique na lupa para pesquisar o comprador" /> <span
-							class="input-group-btn">
-							<button class="btn  btn-default  js-tooltip" type="button"
-								title="Pesquisa avançada">
-								<i class="glyphicon  glyphicon-search"></i>
-							</button>
-						</span>
-					</div>
-				</div>
-
-				<div class="form-group  col-sm-4 bw-required">
-					<label class="control-label" for="valorFrete">Valor do
-						frete</label>
-					<div class="input-group">
-						<div class="input-group-addon">R$</div>
-						<input type="text" maxlength="14" class="form-control  js-decimal"
-							id="valorFrete" />
-					</div>
-				</div>
-
+				<div class="row">							
 				<div class="form-group  col-sm-4">
-					<label class="control-label" for="valorDesconto">Valor do
-						desconto</label>
+					<label for="comprador" class="control-label">Comprador</label> 
+					<div class="bw-field-action">
+						<select id="comprador" class="form-control" th:field="*{comprador}">
+	  						<option value="">Selecione o Comprador</option>
+							<option th:each="comprador: ${compradores}" th:value="${comprador.id}" th:text="${comprador.nome}"></option>
+						</select>
+	     			</div>
+					</div>
+
+					<div class="form-group  col-sm-4">
+					<label for="animal" class="control-label">Animal</label> 
+					<div class="bw-field-action">
+						<select id="animal" class="form-control" th:field="*{animal}">
+	  						<option value="">Selecione o Animal</option>
+							<option th:each="animal: ${animais}" th:value="${animal.id}" th:text="${animal.nome}"></option>
+						</select>
+	     			</div>
+					</div>
+					
+					<div class="col-sm-4 form-group  bw-required" agroWeb:classforerror="valor">
+					<label for="valor" class="control-label">Valor</label>
 					<div class="input-group">
 						<div class="input-group-addon">R$</div>
-						<input type="text" maxlength="14" class="form-control  js-decimal"
-							id="valorDesconto" />
+						<input id="valor" type="text" class="form-control js-decimal" th:field="*{valor}"/>
+					</div>	
 					</div>
 				</div>
-			</div>
 
-			<div class="tab-content">
-				<div class="tab-pane active" id="animal">
-
-					<div class="row">
-						<div class="form-group  col-lg-12">
-							<label class="control-label" for="produto">Produto</label> <input
-								type="text" class="form-control js-nome-produto-input"
-								id="produto" placeholder="Pesquise e adicione o produto nome"
-								autofocus="autofocus" data:url="@{/produtos}" />
-						</div>
-					</div>
-
-					<div class="bw-tabela-produto  js-tabela-produto-container">
-						<div class="bw-tabela-produto__vazio">
-							<i class="glyphicon  glyphicon-shopping-cart"></i> <span>Você
-								ainda não adicionou nenhum Produto.</span>
-						</div>
-					</div>
+				
+				
+				<div class="form-group">
+					<button class="btn  btn-primary" type="submit">Salvar</button>
 				</div>
-			</div>
-
-
-	<div class="row" style="clear: both">
-		<div class="col-lg-12">
-			<div class="btn-group">
-				<button type="submit" class="btn  btn-primary">Salvar</button>
-				<button type="button" class="btn  btn-primary  dropdown-toggle"
-					data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
-
-				<ul class="dropdown-menu">
-					<li><a href="#">Salvar e emitir</a></li>
-					<li><a href="#">Salvar e enviar por e-mail</a></li>
-				</ul>
-			</div>
-
-			<button class="btn  btn-danger">Cancelar</button>
+			</form>
 		</div>
-	</div>
-</form>
-	</div>
-</section>
-<th:block layout:fragment="javascript-extra">
-		<script	th:src="@{/javaScripts/vendors/jquery.easy-autocomplete.min.js}"></script>
-		<script th:src="@{/javaScripts/vendors/handlebars.min.js}"></script>
-		<script th:src="@{/javaScripts/vendors/bootstrap-switch.min.js}"></script>
-		<script th:src="@{/javaScripts/venda.autocomplete-itens.js}"></script>
-		<script th:src="@{/javaScripts/venda.tabela-itens.js}"></script>
-		<script>
-		$('.js-status').bootstrapSwitch();
-		</script>
-</th:block>
 
+	</section>
+</body>
 </html>

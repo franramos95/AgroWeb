@@ -1,7 +1,6 @@
 package com.agroWeb.repository.helper.venda;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,19 +50,36 @@ public class VendaRepositoryImpl implements VendaRepositoryQueries {
 	private void adicionarFiltro(VendaFilter filter, Criteria criteria) {
 		criteria.createAlias("comprador", "c");
 
+
 		if (filter != null) {
 		}
-		if (filter.getValorTotal() != null) {
-			criteria.add(Restrictions.eq("valor total", filter.getValorTotal()));
+		if (!StringUtils.isEmpty(filter.getNome())) {
+			criteria.add(Restrictions.ilike("nome", filter.getNome()));
 		}
-		if (filter.getDataVenda() != null) {
-			LocalDateTime dtvenda = LocalDateTime.of(filter.getDataVenda(), LocalTime.of(23, 59));
-			criteria.add(Restrictions.ge("dataVenda", dtvenda));
+		if (filter.getValor() != null) {
+			criteria.add(Restrictions.eq("valor", filter.getValor()));
+		}
+		if (filter.getDesde() != null) {
+			LocalDate desde = LocalDate.of(filter.getDesde().getYear(), filter.getDesde().getMonth(),
+					filter.getDesde().getDayOfMonth());
+			// LocalDateTime desde = LocalDateTime.of(filter.getDesde(),
+			// LocalTime.of(0, 0));
+			criteria.add(Restrictions.ge("dataCriacao", desde));
+		}
+		if (filter.getAte() != null) {
+			LocalDate ate = LocalDate.of(filter.getAte().getYear(), filter.getAte().getMonth(),
+					filter.getAte().getDayOfMonth());
+			// LocalDate ate = LocalDate.from(filter.getAte());
+			// LocalDateTime ate = LocalDateTime.of(filter.getAte(),
+			// LocalTime.of(23, 59));
+			criteria.add(Restrictions.le("dataCriacao", ate));
 		}
 		if (!StringUtils.isEmpty(filter.getComprador())) {
 			criteria.add(Restrictions.ilike("c.nome", filter.getComprador()));
 		}
-
+		if (!StringUtils.isEmpty(filter.getStatus())) {
+			criteria.add(Restrictions.ilike("status", filter.getStatus()));
+		}
 	}
 
 }
